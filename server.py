@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_file, send_from_directory
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_file, send_from_directory, Response
 from iti_app import (
     ChatBot, 
     ContextualModel, 
@@ -24,6 +24,16 @@ from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 import time
 from flask import after_this_request
 import re
+import uuid
+import tempfile
+import gtts
+
+# Import configuration
+from config import get_config
+from logger import setup_logger
+from tts_cache import TTSCache
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # Database setup
 Base = declarative_base()
@@ -3500,5 +3510,230 @@ def check_filesystem():
             'error': f'Filesystem check failed: {str(e)}'
         }), 500
 
+# Import configuration
+from config import get_config
+from logger import setup_logger
+from tts_cache import TTSCache
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+# Initialize app with configuration
+def create_app(config_name=None):
+    app = Flask(__name__)
+    
+    # Load configuration
+    config = get_config()
+    app.config.from_object(config)
+    
+    # Set up CORS
+    CORS(app)
+    
+    # Set up rate limiter
+    limiter = Limiter(
+        app,
+        key_func=get_remote_address,
+        default_limits=["200 per day", "50 per hour"]
+    )
+    
+    # Set up logger
+    logger = setup_logger()
+    
+    # Initialize TTS cache
+    tts_cache = TTSCache()
+    
+    # Create required directories
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(app.config['TEMP_AUDIO_DIR'], exist_ok=True)
+    
+    # Clean up temporary files after each request
+    @app.teardown_appcontext
+    def cleanup_temp_files(exception=None):
+        try:
+            tts_cache.cleanup()
+        except Exception as e:
+            logger.error(f"Error during temp file cleanup: {str(e)}")
+    
+    @app.route('/test')
+    def test_index():
+        return render_template('test_index.html')
+
+    @app.route('/tts-test')
+    def tts_test_page():
+        return render_template('tts_test.html')
+
+    @app.route('/tts-debug')
+    def tts_debug_page():
+        """Render the TTS debugging page."""
+        return render_template('tts_debug.html')
+    
+    @app.route('/api/health', methods=['GET'])
+    def health_check():
+        """Simple health check endpoint for cloud monitoring."""
+        return jsonify({
+            'status': 'healthy',
+            'timestamp': datetime.now().isoformat(),
+            'version': '1.0.0'
+        })
+
+    @app.route('/api/check-filesystem', methods=['GET'])
+    def check_filesystem():
+        """Check if the application has proper permissions to create and delete temporary files."""
+        try:
+            # Check temp directory
+            temp_dir = os.path.join(os.getcwd(), app.config['TEMP_AUDIO_DIR'])
+            os.makedirs(temp_dir, exist_ok=True)
+            
+            # Test file creation and deletion
+            try:
+                # Create a test file
+                test_file = tempfile.NamedTemporaryFile(dir=temp_dir, suffix='.test', delete=False)
+                test_filename = test_file.name
+                test_file.write(b'test')
+                test_file.close()
+                
+                # Check if file exists
+                file_exists = os.path.exists(test_filename)
+                
+                # Try to delete the file
+                os.remove(test_filename)
+                delete_success = not os.path.exists(test_filename)
+                
+                logger.info(f"Filesystem check: write_access={file_exists}, delete_access={delete_success}")
+                
+                return jsonify({
+                    'success': True,
+                    'temp_dir': temp_dir,
+                    'write_access': file_exists,
+                    'delete_access': delete_success
+                })
+            except Exception as e:
+                logger.error(f"Filesystem check file operation error: {str(e)}")
+                return jsonify({
+                    'success': False,
+                    'temp_dir': temp_dir,
+                    'error': f'File operation error: {str(e)}'
+                }), 500
+        except Exception as e:
+            logger.error(f"Filesystem check failed: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': f'Filesystem check failed: {str(e)}'
+            }), 500
+    
+    @app.route('/api/tts-test', methods=['GET'])
+    def test_tts():
+        """Test endpoint for the TTS functionality.
+        Returns an audio file with a test message."""
+        try:
+            # Check if the test file is already cached
+            cached_file = tts_cache.get("This is a test of the text to speech system.", "en")
+            if cached_file and os.path.exists(cached_file):
+                logger.debug(f"Using cached test file: {cached_file}")
+                
+                @after_this_request
+                def cleanup(response):
+                    # No need to delete the file when using cache
+                    return response
+                
+                return send_file(cached_file, mimetype='audio/mpeg')
+            
+            # Generate a test audio file
+            tts = gtts.gTTS("This is a test of the text to speech system.", lang="en")
+            
+            # Generate a unique filename
+            filename = os.path.join(app.config['TEMP_AUDIO_DIR'], f"speech_test_{uuid.uuid4().hex}.mp3")
+            
+            # Save the audio file
+            tts.save(filename)
+            
+            # Cache the file for future use
+            cached_path = tts_cache.put("This is a test of the text to speech system.", "en", filename)
+            
+            # Send the file
+            response = send_file(cached_path, mimetype='audio/mpeg')
+            
+            logger.debug(f"Generated new test TTS file: {cached_path}")
+            
+            return response
+        except Exception as e:
+            logger.error(f"Error in TTS test: {str(e)}")
+            return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/text-to-speech', methods=['POST'])
+    @limiter.limit("100/day;30/hour;5/minute")
+    def text_to_speech():
+        """Convert text to speech and return an audio file."""
+        try:
+            # Get the request data
+            data = request.get_json()
+            if not data:
+                logger.warning("TTS request missing JSON data")
+                return jsonify({"error": "No data provided"}), 400
+            
+            # Extract text and language from the request
+            text = data.get('text', '')
+            language = data.get('language', 'en')
+            
+            if not text:
+                logger.warning("TTS request missing text")
+                return jsonify({"error": "No text provided"}), 400
+            
+            logger.info(f"TTS request: language={language}, text_length={len(text)}")
+            
+            # Check if the audio is already cached
+            cached_file = tts_cache.get(text, language)
+            if cached_file and os.path.exists(cached_file):
+                logger.debug(f"Using cached TTS file: {cached_file}")
+                
+                # Return the cached file
+                return send_file(cached_file, mimetype='audio/mpeg')
+            
+            # Generate the audio
+            start_time = time.time()
+            tts = gtts.gTTS(text=text, lang=language, slow=False)
+            
+            # Generate a unique filename
+            filename = os.path.join(app.config['TEMP_AUDIO_DIR'], f"speech_{uuid.uuid4().hex}.mp3")
+            
+            # Save the audio file
+            tts.save(filename)
+            generation_time = time.time() - start_time
+            
+            # Cache the file for future use
+            cached_path = tts_cache.put(text, language, filename)
+            
+            logger.debug(f"Generated new TTS file in {generation_time:.2f}s: {cached_path}")
+            
+            # Return the audio file
+            return send_file(cached_path, mimetype='audio/mpeg')
+        except Exception as e:
+            logger.error(f"Error in text-to-speech: {str(e)}")
+            return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/get-stats', methods=['GET'])
+    def get_stats():
+        """Get statistics about the TTS system."""
+        try:
+            # Count files in temp directory
+            temp_dir = app.config['TEMP_AUDIO_DIR']
+            audio_files = [f for f in os.listdir(temp_dir) if f.endswith('.mp3')]
+            
+            return jsonify({
+                'status': 'ok',
+                'cached_files': len(audio_files),
+                'cache_size_bytes': sum(os.path.getsize(os.path.join(temp_dir, f)) for f in audio_files),
+                'temp_dir': temp_dir,
+                'uptime': int(time.time() - app.config.get('START_TIME', time.time()))
+            })
+        except Exception as e:
+            logger.error(f"Error getting stats: {str(e)}")
+            return jsonify({"error": str(e)}), 500
+    
+    # Store application start time for uptime tracking
+    app.config['START_TIME'] = time.time()
+    
+    return app
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5000) 
+    app = create_app()
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=os.environ.get('FLASK_DEBUG', 'true').lower() == 'true') 
