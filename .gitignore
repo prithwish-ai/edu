@@ -1,5 +1,5 @@
 # Ignore large model files
-**/plant_disease_prediction_model.h5
+# Removed plant_disease_prediction_model.h5 since we're now tracking it with Git LFS
 
 # Environment variables
 .env
