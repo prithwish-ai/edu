@@ -5,3 +5,4 @@
 *.png filter=lfs diff=lfs merge=lfs -text
 *.JPG filter=lfs diff=lfs merge=lfs -text
 *.db filter=lfs diff=lfs merge=lfs -text
+RAPRITHPRA/sunita[[:space:]]willams/sunita[[:space:]]williams/AI-CHATBOT/models/** filter=lfs diff=lfs merge=lfs -text
