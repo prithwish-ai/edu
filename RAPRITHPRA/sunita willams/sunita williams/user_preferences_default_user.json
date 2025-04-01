@@ -1,0 +1,8 @@
+{
+  "language": "mr",
+  "response_length": "concise",
+  "difficulty_level": "medium",
+  "voice_enabled": true,
+  "voice_wake_word": "assistant",
+  "theme": "default"
+}

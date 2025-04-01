@@ -1,0 +1,20 @@
+{
+  "default_user": {
+    "vocational_skills": {
+      "Welding": {
+        "progress": 20.0,
+        "last_accessed": "2025-03-31T08:44:56.736375",
+        "quiz_scores": [],
+        "completion_time": 0
+      }
+    },
+    "agricultural_topics": {
+      "Organic Farming": {
+        "progress": 10.0,
+        "last_accessed": "2025-03-31T08:13:45.995494",
+        "quiz_scores": [],
+        "completion_time": 0
+      }
+    }
+  }
+}

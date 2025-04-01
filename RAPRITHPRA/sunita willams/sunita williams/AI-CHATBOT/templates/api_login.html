@@ -1,0 +1,106 @@
+{% extends "api_base.html" %}
+
+{% block title %}Login - EduSpark{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Login to access your EduSpark account</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+                <div class="form-error" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+                <div class="form-error" id="passwordError"></div>
+            </div>
+            
+            <div class="form-group" style="text-align: right;">
+                <a href="#" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            
+            <div class="form-error" id="formError" style="margin-top: 20px; text-align: center;"></div>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="/api_signup.html">Sign Up</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
+        
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+            document.getElementById('formError').textContent = '';
+            
+            // Get form values
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Basic validation
+            let isValid = true;
+            
+            if (!email) {
+                document.getElementById('emailError').textContent = 'Email is required.';
+                isValid = false;
+            }
+            
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Password is required.';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Send login request
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Login successful!') {
+                    // Store token and user data
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Redirect to dashboard
+                    window.location.href = '/api_dashboard.html';
+                } else {
+                    // Show error message
+                    document.getElementById('formError').textContent = data.message || 'Login failed. Please check your credentials.';
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                document.getElementById('formError').textContent = 'An error occurred. Please try again.';
+            });
+        });
+    });
+</script>
+{% endblock %} 

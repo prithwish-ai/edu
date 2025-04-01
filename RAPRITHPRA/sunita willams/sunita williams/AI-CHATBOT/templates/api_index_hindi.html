@@ -1,0 +1,531 @@
+{% extends "api_base.html" %}
+
+{% block title %}एडु स्पार्क - शिक्षा, विकास, खेती{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced network animation for index page */
+    .agro-background {
+        background: linear-gradient(to bottom, #0a2a0a, #071b07);
+    }
+    
+    .digital-grid {
+        background-image: 
+            radial-gradient(rgba(76, 175, 80, 0.1) 2px, transparent 2px),
+            radial-gradient(rgba(76, 175, 80, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px, 20px 20px;
+        background-position: 0 0, 10px 10px;
+        opacity: 0.3;
+        animation: pulseGrid 8s ease-in-out infinite;
+    }
+    
+    @keyframes pulseGrid {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.4; }
+    }
+    
+    /* Additional floating dots specific to index page */
+    .index-dots {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+    
+    .index-dot {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background-color: rgba(76, 175, 80, 0.8);
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    /* Add special pulse effect for some dots */
+    .index-dot.pulse {
+        animation: dotPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes dotPulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.5); opacity: 1; }
+    }
+    
+    /* Make content sections pop more against the background */
+    .hero-section, .features-section, .spotlight-section, .testimonials-section {
+        position: relative;
+        z-index: 2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Add index-specific dots container -->
+<div class="index-dots"></div>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <!-- Language option banner -->
+        <div class="language-banner text-center mb-4 p-2" style="background-color: rgba(255,255,255,0.9); border-radius: 10px;">
+            <p class="mb-0">
+                <i class="fas fa-language me-2"></i> 
+                <span>अंग्रेजी पसंद करते हैं? <a href="#" onclick="if(!languageChangeInProgress){setAppLanguage('en');} return false;" class="fw-bold">View in English</a></span>
+            </p>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text animate__animated animate__fadeInLeft">
+                <h1>ज्ञान का विकास करें, <br>सफलता की फसल काटें</h1>
+                <p>एडु स्पार्क आधुनिक एआई तकनीक को कृषि विशेषज्ञता के साथ जोड़कर कृषि शिक्षा और फसल प्रबंधन में क्रांति ला रहा है। हमारा नवीन प्लेटफॉर्म आपको पौधों के रोगों की पहचान करने, बाजार के रुझानों का अनुमान लगाने और विशेषज्ञ ज्ञान तक तुरंत पहुंचने में मदद करता है।</p>
+                <div class="hero-buttons">
+                    <a href="/api_signup.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus"></i> शुरू करें
+                    </a>
+                    <a href="/api_chat.html" class="btn btn-outline btn-lg">
+                        <i class="fas fa-comment-dots"></i> एआई सहायक आज़माएं
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number"><span class="counter">10</span>K+</div>
+                        <div class="stat-label">सक्रिय उपयोगकर्ता</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number"><span class="counter">97</span>%</div>
+                        <div class="stat-label">सटीकता दर</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number"><span class="counter">24</span>/7</div>
+                        <div class="stat-label">सहायता</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image animate__animated animate__fadeInRight">
+                <img src="https://images.unsplash.com/photo-1590682680695-43b964a3ae17?auto=format&fit=crop&w=800&q=80" alt="स्मार्ट खेती" class="main-image">
+                <div class="image-badge">
+                    <div class="badge-icon"><i class="fas fa-robot"></i></div>
+                    <div class="badge-text">एआई-संचालित</div>
+                </div>
+                <div class="image-badge badge-right">
+                    <div class="badge-icon"><i class="fas fa-leaf"></i></div>
+                    <div class="badge-text">टिकाऊ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+            <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,117.3C672,107,768,117,864,144C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>अत्याधुनिक विशेषताएं</h2>
+            <p>आपकी कृषि यात्रा में क्रांति लाने के लिए डिज़ाइन किए गए शक्तिशाली उपकरणों की खोज करें</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h3>पौधों के रोगों का पता लगाना</h3>
+                <p>हमारी एआई-संचालित छवि पहचान प्रणाली के साथ तुरंत फसल रोगों की पहचान करें। सटीक निदान और उपचार अनुशंसाएं प्राप्त करें।</p>
+                <a href="/api_plant_disease.html" class="feature-link">
+                    रोगों का पता लगाएं <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>एआई कृषि सहायक</h3>
+                <p>हमारा बुद्धिमान चैटबॉट आपके सभी कृषि प्रश्नों के तुरंत उत्तर प्रदान करता है, कभी भी, कहीं भी।</p>
+                <a href="/api_chat.html" class="feature-link">
+                    एआई से चैट करें <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>बाजार पूर्वानुमान</h3>
+                <p>विभिन्न कृषि वस्तुओं के लिए मूल्य पूर्वानुमान और प्रवृत्ति विश्लेषण के साथ बाजार से आगे रहें।</p>
+                <a href="/api_market_prediction.html" class="feature-link">
+                    कीमतों का अनुमान लगाएं <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="400">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>शिक्षा संसाधन</h3>
+                <p>कृषि ज्ञान, ट्यूटोरियल और सर्वोत्तम प्रथाओं के व्यापक पुस्तकालय तक पहुंच प्राप्त करें।</p>
+                <a href="/api_dashboard.html" class="feature-link">
+                    अधिक जानें <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Spotlight Sections -->
+<section class="spotlight-section">
+    <div class="container">
+        <div class="spotlight-item">
+            <div class="spotlight-image animate__animated animate__fadeInLeft">
+                <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=800&q=80" alt="पौधों के रोग का पता लगाना">
+                <div class="spotlight-badge">
+                    <i class="fas fa-shield-alt"></i> 97% सटीकता
+                </div>
+            </div>
+            <div class="spotlight-content animate__animated animate__fadeInRight">
+                <div class="section-tag">उन्नत तकनीक</div>
+                <h2>अत्याधुनिक पौधों के रोग का पता लगाना</h2>
+                <p>हमारा परिष्कृत एआई मॉडल 15 अलग-अलग फसल किस्मों में 40+ पौधों के रोगों की उल्लेखनीय सटीकता के साथ पहचान कर सकता है। केवल एक फोटो अपलोड करके, आपको तुरंत निदान और अनुकूलित उपचार सिफारिशें मिलेंगी।</p>
+                
+                <div class="spotlight-features">
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>तुरंत रोग पहचान</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>प्रमाण-आधारित उपचार योजनाएं</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>निवारक उपाय सिफारिशें</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>फील्ड उपयोग के लिए ऑफलाइन मोड</span>
+                    </div>
+                </div>
+                
+                <a href="/api_plant_disease.html" class="btn btn-primary">
+                    <i class="fas fa-leaf"></i> रोग पहचान आज़माएं
+                </a>
+            </div>
+        </div>
+        
+        <div class="spotlight-item reversed">
+            <div class="spotlight-content animate__animated animate__fadeInLeft">
+                <div class="section-tag">बुद्धिमान सहायता</div>
+                <h2>आपका 24/7 खेती और व्यावसायिक प्रशिक्षण विशेषज्ञ</h2>
+                <p>एडु स्पार्क का एआई सहायक विशाल कृषि और व्यावसायिक प्रशिक्षण ज्ञान को नवीनतम शोध के साथ जोड़कर आपके प्रश्नों का तुरंत उत्तर देता है। फसल चयन से लेकर कीट प्रबंधन तक, हमारा सहायक आपका विश्वसनीय खेती साथी है।</p>
+                
+                <div class="spotlight-features">
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>आवाज-सक्षम बातचीत</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>व्यक्तिगत सिफारिशें</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>निरंतर सीखने की क्षमताएं</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>बहुभाषी समर्थन</span>
+                    </div>
+                </div>
+                
+                <a href="/api_chat.html" class="btn btn-primary">
+                    <i class="fas fa-comments"></i> वार्तालाप शुरू करें
+                </a>
+            </div>
+            <div class="spotlight-image animate__animated animate__fadeInRight">
+                <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?auto=format&fit=crop&w=800&q=80" alt="एआई कृषि सहायक">
+                <div class="spotlight-badge">
+                    <i class="fas fa-brain"></i> एआई संचालित
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>दुनिया भर के किसानों, व्यावसायिक प्रशिक्षण छात्रों द्वारा विश्वसनीय</h2>
+            <p>हमारे बढ़ते कृषि पेशेवरों और व्यावसायिक प्रशिक्षण छात्रों के समुदाय से सुनें</p>
+        </div>
+        
+        <div class="testimonials-slider">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"एडु स्पार्क ने फसल उपज और गुणवत्ता के प्रबंधन और मेरे व्यावसायिक प्रशिक्षण कौशल को बेहतर बनाने के तरीके को बदल दिया है। तुरंत पहचान प्रणाली ने मेरी टमाटर की फसल को लेट ब्लाइट से बचाया, जिससे मुझे हजारों का नुकसान हो सकता था।"</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="प्रशंसापत्र लेखक">
+                    </div>
+                    <div class="author-info">
+                        <h4>मुन्ना कुमार</h4>
+                        <p>फार्म मालिक भारत</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"एक कृषि छात्र के रूप में, एआई सहायक मेरे अध्ययन के लिए अत्यंत मूल्यवान रहा है। यह मेरे सभी खेती प्रश्नों का उत्तर देने के लिए 24/7 उपलब्ध एक मार्गदर्शक की तरह है।"</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="प्रशंसापत्र लेखक">
+                    </div>
+                    <div class="author-info">
+                        <h4>प्रशांत कुमार</h4>
+                        <p>कृषि विज्ञान छात्र</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"मूल्य पूर्वानुमान उपकरण ने मुझे अपनी फसलों के लिए सर्वोत्तम बाजार मूल्य प्राप्त करने में मदद की है, जिससे मेरी आय में 25% की वृद्धि हुई है। यह एक अविश्वसनीय संसाधन है!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="https://randomuser.me/api/portraits/men/62.jpg" alt="प्रशंसापत्र लेखक">
+                    </div>
+                    <div class="author-info">
+                        <h4>राजेश सिंह</h4>
+                        <p>किसान</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create additional animated dots specifically for index page
+        const dotsContainer = document.querySelector('.index-dots');
+        const numDots = 120; // Increased number of dots
+        let mousePosX = 0, mousePosY = 0;
+        
+        // Track mouse position
+        document.addEventListener('mousemove', function(e) {
+            mousePosX = e.clientX;
+            mousePosY = e.clientY;
+            
+            // Make dots near mouse react
+            const dots = document.querySelectorAll('.index-dot');
+            dots.forEach(dot => {
+                const dotX = parseInt(dot.style.left);
+                const dotY = parseInt(dot.style.top);
+                const dx = mousePosX - dotX;
+                const dy = mousePosY - dotY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = (100 - distance) / 10;
+                    const moveX = Math.cos(angle) * force;
+                    const moveY = Math.sin(angle) * force;
+                    
+                    // Apply transform for performance instead of changing position
+                    dot.style.transform = `translate(${moveX}px, ${moveY}px) scale(${1 + (100-distance)/100})`;
+                    dot.style.opacity = Math.min(1, 0.8 + (100-distance)/100 * 0.2);
+                    dot.style.zIndex = "1";
+                } else {
+                    dot.style.transform = "";
+                    dot.style.opacity = "";
+                    dot.style.zIndex = "-1";
+                }
+            });
+        });
+        
+        if (dotsContainer) {
+            // Generate random dots
+            for (let i = 0; i < numDots; i++) {
+                createIndexDot(dotsContainer, i);
+            }
+            
+            // Draw connections between dots
+            setInterval(drawConnections, 1000/30); // 30 fps update for connections
+        }
+        
+        function createIndexDot(container, index) {
+            const dot = document.createElement('div');
+            dot.classList.add('index-dot');
+            
+            // Some dots will pulse
+            if (index % 8 === 0) {
+                dot.classList.add('pulse');
+            }
+            
+            // Random initial position
+            const posX = Math.random() * window.innerWidth;
+            const posY = Math.random() * window.innerHeight;
+            
+            // Random size (varied sizes for more interest)
+            const size = Math.random() * 3 + 1;
+            
+            // Set dot styles
+            dot.style.left = posX + 'px';
+            dot.style.top = posY + 'px';
+            dot.style.width = size + 'px';
+            dot.style.height = size + 'px';
+            dot.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            // Add dot to container
+            container.appendChild(dot);
+            
+            // Create floating animation with random duration
+            const duration = Math.random() * 20 + 10; // 10-30 seconds
+            const delay = Math.random() * 10; // 0-10 seconds delay
+            
+            dot.style.animation = `floatDot ${duration}s ease-in-out ${delay}s infinite`;
+            
+            // Add keyframe animation to head
+            if (!document.querySelector('#dot-animations')) {
+                const style = document.createElement('style');
+                style.id = 'dot-animations';
+                style.textContent = `
+                    @keyframes floatDot {
+                        0%, 100% {
+                            transform: translate(0, 0);
+                        }
+                        25% {
+                            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px);
+                        }
+                        50% {
+                            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px);
+                        }
+                        75% {
+                            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        function drawConnections() {
+            // Create canvas if it doesn't exist
+            let canvas = document.querySelector('#dots-connections');
+            if (!canvas) {
+                canvas = document.createElement('canvas');
+                canvas.id = 'dots-connections';
+                canvas.style.position = 'absolute';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.pointerEvents = 'none';
+                canvas.style.zIndex = '-1';
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                dotsContainer.appendChild(canvas);
+                
+                // Update canvas size on window resize
+                window.addEventListener('resize', function() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                });
+            }
+            
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const dots = document.querySelectorAll('.index-dot');
+            const dotsArray = Array.from(dots);
+            const maxDistance = 100; // Maximum distance for connections
+            
+            // Draw connections
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.15)';
+            ctx.lineWidth = 0.5;
+            
+            for (let i = 0; i < dotsArray.length; i++) {
+                const dot1 = dotsArray[i];
+                const x1 = parseInt(dot1.style.left);
+                const y1 = parseInt(dot1.style.top);
+                
+                // Connect to nearby dots
+                for (let j = i + 1; j < dotsArray.length; j++) {
+                    const dot2 = dotsArray[j];
+                    const x2 = parseInt(dot2.style.left);
+                    const y2 = parseInt(dot2.style.top);
+                    
+                    const dx = x1 - x2;
+                    const dy = y1 - y2;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < maxDistance) {
+                        // Opacity based on distance
+                        const opacity = 0.15 * (1 - distance / maxDistance);
+                        ctx.strokeStyle = `rgba(76, 175, 80, ${opacity})`;
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    }
+                }
+                
+                // Connect dots to mouse if close enough
+                const mouseDistance = Math.sqrt(
+                    Math.pow(x1 - mousePosX, 2) + 
+                    Math.pow(y1 - mousePosY, 2)
+                );
+                
+                if (mouseDistance < 150) {
+                    const opacity = 0.3 * (1 - mouseDistance / 150);
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(mousePosX, mousePosY);
+                    ctx.stroke();
+                }
+            }
+        }
+    });
+</script>
+{% endblock %} 

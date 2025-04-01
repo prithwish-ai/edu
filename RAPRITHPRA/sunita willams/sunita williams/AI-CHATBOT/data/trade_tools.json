@@ -1,0 +1,151 @@
+{
+  "Electrician": {
+    "Screwdriver set": {
+      "description": "Set of various sizes and types of screwdrivers for electrical work",
+      "usage": "Tightening and loosening screws on electrical fixtures and panels",
+      "types": [
+        "Flat head",
+        "Phillips head",
+        "Cabinet tip",
+        "Insulated"
+      ],
+      "safety_tips": [
+        "Use insulated handles",
+        "Match size to screw",
+        "Don't use as pry bar"
+      ],
+      "image": "screwdriver_set.png"
+    },
+    "Multimeter": {
+      "description": "Device for measuring electrical values such as voltage, current, and resistance",
+      "usage": "Testing circuits, fault finding, measuring electrical parameters",
+      "types": [
+        "Digital",
+        "Analog",
+        "Clamp meter"
+      ],
+      "safety_tips": [
+        "Verify meter is working before use",
+        "Use correct measurement range",
+        "Don't exceed rated voltage"
+      ],
+      "image": "multimeter.png"
+    },
+    "Wire stripper": {
+      "description": "Tool for removing insulation from electrical wires",
+      "usage": "Preparing wires for connections by stripping insulation without damaging conductor",
+      "types": [
+        "Manual",
+        "Automatic",
+        "Combination"
+      ],
+      "safety_tips": [
+        "Match tool to wire gauge",
+        "Don't cut too deep",
+        "Keep handles clean"
+      ],
+      "image": "wire_stripper.png"
+    }
+  },
+  "Fitter": {
+    "Files": {
+      "description": "Hand tools used for removing material and finishing surfaces",
+      "usage": "Shaping, smoothing, and deburring metal surfaces",
+      "types": [
+        "Flat",
+        "Round",
+        "Half-round",
+        "Triangular",
+        "Square",
+        "Bastard",
+        "Second cut",
+        "Smooth cut"
+      ],
+      "safety_tips": [
+        "Always use with handle",
+        "Clean with file card",
+        "Don't hammer or use as pry bar"
+      ],
+      "image": "files.png"
+    },
+    "Vernier caliper": {
+      "description": "Precision measuring instrument for internal, external and depth measurements",
+      "usage": "Taking accurate measurements of length, diameter, depth, and step dimensions",
+      "types": [
+        "Dial",
+        "Digital",
+        "Vernier"
+      ],
+      "safety_tips": [
+        "Handle carefully",
+        "Clean measuring faces before use",
+        "Don't drop"
+      ],
+      "image": "vernier_caliper.png"
+    },
+    "Try square": {
+      "description": "L-shaped measurement tool for checking right angles",
+      "usage": "Verifying perpendicularity and straightness of surfaces",
+      "types": [
+        "Fixed",
+        "Combination",
+        "Engineer's square"
+      ],
+      "safety_tips": [
+        "Store carefully to maintain accuracy",
+        "Clean before use",
+        "Don't drop or mishandle"
+      ],
+      "image": "try_square.png"
+    }
+  },
+  "Mechanic (Motor Vehicle)": {
+    "Socket set": {
+      "description": "Set of various sized sockets with ratchet handles",
+      "usage": "Removing and installing various nuts and bolts on vehicles",
+      "types": [
+        "Standard (SAE)",
+        "Metric",
+        "Deep socket",
+        "Impact socket"
+      ],
+      "safety_tips": [
+        "Use correct size socket",
+        "Don't use with power tools unless impact rated",
+        "Keep clean"
+      ],
+      "image": "socket_set.png"
+    },
+    "Torque wrench": {
+      "description": "Precision tool for applying specific amount of torque to fasteners",
+      "usage": "Tightening bolts to manufacturer specifications",
+      "types": [
+        "Click",
+        "Beam",
+        "Digital",
+        "Dial"
+      ],
+      "safety_tips": [
+        "Reset to lowest setting after use",
+        "Don't use for loosening",
+        "Calibrate regularly"
+      ],
+      "image": "torque_wrench.png"
+    },
+    "Timing light": {
+      "description": "Stroboscopic tool that flashes in sync with engine firing",
+      "usage": "Checking and adjusting ignition timing",
+      "types": [
+        "Inductive",
+        "Digital",
+        "Advance"
+      ],
+      "safety_tips": [
+        "Don't look directly at light",
+        "Keep away from moving parts",
+        "Shield from water"
+      ],
+      "image": "timing_light.png"
+    }
+  }
+}

@@ -1,0 +1,1743 @@
+{% extends "api_base.html" %}
+
+{% block title %}EDU SPARK - AI Assistant{% endblock %}
+
+{% block content %}
+<div class="chat-container animate__animated animate__fadeIn">
+    <div class="topics-sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-lightbulb"></i> Topics</h3>
+        </div>
+        <div class="topic-list">
+            <button class="topic-btn" data-topic="farming techniques"><i class="fas fa-tractor"></i> Farming Techniques</button>
+            <button class="topic-btn" data-topic="crop management"><i class="fas fa-seedling"></i> Crop Management</button>
+            <button class="topic-btn" data-topic="pest control"><i class="fas fa-bug"></i> Pest Control</button>
+            <button class="topic-btn" data-topic="plant disease"><i class="fas fa-leaf"></i> Plant Diseases</button>
+            <button class="topic-btn" data-topic="soil health"><i class="fas fa-mountain"></i> Soil Health</button>
+            <button class="topic-btn" data-topic="water management"><i class="fas fa-tint"></i> Water Management</button>
+            <button class="topic-btn" data-topic="market trends"><i class="fas fa-chart-line"></i> Market Trends</button>
+            <button class="topic-btn" data-topic="farm equipment"><i class="fas fa-tools"></i> Farm Equipment</button>
+            <button class="topic-btn" data-topic="education"><i class="fas fa-graduation-cap"></i> Agri-Education</button>
+        </div>
+        
+        <div class="sidebar-header mt-4">
+            <h3><i class="fas fa-link"></i> Quick Links</h3>
+        </div>
+        <div class="quick-links">
+            <a href="/api_plant_disease.html" class="quick-link"><i class="fas fa-microscope"></i> Disease Detection</a>
+            <a href="/api_market_prediction.html" class="quick-link"><i class="fas fa-chart-bar"></i> Market Prediction</a>
+            <a href="/api_dashboard.html" class="quick-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="assistant-info">
+                <div class="assistant-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="assistant-status">
+                    <span class="status-indicator"></span>
+                    <span>AI Assistant Online</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="chat-main">
+        <div class="chat-header">
+            <div class="chat-title">
+                <h2><i class="fas fa-comment-dots"></i> EDU SPARK Assistant</h2>
+                <p>Your agricultural knowledge companion</p>
+            </div>
+            <div class="chat-actions">
+                <button id="voiceToggle" class="action-btn" title="Toggle voice mode">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button id="clearChat" class="action-btn" title="Clear conversation">
+                    <i class="fas fa-broom"></i>
+                </button>
+            </div>
+            <div class="language-indicator">
+                <i class="fas fa-language"></i>
+                <span id="languageIndicator">English</span>
+            </div>
+        </div>
+        
+        <div id="chatbox" class="messages-container">
+            <div class="welcome-message">
+                <div class="welcome-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3>Welcome to EDU SPARK Assistant</h3>
+                <p>Ask me anything about agriculture, farming techniques, or educational resources. I'm here to help!</p>
+            </div>
+            
+            <div class="message assistant">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble">
+                    <div class="message-info">
+                        <span class="message-sender">EDU SPARK Assistant</span>
+                        <span class="message-time">Just now</span>
+                    </div>
+                    <div class="message-content">
+                        Hello! I'm your EDU SPARK assistant. How can I help you with agriculture, farming, or education today?
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <div class="typing-indicator" id="thinking">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <div class="chat-input-wrapper">
+                <input type="text" id="userMessage" class="chat-input" placeholder="Type your message here...">
+                <button id="imageUploadBtn" class="input-action-btn" title="Upload an image">
+                    <i class="fas fa-image"></i>
+                </button>
+                <button id="micButton" class="input-action-btn" title="Speak your message">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button id="sendMessage" class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <!-- Hidden file input for image upload -->
+            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+            
+            <div id="imagePreviewContainer" class="image-preview-container" style="display: none;">
+                <div class="preview-header">
+                    <span>Image Preview</span>
+                    <button id="removeImage" class="btn-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="preview-content">
+                    <img id="imagePreview" src="" alt="Preview">
+                </div>
+            </div>
+            
+            <div class="chat-suggestions">
+                <button class="suggestion-chip">How to improve soil health?</button>
+                <button class="suggestion-chip">Best crops for summer</button>
+                <button class="suggestion-chip">Identify tomato diseases</button>
+                <button class="suggestion-chip">Water management tips</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Voice recording modal -->
+<div class="recording-modal" id="recordingModal">
+    <div class="recording-modal-content">
+        <div class="recording-header">
+            <h3>Recording Voice</h3>
+            <button type="button" class="close-btn" id="closeRecordingModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="recording-body">
+            <div class="recording-animation">
+                <i class="fas fa-microphone pulse"></i>
+            </div>
+            <p>Speak your message now...</p>
+            <div id="recordingStatus" class="recording-status">Listening...</div>
+        </div>
+        <div class="recording-footer">
+            <button type="button" class="btn btn-secondary" id="cancelRecording">Cancel</button>
+            <button type="button" class="btn btn-primary" id="stopRecording">Stop Recording</button>
+        </div>
+    </div>
+</div>
+
+<!-- Image viewer modal -->
+<div class="image-viewer-modal" id="imageViewerModal">
+    <div class="modal-image-container">
+        <button class="modal-close" id="closeImageViewer">
+            <i class="fas fa-times"></i>
+        </button>
+        <img src="" alt="Full size image" class="modal-image" id="modalImage">
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Chat Layout */
+    .chat-container {
+        display: flex;
+        max-width: 1280px;
+        height: calc(100vh - 180px);
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    
+    /* Topics Sidebar */
+    .topics-sidebar {
+        width: 280px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #e9ecef;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .sidebar-header h3 {
+        font-size: 1.1rem;
+        color: var(--dark-color);
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .sidebar-header h3 i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .topic-list {
+        padding: 15px;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+    
+    .topic-btn {
+        width: 100%;
+        text-align: left;
+        padding: 12px 15px;
+        border: none;
+        background-color: transparent;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        color: #495057;
+    }
+    
+    .topic-btn i {
+        margin-right: 10px;
+        color: var(--primary-color);
+        width: 20px;
+        text-align: center;
+    }
+    
+    .topic-btn:hover {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    .quick-links {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .quick-link {
+        padding: 10px 15px;
+        color: #495057;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+    
+    .quick-link i {
+        margin-right: 10px;
+        color: var(--primary-color);
+        width: 20px;
+        text-align: center;
+    }
+    
+    .quick-link:hover {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--primary-color);
+        transform: translateX(5px);
+    }
+    
+    .sidebar-footer {
+        padding: 15px;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .assistant-info {
+        display: flex;
+        align-items: center;
+    }
+    
+    .assistant-avatar {
+        width: 40px;
+        height: 40px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .assistant-status {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #495057;
+    }
+    
+    .status-indicator {
+        width: 8px;
+        height: 8px;
+        background-color: #4caf50;
+        border-radius: 50%;
+        margin-right: 5px;
+        position: relative;
+    }
+    
+    .status-indicator::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #4caf50;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+        opacity: 0.5;
+    }
+    
+    /* Chat Main Area */
+    .chat-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    
+    .chat-header {
+        padding: 20px;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .chat-title h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: var(--dark-color);
+        display: flex;
+        align-items: center;
+    }
+    
+    .chat-title h2 i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .chat-title p {
+        margin: 5px 0 0;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    
+    .chat-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background-color: #f8f9fa;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .action-btn:hover {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    .action-btn.voice-enabled {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .messages-container {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background-color: #f9fafb;
+        background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+    }
+    
+    .welcome-message {
+        text-align: center;
+        padding: 30px;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+    }
+    
+    .welcome-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+    
+    .welcome-message h3 {
+        margin-bottom: 10px;
+        color: var(--dark-color);
+    }
+    
+    .welcome-message p {
+        color: #6c757d;
+    }
+    
+    .message {
+        display: flex;
+        margin-bottom: 20px;
+        max-width: 80%;
+    }
+    
+    .user {
+        margin-left: auto;
+        flex-direction: row-reverse;
+    }
+    
+    .message-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+    
+    .assistant .message-avatar {
+        background-color: var(--primary-color);
+        color: white;
+        margin-right: 12px;
+    }
+    
+    .user .message-avatar {
+        background-color: var(--info-color);
+        color: white;
+        margin-left: 12px;
+    }
+    
+    .message-bubble {
+        flex: 1;
+    }
+    
+    .message-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 0.85rem;
+    }
+    
+    .message-sender {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+    
+    .user .message-sender {
+        color: var(--info-color);
+    }
+    
+    .assistant .message-sender {
+        color: var(--primary-color);
+    }
+    
+    .message-time {
+        font-size: 0.75rem;
+        color: #adb5bd;
+        margin-left: 8px;
+    }
+    
+    .message-content {
+        padding: 12px 16px;
+        border-radius: 12px;
+        word-wrap: break-word;
+        line-height: 1.6;
+    }
+    
+    .assistant .message-content {
+        background-color: white;
+        color: #495057;
+        border-top-left-radius: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .user .message-content {
+        background-color: var(--info-color);
+        color: white;
+        border-top-right-radius: 0;
+        text-align: right;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .chat-input-container {
+        padding: 20px;
+        border-top: 1px solid #e9ecef;
+        background-color: white;
+    }
+    
+    .typing-indicator {
+        display: none;
+        background-color: #f2f3f5;
+        padding: 8px 15px;
+        border-radius: 30px;
+        margin-bottom: 10px;
+        width: fit-content;
+        align-self: flex-start;
+    }
+    
+    .typing-indicator span {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: #adb5bd;
+        border-radius: 50%;
+        margin-right: 5px;
+        animation: typing 1.5s infinite ease-in-out;
+    }
+    
+    .typing-indicator span:nth-child(1) {
+        animation-delay: 0s;
+    }
+    
+    .typing-indicator span:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    
+    .typing-indicator span:nth-child(3) {
+        animation-delay: 0.6s;
+        margin-right: 0;
+    }
+    
+    @keyframes typing {
+        0%, 100% {
+            transform: translateY(0);
+            opacity: 0.5;
+        }
+        50% {
+            transform: translateY(-5px);
+            opacity: 1;
+        }
+    }
+    
+    .chat-input-wrapper {
+        display: flex;
+        align-items: center;
+        background-color: #f1f3f5;
+        border-radius: 30px;
+        padding: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .chat-input-wrapper:focus-within {
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+        background-color: white;
+    }
+    
+    .chat-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 12px 15px;
+        font-size: 1rem;
+        color: #495057;
+        outline: none;
+    }
+    
+    .input-action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background-color: transparent;
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 5px;
+    }
+    
+    .input-action-btn:hover {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--primary-color);
+    }
+    
+    .send-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
+    }
+    
+    .send-btn:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+    }
+    
+    .chat-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .suggestion-chip {
+        padding: 8px 16px;
+        background-color: #f1f3f5;
+        border: none;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #495057;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .suggestion-chip:hover {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    /* Recording Modal */
+    .recording-modal {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .recording-modal-content {
+        background-color: white;
+        border-radius: 16px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+    
+    .recording-header {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .recording-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: var(--dark-color);
+    }
+    
+    .close-btn {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #6c757d;
+        transition: color 0.3s ease;
+    }
+    
+    .close-btn:hover {
+        color: var(--danger-color);
+    }
+    
+    .recording-body {
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .recording-animation {
+        margin-bottom: 20px;
+    }
+    
+    .recording-animation i {
+        font-size: 3rem;
+        color: var(--danger-color);
+    }
+    
+    .pulse {
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            opacity: 0.7;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0.95);
+            opacity: 0.7;
+        }
+    }
+    
+    .recording-status {
+        margin-top: 10px;
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    .recording-footer {
+        padding: 15px 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .chat-container {
+            flex-direction: column;
+            height: calc(100vh - 120px);
+        }
+        
+        .topics-sidebar {
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-footer {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .chat-suggestions {
+            display: none;
+        }
+        
+        .message {
+            max-width: 90%;
+        }
+    }
+    
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+    
+    /* Image Upload and Preview */
+    .image-preview-container {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        margin-top: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+    
+    .preview-header {
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e9ecef;
+        background-color: white;
+    }
+    
+    .preview-header span {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .btn-close {
+        background: transparent;
+        border: none;
+        color: #6c757d;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-close:hover {
+        background-color: rgba(108, 117, 125, 0.1);
+        color: #dc3545;
+    }
+    
+    .preview-content {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .preview-content img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        object-fit: contain;
+    }
+    
+    /* Multimodal Messages */
+    .message-image {
+        margin-top: 10px;
+        max-width: 100%;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    
+    .message-image:hover {
+        transform: scale(1.02);
+    }
+    
+    .image-caption {
+        margin-top: 5px;
+        font-size: 0.85rem;
+        color: #6c757d;
+        font-style: italic;
+    }
+    
+    /* Image Viewer Modal */
+    .image-viewer-modal {
+        display: none;
+        position: fixed;
+        z-index: 1060;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal-image-container {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+    }
+    
+    .modal-image {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 4px;
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        color: white;
+        font-size: 1.5rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+    
+    .modal-close:hover {
+        color: #dc3545;
+    }
+    
+    /* Add style for text-to-speech loading indicator */
+    .tts-loading {
+        position: absolute;
+        top: -30px;
+        left: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // IMPORTANT: Single DOMContentLoaded event to prevent nesting issues
+    
+    // Define global variables to prevent scope issues
+    window.currentLanguage = localStorage.getItem('app_language') || 'en';
+    window.isRecording = false;
+    window.voiceMode = false;
+    window.currentAudio = null;
+    window.currentRecognition = null;
+    
+    // Global element references
+    window.userInput = null;
+    window.recordingModal = null;
+    window.recordingStatus = null;
+    window.chatbox = null;
+            window.translations = {
+        'en': { 'chatPage': { 'listening': 'Listening...', 'processing': 'Processing your speech...' } },
+        'hi': { 'chatPage': { 'listening': 'सुन रहा है...', 'processing': 'आपकी बात प्रोसेस कर रहा है...' } },
+        'bn': { 'chatPage': { 'listening': 'শুনছি...', 'processing': 'আপনার কথা প্রসেস করছি...' } },
+        'ta': { 'chatPage': { 'listening': 'கேட்கிறது...', 'processing': 'உங்கள் பேச்சை செயலாக்குகிறது...' } },
+        'te': { 'chatPage': { 'listening': 'వింటున్నాను...', 'processing': 'మీ ప్రసంగాన్ని ప్రాసెస్ చేస్తోంది...' } },
+        'mr': { 'chatPage': { 'listening': 'ऐकत आहे...', 'processing': 'तुमचे भाषण प्रक्रिया करत आहे...' } },
+        'kn': { 'chatPage': { 'listening': 'ಆಲಿಸುತ್ತಿದೆ...', 'processing': 'ನಿಮ್ಮ ಮಾತನ್ನು ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ...' } }
+    };
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded - initializing chat functionality');
+        
+        // Update language indicators
+        updateLanguageIndicators(window.currentLanguage);
+        
+        // Elements - assign to window for global access
+        window.chatbox = document.getElementById('chatbox');
+        window.userInput = document.getElementById('userMessage');
+        window.recordingModal = document.getElementById('recordingModal');
+        window.recordingStatus = document.getElementById('recordingStatus');
+        
+        const sendButton = document.getElementById('sendMessage');
+        const thinkingIndicator = document.getElementById('thinking');
+        const clearChatButton = document.getElementById('clearChat');
+        const topicButtons = document.querySelectorAll('.topic-btn');
+        const suggestionChips = document.querySelectorAll('.suggestion-chip');
+        const micButton = document.getElementById('micButton');
+        const closeRecordingModal = document.getElementById('closeRecordingModal');
+        const cancelRecording = document.getElementById('cancelRecording');
+        const stopRecording = document.getElementById('stopRecording');
+        const voiceToggle = document.getElementById('voiceToggle');
+        const imageUploadBtn = document.getElementById('imageUploadBtn');
+        const imageUpload = document.getElementById('imageUpload');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImage = document.getElementById('removeImage');
+        const imageViewerModal = document.getElementById('imageViewerModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeImageViewer = document.getElementById('closeImageViewer');
+        
+        // State
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let uploadedImage = null;
+        
+        // Add translations for the chat interface if not defined
+        if (typeof translations === 'undefined') {
+            window.translations = {
+                'en': {},
+                'hi': {}
+            };
+        }
+        
+        // Add chat page translations here...
+        
+        // Apply translations
+        if (typeof applyPageTranslations === 'function') {
+            applyPageTranslations(window.currentLanguage);
+        }
+        
+        // Hide thinking indicator initially
+        thinkingIndicator.style.display = 'none';
+        
+        // Add a Test TTS button
+        const chatActions = document.querySelector('.chat-actions');
+        if (chatActions) {
+            console.log('Adding TTS test button');
+            const testTTSButton = document.createElement('button');
+            testTTSButton.className = 'action-btn';
+            testTTSButton.title = 'Test TTS';
+            testTTSButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+            testTTSButton.style.backgroundColor = '#ff5722'; // Change to bright orange for visibility
+            testTTSButton.style.color = 'white';
+            
+            testTTSButton.addEventListener('click', function() {
+                console.log('TTS test button clicked');
+                let testText = 'Hello, I am testing the text-to-speech functionality.';
+                
+                // Use appropriate test text for each language
+                if (window.currentLanguage === 'hi') {
+                    testText = 'नमस्ते, मैं टेक्स्ट-टू-स्पीच परीक्षण कर रहा हूँ।';
+                } else if (window.currentLanguage === 'bn') {
+                    testText = 'হ্যালো, আমি টেক্সট-টু-স্পিচ পরীক্ষা করছি।';
+                } else if (window.currentLanguage === 'ta') {
+                    testText = 'வணக்கம், நான் உரை-பேச்சு சோதனை செய்கிறேன்.';
+                } else if (window.currentLanguage === 'te') {
+                    testText = 'హలో, నేను టెక్స్ట్-టు-స్పీచ్ పరీక్షిస్తున్నాను.';
+                } else if (window.currentLanguage === 'mr') {
+                    testText = 'नमस्कार, मी टेक्स्ट-टू-स्पीच चाचणी करत आहे.';
+                } else if (window.currentLanguage === 'kn') {
+                    testText = 'ನಮಸ್ಕಾರ, ನಾನು ಪಠ್ಯ-ಧ್ವನಿ ಪರೀಕ್ಷೆ ಮಾಡುತ್ತಿದ್ದೇನೆ.';
+                }
+                
+                // Direct call to TTS API for debugging
+                console.log('Direct debug call to TTS API for text:', testText);
+                
+                // Show a debug notification
+                const notification = document.createElement('div');
+                notification.style.position = 'fixed';
+                notification.style.top = '50%';
+                notification.style.left = '50%';
+                notification.style.transform = 'translate(-50%, -50%)';
+                notification.style.backgroundColor = 'rgba(33, 150, 243, 0.9)';
+                notification.style.color = 'white';
+                notification.style.padding = '20px';
+                notification.style.borderRadius = '10px';
+                notification.style.zIndex = '9999';
+                notification.style.boxShadow = '0 0 20px rgba(0,0,0,0.5)';
+                notification.style.minWidth = '300px';
+                notification.style.textAlign = 'center';
+                notification.innerHTML = `
+                    <h3>TTS Debug Test</h3>
+                    <p>Text: ${testText}</p>
+                    <p>Language: ${window.currentLanguage}</p>
+                    <button id="debugFetchTTS" style="background:#4CAF50; color:white; border:none; padding:8px 16px; border-radius:4px; margin-top:10px; cursor:pointer;">Try Direct Fetch</button>
+                    <button id="debugNativeTTS" style="background:#2196F3; color:white; border:none; padding:8px 16px; border-radius:4px; margin-top:10px; cursor:pointer; margin-left:10px;">Try Native TTS</button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Add click handlers for the debug buttons
+                document.getElementById('debugFetchTTS').addEventListener('click', function() {
+                    // Use the backend text-to-speech endpoint directly
+                    fetch('/api/text-to-speech', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            text: testText,
+                            language: window.currentLanguage
+                        })
+                    })
+                    .then(response => {
+                        console.log('TTS debug response status:', response.status);
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.status);
+                        }
+                        return response.blob();
+                    })
+                    .then(audioBlob => {
+                        console.log('Received audio blob:', audioBlob.type, audioBlob.size);
+                        
+                        // Create audio element
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        const audio = new Audio(audioUrl);
+                        
+                        // Play the audio
+                        audio.play().catch(e => {
+                            console.error('Failed to play audio:', e);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error in debug TTS fetch:', error);
+                        alert('TTS API Error: ' + error.message);
+                    });
+                });
+                
+                document.getElementById('debugNativeTTS').addEventListener('click', function() {
+                    // Try browser's native TTS
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(testText);
+                        
+                        // Set language based on current selection
+                        if (window.currentLanguage === 'hi') {
+                            utterance.lang = 'hi-IN';
+                        } else if (window.currentLanguage === 'bn') {
+                            utterance.lang = 'bn-IN';
+                        } else if (window.currentLanguage === 'ta') {
+                            utterance.lang = 'ta-IN';
+                        } else if (window.currentLanguage === 'te') {
+                            utterance.lang = 'te-IN';
+                        } else if (window.currentLanguage === 'mr') {
+                            utterance.lang = 'mr-IN';
+                        } else if (window.currentLanguage === 'kn') {
+                            utterance.lang = 'kn-IN';
+                        } else {
+                            utterance.lang = 'en-US';
+                        }
+                        
+                        window.speechSynthesis.speak(utterance);
+                        console.log('Using browser native TTS with language:', utterance.lang);
+                    } else {
+                        alert('Browser does not support speechSynthesis API');
+                    }
+                });
+                
+                // Close button for the notification
+                const closeButton = document.createElement('button');
+                closeButton.innerHTML = '×';
+                closeButton.style.position = 'absolute';
+                closeButton.style.top = '10px';
+                closeButton.style.right = '10px';
+                closeButton.style.background = 'transparent';
+                closeButton.style.border = 'none';
+                closeButton.style.color = 'white';
+                closeButton.style.fontSize = '20px';
+                closeButton.style.cursor = 'pointer';
+                closeButton.onclick = function() {
+                    document.body.removeChild(notification);
+                };
+                notification.appendChild(closeButton);
+                
+                // Also try the regular way
+                speakText(testText);
+            });
+            
+            chatActions.appendChild(testTTSButton);
+        } else {
+            console.error('Chat actions element not found for TTS button');
+        }
+        
+        // Function to speak text using backend text-to-speech API
+        function speakText(text) {
+            // Clean the text for TTS - remove special characters that shouldn't be pronounced
+            const cleanText = text
+                // Remove Markdown formatting characters
+                .replace(/\*\*(.*?)\*\*/g, '$1') // Bold text
+                .replace(/\*(.*?)\*/g, '$1')     // Italic text
+                .replace(/\_\_(.*?)\_\_/g, '$1') // Bold text with underscores
+                .replace(/\_(.*?)\_/g, '$1')     // Italic text with underscores
+                .replace(/\~\~(.*?)\~\~/g, '$1') // Strikethrough
+                .replace(/\`(.*?)\`/g, '$1')     // Inline code
+                .replace(/\`\`\`[\s\S]*?\`\`\`/g, '') // Code blocks - remove entirely
+                
+                // Remove standalone special characters
+                .replace(/\*/g, '')
+                .replace(/\_/g, '')
+                .replace(/\#/g, '')
+                .replace(/\~/g, '')
+                .replace(/\`/g, '')
+                .replace(/\|/g, '')
+                .replace(/\</g, '')
+                .replace(/\>/g, '')
+                .replace(/\{/g, '')
+                .replace(/\}/g, '')
+                .replace(/\[/g, '')
+                .replace(/\]/g, '')
+                
+                // Handle HTML tags
+                .replace(/<[^>]*>/g, '')         // Remove HTML tags
+                
+                // Handle common HTML entities
+                .replace(/&lt;/g, '')
+                .replace(/&gt;/g, '')
+                .replace(/&amp;/g, 'and')
+                .replace(/&quot;/g, '')
+                .replace(/&apos;/g, '')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&copy;/g, 'copyright')
+                .replace(/&reg;/g, 'registered')
+                .replace(/&trade;/g, 'trademark')
+                
+                // Replace URLs with placeholder text to avoid reading long URLs
+                .replace(/https?:\/\/[^\s]+/g, 'URL link')
+                
+                // Replace common symbols with better pronounceable text
+                .replace(/\$/g, ' dollars ')
+                .replace(/%/g, ' percent ')
+                .replace(/&/g, ' and ')
+                .replace(/\+/g, ' plus ')
+                .replace(/@/g, ' at ')
+                .replace(/=/g, ' equals ');
+                
+            // Remove any double spaces that might have been created
+            const finalText = cleanText.replace(/\s+/g, ' ').trim();
+            
+            console.log('Original TTS text:', text);
+            console.log('Cleaned TTS text:', finalText);
+            
+            // Stop any currently playing audio
+            if (window.currentAudio) {
+                window.currentAudio.pause();
+                window.currentAudio = null;
+            }
+            
+            console.log('Requesting TTS for:', finalText, 'Language:', window.currentLanguage);
+            
+            // Show a small loading indicator
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'tts-loading';
+            loadingIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading audio...';
+            document.querySelector('.chat-input-wrapper').prepend(loadingIndicator);
+            
+            // Use the backend text-to-speech endpoint
+            fetch('/api/text-to-speech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: finalText,
+                    language: window.currentLanguage
+                })
+            })
+            .then(response => {
+                console.log('TTS response status:', response.status);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                return response.blob();
+            })
+            .then(audioBlob => {
+                console.log('Received audio blob:', audioBlob.type, audioBlob.size);
+                
+                // Create audio element
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                window.currentAudio = audio;
+                
+                // Set up audio event handlers
+                audio.onended = function() {
+                    URL.revokeObjectURL(audioUrl);
+                    window.currentAudio = null;
+                };
+                
+                audio.onerror = function(e) {
+                    console.error('Error playing audio:', e);
+                    URL.revokeObjectURL(audioUrl);
+                    window.currentAudio = null;
+                };
+                
+                // Remove loading indicator
+                if (document.querySelector('.tts-loading')) {
+                    document.querySelector('.tts-loading').remove();
+                }
+                
+                // Play the audio
+                audio.play().catch(e => {
+                    console.error('Failed to play audio:', e);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching text-to-speech:', error);
+                if (document.querySelector('.tts-loading')) {
+                    document.querySelector('.tts-loading').remove();
+                }
+                
+                // Fallback to browser TTS if server TTS fails
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(finalText);
+                    
+                    // Set language based on current selection
+                    if (window.currentLanguage === 'hi') {
+                        utterance.lang = 'hi-IN';
+                    } else if (window.currentLanguage === 'bn') {
+                        utterance.lang = 'bn-IN';
+                    } else if (window.currentLanguage === 'ta') {
+                        utterance.lang = 'ta-IN';
+                    } else if (window.currentLanguage === 'te') {
+                        utterance.lang = 'te-IN';
+                    } else if (window.currentLanguage === 'mr') {
+                        utterance.lang = 'mr-IN';
+                    } else if (window.currentLanguage === 'kn') {
+                        utterance.lang = 'kn-IN';
+                    } else {
+                        utterance.lang = 'en-US';
+                    }
+                    
+                    window.speechSynthesis.speak(utterance);
+                    console.log('Using browser TTS as fallback with language:', utterance.lang);
+                }
+            });
+        }
+        
+        // Function to send a message to the server
+        function sendMessage(messageText) {
+            // Show thinking indicator
+            thinkingIndicator.style.display = 'flex';
+            
+            // Add the message to the user's side of the chat immediately
+            if (uploadedImage) {
+                addMessage(messageText, 'user', URL.createObjectURL(uploadedImage));
+            } else {
+                addMessage(messageText, 'user');
+            }
+            
+            // Determine if we need to use multimodal endpoint or regular chat endpoint
+            if (uploadedImage) {
+                // Convert image to base64 for JSON transport
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Image = event.target.result.split(',')[1]; // Remove the data:image part
+                    
+                    // Send to multimodal endpoint using JSON
+                    fetch('/api/multimodal-chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: messageText,
+                            language: window.currentLanguage,
+                            image: base64Image,
+                            filename: uploadedImage.name
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        thinkingIndicator.style.display = 'none';
+                        
+                        // Debug info about language
+                        console.log('Chatbot response language:', data.language);
+                        console.log('Current UI language:', window.currentLanguage);
+                        
+                        // Add message to chat
+                        addMessage(data.response, 'assistant');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        thinkingIndicator.style.display = 'none';
+                        addMessage("I'm sorry, I encountered an error processing your image request. Please try again later.", 'assistant');
+                    });
+                    
+                    // Reset image upload
+                    uploadedImage = null;
+                    imagePreviewContainer.style.display = 'none';
+                };
+                
+                reader.onerror = function() {
+                    console.error('Error reading the file');
+                    thinkingIndicator.style.display = 'none';
+                    addMessage("I'm sorry, I encountered an error processing your image. Please try again later.", 'assistant');
+                    
+                    // Reset image upload
+                    uploadedImage = null;
+                    imagePreviewContainer.style.display = 'none';
+                };
+                
+                // Read the image file as data URL (base64)
+                reader.readAsDataURL(uploadedImage);
+            } else {
+                // Regular text message - use JSON format
+                fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: messageText,
+                        language: window.currentLanguage
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    thinkingIndicator.style.display = 'none';
+                    
+                    // Debug info about language
+                    console.log('Chatbot response language:', data.language);
+                    console.log('Current UI language:', window.currentLanguage);
+                    
+                    // Add message to chat
+                    addMessage(data.response, 'assistant');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    thinkingIndicator.style.display = 'none';
+                    addMessage("I'm sorry, I encountered an error processing your request. Please try again later.", 'assistant');
+                });
+            }
+            
+            // Clear the input field
+            userInput.value = '';
+        }
+        
+        // Function to add a message to the chat
+        function addMessage(message, sender, imageUrl = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatarIcon = sender === 'user' ? 'fa-user' : 'fa-robot';
+            const senderName = sender === 'user' ? 'You' : 'EDU SPARK Assistant';
+            
+            let imageHtml = '';
+            if (imageUrl) {
+                imageHtml = `
+                    <div class="message-image">
+                        <img src="${imageUrl}" alt="Uploaded image" class="chat-image" onclick="showImageViewer('${imageUrl}')">
+                    </div>
+                `;
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas ${avatarIcon}"></i>
+                </div>
+                <div class="message-bubble">
+                    <div class="message-info">
+                        <span class="message-sender">${senderName}</span>
+                        <span class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <div class="message-content">
+                        ${message}
+                    </div>
+                    ${imageHtml}
+                </div>
+            `;
+            
+            window.chatbox.appendChild(messageDiv);
+            window.chatbox.scrollTop = window.chatbox.scrollHeight;
+            
+            // If voice mode is on and the message is from the assistant, read it aloud
+            if (window.voiceMode && sender === 'assistant') {
+                speakText(message);
+            }
+        }
+        
+        // SETUP ALL EVENT LISTENERS
+        // Microphone button click
+        console.log('Setting up mic button event listener');
+        if (micButton) {
+            micButton.addEventListener('click', function() {
+                console.log('Mic button clicked');
+                startRecording();
+            });
+        } else {
+            console.error('Mic button not found!');
+        }
+        
+        // Other event listeners
+        if (sendButton) {
+        sendButton.addEventListener('click', function() {
+            const message = userInput.value.trim();
+            if (message) {
+                sendMessage(message);
+            }
+        });
+        }
+        
+        if (userInput) {
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const message = userInput.value.trim();
+                if (message) {
+                    sendMessage(message);
+                }
+            }
+        });
+        }
+        
+        if (clearChatButton) {
+        clearChatButton.addEventListener('click', function() {
+            // Keep only the welcome and first assistant message
+            const welcomeMessage = document.querySelector('.welcome-message');
+            const firstMessage = document.querySelector('.message.assistant');
+            
+                window.chatbox.innerHTML = '';
+                if (welcomeMessage) window.chatbox.appendChild(welcomeMessage);
+                if (firstMessage) window.chatbox.appendChild(firstMessage);
+            
+            // Stop any currently playing audio
+                if (window.currentAudio) {
+                    window.currentAudio.pause();
+                    window.currentAudio = null;
+                }
+            });
+        }
+        
+        if (topicButtons.length) {
+        topicButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const topic = this.getAttribute('data-topic');
+                userInput.value = `Tell me about ${topic}`;
+                sendMessage(userInput.value);
+            });
+        });
+        }
+        
+        if (suggestionChips.length) {
+        suggestionChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                userInput.value = this.textContent;
+                sendMessage(userInput.value);
+            });
+        });
+        }
+        
+        if (closeRecordingModal) {
+        closeRecordingModal.addEventListener('click', function() {
+                window.recordingModal.style.display = 'none';
+            
+            // Stop the recognition
+            if (window.currentRecognition) {
+                window.currentRecognition.abort();
+                    window.isRecording = false;
+            }
+        });
+        }
+        
+        if (cancelRecording) {
+        cancelRecording.addEventListener('click', function() {
+                window.recordingModal.style.display = 'none';
+            
+            // Stop the recognition without processing
+            if (window.currentRecognition) {
+                window.currentRecognition.abort();
+                    window.isRecording = false;
+            }
+        });
+        }
+        
+        if (stopRecording) {
+        stopRecording.addEventListener('click', stopRecordingFunc);
+        }
+        
+        if (voiceToggle) {
+        voiceToggle.addEventListener('click', function() {
+                window.voiceMode = !window.voiceMode;
+            this.classList.toggle('voice-enabled');
+            
+                console.log('Voice mode toggled:', window.voiceMode);
+            
+                if (window.voiceMode) {
+                this.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    this.title = translations[window.currentLanguage]?.chatPage?.toggleVoice || 'Toggle voice mode';
+                
+                // Notify user that voice mode is enabled
+                const notification = document.createElement('div');
+                notification.className = 'voice-notification';
+                notification.style.position = 'fixed';
+                notification.style.bottom = '20px';
+                notification.style.right = '20px';
+                notification.style.backgroundColor = 'rgba(76, 175, 80, 0.9)';
+                notification.style.color = 'white';
+                notification.style.padding = '10px 20px';
+                notification.style.borderRadius = '5px';
+                notification.style.zIndex = '1000';
+                notification.innerHTML = '<i class="fas fa-volume-up"></i> Voice mode enabled';
+                
+                document.body.appendChild(notification);
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 500);
+                }, 2000);
+            } else {
+                this.innerHTML = '<i class="fas fa-microphone"></i>';
+                // Stop any currently playing audio
+                    if (window.currentAudio) {
+                        window.currentAudio.pause();
+                        window.currentAudio = null;
+                }
+                // Also stop any speaking in progress
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            }
+        });
+        }
+        
+        // Add an event listener for language changes
+        document.addEventListener('languageChanged', function(e) {
+            console.log('Language changed event received:', e.detail.language);
+            window.currentLanguage = e.detail.language;
+            updateLanguageIndicators(window.currentLanguage);
+            if (typeof applyPageTranslations === 'function') {
+                applyPageTranslations(window.currentLanguage);
+            }
+        });
+    });
+    
+    // Function to update all language indicators on the page
+    function updateLanguageIndicators(lang) {
+        // Update the language indicator in the header
+        const langNames = {
+            'en': 'English',
+            'hi': 'हिंदी',
+            'bn': 'বাংলা',
+            'ta': 'தமிழ்',
+            'te': 'తెలుగు',
+            'mr': 'मराठी',
+            'kn': 'ಕನ್ನಡ'
+        };
+        
+        const indicators = document.querySelectorAll('.language-indicator #languageIndicator, #language-display');
+        indicators.forEach(indicator => {
+            if (indicator) {
+                indicator.textContent = langNames[lang] || 'English';
+            }
+        });
+        
+        console.log('Language indicators updated to:', langNames[lang] || 'English');
+    }
+    
+    // Function to start recording audio for speech-to-text
+    function startRecording() {
+        console.log('startRecording function called');
+        if (window.isRecording) {
+            console.log('Already recording, ignoring call');
+            return;
+        }
+        
+        // Show recording modal
+        window.recordingModal.style.display = 'flex';
+        window.recordingStatus.textContent = window.translations[window.currentLanguage]?.chatPage?.listening || 'Listening...';
+        
+        // Check for browser support first with clear messaging
+        if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
+            console.error('Speech recognition not supported in this browser');
+            window.recordingStatus.textContent = 'Speech recognition not supported in this browser';
+            alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+            setTimeout(() => {
+                window.recordingModal.style.display = 'none';
+            }, 2000);
+            return;
+        }
+        
+        try {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            // Configure recognition with proper language settings
+            const languageMap = {
+                'en': 'en-US',
+                'hi': 'hi-IN',
+                'bn': 'bn-IN', // Bengali
+                'ta': 'ta-IN', // Tamil
+                'te': 'te-IN', // Telugu
+                'mr': 'mr-IN', // Marathi
+                'kn': 'kn-IN'  // Kannada
+            };
+            
+            // Set language based on current selection
+            recognition.lang = languageMap[window.currentLanguage] || 'en-US';
+            console.log('Setting speech recognition language to:', recognition.lang);
+            
+            // Ensure continuous recognition is disabled to avoid memory issues
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            // Store the recognition instance to be able to stop it later
+            window.currentRecognition = recognition;
+            window.isRecording = true;
+            
+            recognition.onstart = function() {
+                console.log('Recognition started in language:', recognition.lang);
+                window.recordingStatus.textContent = window.translations[window.currentLanguage]?.chatPage?.listening || 'Listening...';
+            };
+            
+            recognition.onresult = function(event) {
+                const result = event.results[0][0].transcript;
+                console.log('Recognition result:', result, 'Confidence:', event.results[0][0].confidence);
+                
+                // Update status
+                window.recordingStatus.textContent = window.translations[window.currentLanguage]?.chatPage?.processing || 'Processing your speech...';
+                
+                // Hide modal after a short delay to show the processing status
+                setTimeout(() => {
+                    window.recordingModal.style.display = 'none';
+                    window.isRecording = false;
+                    
+                    // Set the result in the input field
+                    window.userInput.value = result;
+                    
+                    // Automatically send if confidence is high
+                    if (event.results[0][0].confidence > 0.8) {
+                        sendMessage(result);
+                    }
+                }, 500);
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Recognition error:', event.error);
+                
+                if (event.error === 'not-allowed') {
+                    // This happens when microphone access is denied
+                    window.recordingStatus.textContent = 'Microphone access denied';
+                    alert('Please allow microphone access to use voice input');
+        } else {
+                    window.recordingStatus.textContent = 'Error: ' + event.error;
+                }
+                
+                setTimeout(() => {
+                    window.recordingModal.style.display = 'none';
+                    window.isRecording = false;
+                }, 2000);
+            };
+            
+            recognition.onend = function() {
+                console.log('Recognition ended');
+                window.isRecording = false;
+            };
+            
+            // Explicitly try to start recognition - this will trigger the permission prompt
+            recognition.start();
+            console.log('Speech recognition started - should prompt for permission');
+            
+        } catch (error) {
+            console.error('Error initializing speech recognition:', error);
+            window.recordingStatus.textContent = 'Error initializing: ' + error.message;
+                setTimeout(() => {
+                window.recordingModal.style.display = 'none';
+            }, 2000);
+        }
+    }
+    
+    // Function to stop recording
+    function stopRecordingFunc() {
+        if (!window.isRecording) return;
+        
+        // Update status
+        window.recordingStatus.textContent = window.translations[window.currentLanguage]?.chatPage?.processing || 'Processing your speech...';
+        
+        // Stop the recognition
+        if (window.currentRecognition) {
+            window.currentRecognition.stop();
+        }
+    }
+</script>
+{% endblock %}

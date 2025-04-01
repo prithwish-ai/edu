@@ -1,0 +1,608 @@
+/* Professional Agricultural Theme - State of the Art Design */
+:root {
+  /* Agricultural color palette */
+  --primary-green: #2e7d32;
+  --secondary-green: #4caf50;
+  --accent-green: #8bc34a;
+  --earth-brown: #5d4037;
+  --light-brown: #8d6e63;
+  --wheat: #f5deb3;
+  --cream: #fff8e1;
+  --sky-blue: #4fc3f7;
+  --dark-text: #263238;
+  --light-text: #f5f5f5;
+  --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s ease-in-out;
+  --light-bg: #fafafa;
+}
+
+/* General Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Navbar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4rem;
+  background-color: var(--primary-green);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav .logo {
+  display: flex;
+  align-items: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+nav .logo span {
+  color: var(--wheat);
+}
+
+nav .nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+nav .nav-links li {
+  margin-left: 2rem;
+}
+
+nav .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+nav .nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav .nav-links a.btn {
+  background-color: var(--accent-green);
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  box-shadow: var(--box-shadow);
+  font-weight: 600;
+}
+
+nav .nav-links a.btn:hover {
+  background-color: var(--secondary-green);
+  transform: translateY(-2px);
+  box-shadow: var(--hover-shadow);
+}
+
+/* About Banner */
+.about-banner {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1500076656116-558758c991c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 10rem 2rem;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+
+.about-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.7), rgba(139, 195, 74, 0.5));
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.about-banner h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: fadeInDown 1s ease-out;
+}
+
+.about-banner p {
+  font-size: 1.4rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 1.5s ease-out;
+}
+
+/* Section Styling */
+.about-us, .mission, .team, .vocational-courses, .farming-features, .expert-interaction {
+  padding: 5rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+/* Section Headers */
+.about-us h2, .mission h2, .team h2, .vocational-courses h2, .farming-features h2, .expert-interaction h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  color: var(--primary-green);
+  position: relative;
+  display: inline-block;
+}
+
+.about-us h2::after, .mission h2::after, .team h2::after, 
+.vocational-courses h2::after, .farming-features h2::after, .expert-interaction h2::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.about-us p, .mission p, .vocational-courses > p, .farming-features > p, .expert-interaction > p {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  color: #555;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+/* About Us Section */
+.about-us {
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  z-index: 2;
+  margin-top: -50px;
+  border-radius: 8px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Mission Section */
+.mission {
+  background: linear-gradient(to right, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+}
+
+/* Vocational Courses Section */
+.vocational-courses {
+  background-color: #fff;
+}
+
+.courses-grid, .features-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  margin-top: 2rem;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.course-card, .feature-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: calc(33.333% - 2.5rem);
+  min-width: 300px;
+  margin-bottom: 1rem;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  border-top: 5px solid var(--primary-green);
+  position: relative;
+  overflow: hidden;
+}
+
+.course-card::before, .feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(139, 195, 74, 0.05));
+  z-index: -1;
+}
+
+.course-card:hover, .feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--hover-shadow);
+}
+
+.course-card h3, .feature-card h3 {
+  color: var(--primary-green);
+  margin: 0.5rem 0 1rem;
+  font-size: 1.4rem;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.course-card h3::after, .feature-card h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: var(--accent-green);
+  border-radius: 1.5px;
+}
+
+.course-card p, .feature-card p {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Farming Features Section */
+.farming-features {
+  background-color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.farming-features::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 300px;
+  background: url('https://www.svgrepo.com/show/262577/wheat.svg') no-repeat;
+  background-size: contain;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.farming-features::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  height: 300px;
+  background: url('https://www.svgrepo.com/show/530155/tractor.svg') no-repeat;
+  background-size: contain;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+/* Expert Interaction Section */
+.expert-interaction {
+  background: url('https://www.transparenttextures.com/patterns/asfalt-light.png'), #fff;
+}
+
+.expert-interaction .features-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.expert-interaction .feature-card {
+  width: calc(25% - 2.5rem);
+  min-width: 250px;
+  border-top-color: var(--sky-blue);
+}
+
+.expert-interaction .feature-card h3 {
+  color: var(--earth-brown);
+}
+
+.expert-interaction .feature-card h3::after {
+  background-color: var(--sky-blue);
+}
+
+/* Team Section */
+.team {
+  background: linear-gradient(to bottom, #fff, var(--cream));
+}
+
+.team-members {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: calc(33.333% - 2.5rem);
+  min-width: 280px;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  text-align: center;
+  border-bottom: 5px solid var(--primary-green);
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--hover-shadow);
+}
+
+.team-card img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  border: 4px solid var(--accent-green);
+  padding: 4px;
+  object-fit: cover;
+}
+
+.team-card h3 {
+  margin: 1rem 0 0.5rem;
+  color: var(--primary-green);
+  font-size: 1.4rem;
+}
+
+.team-card p {
+  color: #777;
+  font-weight: 500;
+}
+
+/* Footer */
+footer {
+  background-color: var(--earth-brown);
+  color: #fff;
+  padding: 4rem 2rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(90deg, var(--primary-green), var(--accent-green), var(--primary-green));
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-section {
+  width: 30%;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.footer-section h3 {
+  margin-bottom: 1.5rem;
+  color: var(--wheat);
+  position: relative;
+  padding-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--accent-green);
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.8rem;
+}
+
+.footer-section ul li a {
+  color: #ddd;
+  text-decoration: none;
+  transition: var(--transition);
+  position: relative;
+  padding-left: 15px;
+}
+
+.footer-section ul li a::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-green);
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.footer-section ul li a:hover {
+  color: #fff;
+  padding-left: 20px;
+}
+
+.footer-section ul li a:hover::before {
+  opacity: 1;
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  color: #bbb;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+  40% {transform: translateY(-10px);}
+  60% {transform: translateY(-5px);}
+}
+
+/* Logo Animation */
+.logo {
+  animation: bounce 5s infinite;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .course-card, .feature-card, .team-card {
+    width: calc(50% - 2.5rem);
+  }
+  
+  .expert-interaction .feature-card {
+    width: calc(50% - 2.5rem);
+  }
+}
+
+@media (max-width: 992px) {
+  .courses-grid, .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .team-members {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .footer-section {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .logo {
+    margin-bottom: 1rem;
+  }
+  
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .nav-links li {
+    margin: 0 0.5rem;
+  }
+  
+  .about-banner h1 {
+    font-size: 2.5rem;
+  }
+  
+  .about-banner p {
+    font-size: 1.1rem;
+  }
+  
+  .courses-grid, .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .team-members {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .footer-section {
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .footer-section h3::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .about-us h2, .mission h2, .team h2, .vocational-courses h2, 
+  .farming-features h2, .expert-interaction h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-banner {
+    padding: 6rem 1rem;
+  }
+  
+  .about-banner h1 {
+    font-size: 2rem;
+  }
+  
+  .about-us, .mission, .team, .vocational-courses, .farming-features, .expert-interaction {
+    padding: 3rem 1rem;
+  }
+  
+  .team-members {
+    grid-template-columns: 1fr;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+  }
+  
+  .nav-links li {
+    margin: 0.2rem;
+  }
+}

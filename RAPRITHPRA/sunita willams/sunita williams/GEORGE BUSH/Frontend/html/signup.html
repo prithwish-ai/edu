@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - EduSpark</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="signup.css">
+  <style>
+    :root {
+      --primary-green: #2e7d32;
+      --secondary-green: #4caf50;
+      --accent-green: #8bc34a;
+      --earth-brown: #5d4037;
+      --light-brown: #8d6e63;
+      --wheat: #f5deb3;
+      --cream: #fff8e1;
+      --light-bg: #f8f9f0;
+      --dark-text: #263238;
+      --light-text: #f5f5f5;
+      --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      --hover-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s ease-in-out;
+      
+      /* Dark mode colors */
+      --dark-primary: #1b5e20;
+      --dark-secondary: #388e3c;
+      --dark-accent: #689f38;
+      --dark-surface: #1c2a39;
+      --dark-background: #121212;
+      --dark-card: #1e1e1e;
+      --dark-border: #333333;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: linear-gradient(135deg, rgba(27, 94, 32, 0.9), rgba(56, 142, 60, 0.8));
+    }
+
+    body.dark-mode .signup-container {
+      background: rgba(30, 30, 30, 0.95);
+      border-color: var(--dark-border);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .signup-header h1 {
+      color: var(--accent-green);
+    }
+
+    body.dark-mode .signup-header p {
+      color: #aaa;
+    }
+
+    body.dark-mode .form-group label {
+      color: var(--light-text);
+    }
+
+    body.dark-mode .form-group input {
+      background: rgba(40, 40, 40, 0.9);
+      border-color: var(--dark-border);
+      color: white;
+    }
+
+    body.dark-mode .form-group input::placeholder {
+      color: #888;
+    }
+
+    body.dark-mode .form-group input:focus {
+      border-color: var(--dark-accent);
+      box-shadow: 0 0 0 3px rgba(104, 159, 56, 0.3);
+    }
+
+    body.dark-mode .signup-btn {
+      background: var(--dark-primary);
+    }
+
+    body.dark-mode .signup-btn:hover {
+      background: var(--dark-secondary);
+    }
+
+    body.dark-mode .signup-footer a {
+      color: var(--accent-green);
+    }
+
+    body.dark-mode .social-btn {
+      background: #333;
+      border-color: #444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(46, 125, 50, 0.9), rgba(139, 195, 74, 0.8));
+      position: relative;
+      overflow: hidden;
+      transition: background 0.5s ease;
+    }
+
+    /* Enhanced Background Animations */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      perspective: 1000px;
+    }
+
+    .background .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: particleFloat 15s linear infinite;
+    }
+
+    .background .wheat {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: url('https://www.svgrepo.com/show/262577/wheat.svg') no-repeat center/contain;
+      opacity: 0.06;
+      transform-origin: bottom center;
+      animation: wheatSway 8s ease-in-out infinite;
+    }
+
+    .background .tractor {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: url('https://www.svgrepo.com/show/530155/tractor.svg') no-repeat center/contain;
+      opacity: 0.05;
+      transform-origin: bottom center;
+      animation: tractorMove 20s linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes wheatSway {
+      0%, 100% {
+        transform: rotate(-5deg);
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+    }
+
+    @keyframes tractorMove {
+      0% {
+        transform: translateX(-100vw) translateY(20vh);
+      }
+      100% {
+        transform: translateX(100vw) translateY(20vh);
+      }
+    }
+
+    /* Enhanced Signup Container */
+    .signup-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: var(--box-shadow);
+      width: 90%;
+      max-width: 450px;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(0);
+      animation: containerFloat 6s ease-in-out infinite;
+      transition: all 0.5s ease;
+    }
+
+    .signup-container::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--primary-green), transparent, var(--accent-green), transparent, var(--primary-green));
+      z-index: -1;
+      border-radius: 22px;
+      animation: borderGlow 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes borderGlow {
+      0%, 100% {
+        filter: blur(5px);
+        background-position: 0% 0%;
+      }
+      50% {
+        filter: blur(8px);
+        background-position: 100% 100%;
+      }
+    }
+
+    @keyframes containerFloat {
+      0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      50% {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    /* Logo styles */
+    .logo {
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .logo-img {
+      width: 100px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: scale(1);
+      transition: transform 0.3s ease;
+      animation: logoReveal 1s ease-out;
+    }
+    
+    .logo-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    @keyframes logoReveal {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    body.dark-mode .logo-img {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      filter: brightness(0.95);
+    }
+
+    /* Enhanced Header */
+    .signup-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .signup-header h1 {
+      color: var(--primary-green);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      display: inline-block;
+      animation: titleReveal 1s ease-out;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-header p {
+      color: var(--earth-brown);
+      opacity: 0;
+      animation: fadeIn 1s 0.5s forwards;
+      transition: color 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .signup-header h1 .highlight {
+      color: var(--accent-green);
+      position: relative;
+      display: inline-block;
+      animation: highlightPulse 3s infinite;
+    }
+
+    @keyframes highlightPulse {
+      0%, 100% {
+        color: var(--accent-green);
+      }
+      50% {
+        color: var(--primary-green);
+      }
+    }
+
+    @keyframes titleReveal {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    .signup-header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-green), var(--accent-green));
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: right;
+      animation: lineReveal 1s ease-out forwards;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes lineReveal {
+      to {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    }
+
+    /* Enhanced Form Elements */
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+      animation: formReveal 0.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.2s; }
+    .form-group:nth-child(2) { animation-delay: 0.4s; }
+    .form-group:nth-child(3) { animation-delay: 0.6s; }
+    .form-group:nth-child(4) { animation-delay: 0.8s; }
+
+    @keyframes formReveal {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--dark-text);
+      font-weight: 500;
+      transform: translateY(0);
+      transition: var(--transition);
+      font-size: 0.95rem;
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      background-color: transparent;
+      padding: 0 5px;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-group input:focus,
+    .form-group input:valid {
+      border-color: var(--accent-green);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.2);
+    }
+
+    .form-group input:focus + label,
+    .form-group input:valid + label {
+      top: 0;
+      font-size: 0.8rem;
+      color: var(--primary-green);
+      background-color: white;
+      padding: 0 5px;
+    }
+
+    body.dark-mode .form-group input:focus + label,
+    body.dark-mode .form-group input:valid + label {
+      background-color: var(--dark-card);
+    }
+
+    .form-group .input-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus ~ .input-icon {
+      color: var(--primary-green);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .error-message {
+      font-size: 0.8rem;
+      color: #f44336;
+      margin-top: 5px;
+      display: block;
+      height: 16px;
+    }
+
+    /* Enhanced Signup Button */
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary-green);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: buttonReveal 0.5s ease-out forwards;
+      animation-delay: 1s;
+      opacity: 0;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
+    }
+
+    @keyframes buttonReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .btn:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .btn:hover {
+      background: var(--secondary-green);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
+    }
+
+    .btn-text {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-text i {
+      margin-right: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover .btn-text i {
+      transform: translateX(3px);
+    }
+
+    .btn-loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Enhanced Social Login */
+    .social-login {
+      margin-top: 2rem;
+      text-align: center;
+      animation: socialReveal 0.5s ease-out forwards;
+      animation-delay: 1.2s;
+      opacity: 0;
+    }
+
+    .social-login p {
+      position: relative;
+      display: inline-block;
+      padding: 0 15px;
+      color: #777;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .social-login p::before,
+    .social-login p::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.1);
+      width: 40px;
+    }
+
+    .social-login p::before {
+      right: 100%;
+    }
+
+    .social-login p::after {
+      left: 100%;
+    }
+
+    @keyframes socialReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      transform: scale(0);
+      animation: socialButtonPop 0.5s forwards;
+    }
+
+    .social-btn:nth-child(1) { animation-delay: 1.3s; }
+    .social-btn:nth-child(2) { animation-delay: 1.4s; }
+    .social-btn:nth-child(3) { animation-delay: 1.5s; }
+
+    @keyframes socialButtonPop {
+      0% {
+        transform: scale(0);
+      }
+      70% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .social-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(139, 195, 74, 0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .social-btn:hover::before {
+      width: 100px;
+      height: 100px;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px) rotate(5deg);
+      box-shadow: var(--box-shadow);
+    }
+
+    .social-btn i {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-btn:hover i {
+      transform: scale(1.2);
+    }
+
+    .social-btn.google i { color: #DB4437; }
+    .social-btn.facebook i { color: #4267B2; }
+    .social-btn.github i { color: #333333; }
+
+    /* Enhanced Footer links */
+    .signup-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 0.5s 1.7s forwards;
+    }
+
+    .signup-footer a {
+      color: var(--primary-green);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .signup-footer a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--primary-green);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    .signup-footer a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* Enhanced Dark Mode Toggle */
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.5s ease;
+      z-index: 3;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      animation: fadeInRight 1s;
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .dark-mode-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(180deg);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      background: rgba(56, 142, 60, 0.3);
+    }
+
+    .dark-mode-toggle i {
+      color: white;
+      font-size: 1.3rem;
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode-toggle:hover i {
+      transform: scale(1.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .signup-container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+
+      .signup-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .social-buttons {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Animation -->
+  <div class="background"></div>
+
+  <!-- Dark Mode Toggle -->
+  <div class="dark-mode-toggle">
+    <i class="fas fa-moon"></i>
+  </div>
+
+  <!-- Signup Container -->
+  <div class="signup-container">
+    <div class="signup-header">
+      <div class="logo">Edu<span>Spark</span></div>
+      
+      <h1>Create an Account</h1>
+      <p>Join us to start your learning journey.</p>
+    </div>
+
+    <!-- Signup Form -->
+    <form id="signupForm">
+      <div class="form-group">
+        <input type="text" id="name" name="name" required>
+        <label for="name">Full Name</label>
+        <span class="error-message" id="nameError"></span>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" name="email" required>
+        <label for="email">Email</label>
+        <span class="error-message" id="emailError"></span>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" name="password" required>
+        <label for="password">Password</label>
+        <span class="error-message" id="passwordError"></span>
+      </div>
+      <div class="form-group">
+        <input type="password" id="confirmPassword" name="confirm-password" required>
+        <label for="confirmPassword">Confirm Password</label>
+        <span class="error-message" id="confirmPasswordError"></span>
+      </div>
+      
+      <!-- Remember Me -->
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="remember">
+          <span>Remember me</span>
+        </label>
+      </div>
+
+      <!-- Terms and Privacy -->
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="terms" required>
+          <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+        </label>
+        <div class="error-message"></div>
+      </div>
+      
+      <button type="submit" class="btn">
+        <span class="btn-text">Sign Up</span>
+        <span class="btn-loader"></span>
+      </button>
+    </form>
+
+    <!-- Social Login -->
+    <div class="social-login">
+      <p>Or sign up with:</p>
+      <div class="social-buttons">
+        <button class="social-btn google">
+          <i class="fab fa-google"></i>
+        </button>
+        <button class="social-btn facebook">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+        <button class="social-btn github">
+          <i class="fab fa-github"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Additional Links -->
+    <div class="signup-footer">
+      <p>Already have an account? <a href="login.html">Login</a></p>
+      <p><a href="#">Forgot Password?</a></p>
+    </div>
+  </div>
+
+  <script src="signup.js"></script>
+</body>
+</html>

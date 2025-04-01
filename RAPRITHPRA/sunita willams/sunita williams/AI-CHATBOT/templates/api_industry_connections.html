@@ -1,0 +1,890 @@
+{% extends "api_base.html" %}
+
+{% block title %}EDU SPARK - Industry Connections{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        <i class="fas fa-industry me-2"></i>Industry Connections
+                    </h2>
+                    <p class="card-text">Connect with local businesses, find internships, and explore job opportunities in your field of interest.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-4 mb-4">
+            <!-- Search and Filters -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-search me-2"></i>Find Opportunities</h5>
+                </div>
+                <div class="card-body">
+                    <form id="opportunitySearchForm">
+                        <div class="mb-3">
+                            <label for="industryType" class="form-label">Industry Sector</label>
+                            <select class="form-select" id="industryType">
+                                <option value="">All Sectors</option>
+                                <option value="agriculture">Agriculture & Farming</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="construction">Construction</option>
+                                <option value="electronics">Electronics & Technology</option>
+                                <option value="automotive">Automotive</option>
+                                <option value="energy">Energy & Utilities</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="opportunityType" class="form-label">Opportunity Type</label>
+                            <select class="form-select" id="opportunityType">
+                                <option value="">All Types</option>
+                                <option value="internship">Internship</option>
+                                <option value="apprenticeship">Apprenticeship</option>
+                                <option value="job">Full-time Job</option>
+                                <option value="part-time">Part-time Job</option>
+                                <option value="training">Training Program</option>
+                                <option value="mentorship">Mentorship</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" placeholder="City or region">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Upcoming Events -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-calendar me-2"></i>Upcoming Events</h5>
+                </div>
+                <div class="card-body">
+                    <div id="upcomingEvents">
+                        <!-- Events will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Featured Partners -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-handshake me-2"></i>Featured Industry Partners</h5>
+                </div>
+                <div class="card-body">
+                    <div id="partnerCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <!-- Partner slides will be loaded here -->
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#partnerCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#partnerCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="text-center py-5 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Finding opportunities...</p>
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="noResultsMessage" class="text-center py-5 d-none">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4>No opportunities found</h4>
+                <p>Try adjusting your search criteria or explore our featured opportunities below.</p>
+            </div>
+            
+            <!-- Results Container -->
+            <div id="opportunitiesContainer">
+                <h4 class="mb-3"><i class="fas fa-briefcase me-2"></i>Available Opportunities</h4>
+                <div id="opportunitiesList" class="row">
+                    <!-- Opportunities will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Opportunity Detail Modal -->
+<div class="modal fade" id="opportunityModal" tabindex="-1" aria-labelledby="opportunityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="opportunityModalLabel">Opportunity Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="opportunityDetailContent">
+                <!-- Opportunity details will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="applyButton">Apply Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Partner Detail Modal -->
+<div class="modal fade" id="partnerModal" tabindex="-1" aria-labelledby="partnerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="partnerModalLabel">Partner Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="partnerDetailContent">
+                <!-- Partner details will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="visitPartnerButton">Visit Website</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .opportunity-card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+    }
+    
+    .opportunity-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .partner-logo {
+        height: 80px;
+        object-fit: contain;
+        margin-bottom: 1rem;
+    }
+    
+    .partner-card {
+        text-align: center;
+        height: 240px;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    
+    .partner-card:hover {
+        transform: scale(1.03);
+    }
+    
+    .partner-slide {
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+    }
+    
+    .event-card {
+        border-left: 4px solid #0d6efd;
+        padding-left: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .event-date {
+        background: #f8f9fa;
+        padding: 0.5rem;
+        text-align: center;
+        border-radius: 4px;
+    }
+    
+    .event-date .month {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #6c757d;
+    }
+    
+    .event-date .day {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    
+    .opportunity-meta {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    
+    .opportunity-meta i {
+        width: 16px;
+        text-align: center;
+        margin-right: 5px;
+    }
+    
+    .opportunity-type {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .opportunity-type.internship {
+        background-color: #e3f2fd;
+        color: #0d6efd;
+    }
+    
+    .opportunity-type.apprenticeship {
+        background-color: #fff3cd;
+        color: #ffc107;
+    }
+    
+    .opportunity-type.job {
+        background-color: #d1e7dd;
+        color: #198754;
+    }
+    
+    .opportunity-type.part-time {
+        background-color: #f8d7da;
+        color: #dc3545;
+    }
+    
+    .opportunity-type.training {
+        background-color: #d8f3fa;
+        color: #0dcaf0;
+    }
+    
+    .opportunity-type.mentorship {
+        background-color: #e9ecef;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements
+        const opportunitySearchForm = document.getElementById('opportunitySearchForm');
+        const opportunitiesList = document.getElementById('opportunitiesList');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const upcomingEvents = document.getElementById('upcomingEvents');
+        const partnerCarouselInner = document.querySelector('#partnerCarousel .carousel-inner');
+        const opportunityModal = new bootstrap.Modal(document.getElementById('opportunityModal'));
+        const partnerModal = new bootstrap.Modal(document.getElementById('partnerModal'));
+        
+        // Handle search form submission
+        opportunitySearchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            searchOpportunities();
+        });
+        
+        // Search opportunities function
+        function searchOpportunities() {
+            const industry = document.getElementById('industryType').value;
+            const type = document.getElementById('opportunityType').value;
+            const location = document.getElementById('location').value;
+            
+            // Show loading indicator
+            loadingIndicator.classList.remove('d-none');
+            opportunitiesList.innerHTML = '';
+            noResultsMessage.classList.add('d-none');
+            
+            // Make API request
+            fetch('/industry_connections', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    industry: industry,
+                    type: type,
+                    location: location
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingIndicator.classList.add('d-none');
+                
+                if (data.opportunities && data.opportunities.length > 0) {
+                    displayOpportunities(data.opportunities);
+                } else {
+                    noResultsMessage.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingIndicator.classList.add('d-none');
+                noResultsMessage.classList.remove('d-none');
+                
+                // Load sample data if API fails
+                loadSampleData();
+            });
+        }
+        
+        // Display opportunities
+        function displayOpportunities(opportunities) {
+            opportunitiesList.innerHTML = '';
+            
+            opportunities.forEach(opportunity => {
+                const opportunityCard = createOpportunityCard(opportunity);
+                opportunitiesList.appendChild(opportunityCard);
+            });
+        }
+        
+        // Create opportunity card
+        function createOpportunityCard(opportunity) {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 col-lg-6 mb-4';
+            
+            // Determine badge class based on opportunity type
+            let typeClass = 'internship';
+            if (opportunity.type === 'apprenticeship') typeClass = 'apprenticeship';
+            if (opportunity.type === 'job') typeClass = 'job';
+            if (opportunity.type === 'part-time') typeClass = 'part-time';
+            if (opportunity.type === 'training') typeClass = 'training';
+            if (opportunity.type === 'mentorship') typeClass = 'mentorship';
+            
+            col.innerHTML = `
+                <div class="card opportunity-card h-100" data-opportunity-id="${opportunity.id}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">${opportunity.title}</h5>
+                            <span class="opportunity-type ${typeClass}">${opportunity.type}</span>
+                        </div>
+                        <h6 class="card-subtitle mb-2 text-muted">${opportunity.company}</h6>
+                        <p class="card-text">${opportunity.description}</p>
+                        <div class="opportunity-meta mt-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span><i class="fas fa-map-marker-alt"></i>${opportunity.location}</span>
+                                <span><i class="fas fa-industry"></i>${opportunity.industry}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-calendar-alt"></i>Posted: ${formatDate(opportunity.posted_date || new Date())}</span>
+                                <span><i class="fas fa-clock"></i>${opportunity.duration || 'Ongoing'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to show opportunity details
+            col.querySelector('.opportunity-card').addEventListener('click', () => {
+                showOpportunityDetails(opportunity);
+            });
+            
+            return col;
+        }
+        
+        // Format date helper function
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        // Show opportunity details in modal
+        function showOpportunityDetails(opportunity) {
+            const modalTitle = document.getElementById('opportunityModalLabel');
+            const modalContent = document.getElementById('opportunityDetailContent');
+            const applyButton = document.getElementById('applyButton');
+            
+            modalTitle.textContent = opportunity.title;
+            
+            // Generate qualifications and responsibilities
+            const qualifications = generateQualifications(opportunity.industry);
+            const responsibilities = generateResponsibilities(opportunity.type, opportunity.industry);
+            
+            modalContent.innerHTML = `
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4>${opportunity.company}</h4>
+                        <span class="opportunity-type ${opportunity.type}">${opportunity.type}</span>
+                    </div>
+                    <div class="opportunity-meta mb-3">
+                        <div><i class="fas fa-map-marker-alt"></i> ${opportunity.location}</div>
+                        <div><i class="fas fa-industry"></i> ${opportunity.industry}</div>
+                        <div><i class="fas fa-calendar-alt"></i> Posted: ${formatDate(opportunity.posted_date || new Date())}</div>
+                        <div><i class="fas fa-clock"></i> Duration: ${opportunity.duration || 'Ongoing'}</div>
+                    </div>
+                </div>
+                
+                <h5>Description</h5>
+                <p>${opportunity.description}</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>Responsibilities</h5>
+                        <ul>
+                            ${responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Qualifications</h5>
+                        <ul>
+                            ${qualifications.map(qual => `<li>${qual}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Benefits</h5>
+                    <ul>
+                        <li>Hands-on experience in a real-world setting</li>
+                        <li>Mentorship from industry professionals</li>
+                        <li>Networking opportunities with potential employers</li>
+                        ${opportunity.type === 'job' || opportunity.type === 'part-time' ? '<li>Competitive salary and benefits package</li>' : ''}
+                        ${opportunity.type === 'internship' ? '<li>Possibility of full-time employment upon completion</li>' : ''}
+                        ${opportunity.type === 'apprenticeship' ? '<li>Earn while you learn</li>' : ''}
+                    </ul>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Application Process</h5>
+                    <p>Interested candidates should submit their resume and a brief statement explaining their interest in this opportunity. Selected candidates will be contacted for an interview.</p>
+                </div>
+            `;
+            
+            // Set up apply button action
+            applyButton.onclick = function() {
+                alert(`Your application for "${opportunity.title}" at ${opportunity.company} has been submitted!`);
+                opportunityModal.hide();
+            };
+            
+            opportunityModal.show();
+        }
+        
+        // Show partner details in modal
+        function showPartnerDetails(partner) {
+            const modalTitle = document.getElementById('partnerModalLabel');
+            const modalContent = document.getElementById('partnerDetailContent');
+            const visitButton = document.getElementById('visitPartnerButton');
+            
+            modalTitle.textContent = partner.name;
+            
+            modalContent.innerHTML = `
+                <div class="text-center mb-4">
+                    <img src="${partner.logo}" alt="${partner.name}" class="img-fluid partner-logo" style="max-height: 100px;">
+                </div>
+                <h5>About ${partner.name}</h5>
+                <p>${partner.description}</p>
+                
+                <div class="mt-3">
+                    <h6>Industry: ${partner.industry}</h6>
+                    <h6>Location: ${partner.location}</h6>
+                    <h6>Founded: ${partner.founded || 'N/A'}</h6>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Partnership Opportunities</h5>
+                    <ul>
+                        ${partner.opportunities.map(opp => `<li>${opp}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            // Set up visit button action
+            visitButton.onclick = function() {
+                window.open(partner.website || '#', '_blank');
+            };
+            
+            partnerModal.show();
+        }
+        
+        // Helper functions to generate content
+        function generateQualifications(industry) {
+            const generalQualifications = [
+                'High school diploma or equivalent',
+                'Good communication skills',
+                'Ability to work in a team environment',
+                'Problem-solving aptitude',
+                'Reliable and punctual'
+            ];
+            
+            const industrySpecificQualifications = {
+                'agriculture': [
+                    'Basic knowledge of farming practices',
+                    'Willingness to work outdoors in various weather conditions',
+                    'Experience with agricultural equipment (preferred)',
+                    'Understanding of crop cycles and seasonal work'
+                ],
+                'manufacturing': [
+                    'Basic mechanical aptitude',
+                    'Attention to detail and quality control',
+                    'Ability to follow technical instructions',
+                    'Experience with hand and power tools'
+                ],
+                'construction': [
+                    'Physical stamina and strength',
+                    'Basic knowledge of construction safety',
+                    'Ability to read blueprints (preferred)',
+                    'Experience with construction tools'
+                ],
+                'electronics': [
+                    'Basic understanding of electronic circuits',
+                    'Attention to detail',
+                    'Knowledge of soldering techniques (preferred)',
+                    'Experience with testing equipment'
+                ],
+                'automotive': [
+                    'Basic mechanical knowledge',
+                    'Valid driver\'s license',
+                    'Experience with automotive tools (preferred)',
+                    'Understanding of vehicle systems'
+                ],
+                'energy': [
+                    'Basic understanding of electrical systems',
+                    'Safety-conscious mindset',
+                    'Ability to work at heights or in confined spaces',
+                    'Attention to detail and precision'
+                ]
+            };
+            
+            // Combine general and industry-specific qualifications
+            let qualifications = [...generalQualifications];
+            if (industrySpecificQualifications[industry]) {
+                qualifications = qualifications.concat(industrySpecificQualifications[industry].slice(0, 2));
+            }
+            
+            // Shuffle and return 4-5 qualifications
+            return shuffleArray(qualifications).slice(0, 5);
+        }
+        
+        function generateResponsibilities(type, industry) {
+            const typeSpecificResponsibilities = {
+                'internship': [
+                    'Assist with day-to-day operations',
+                    'Learn and apply industry-specific skills',
+                    'Support senior staff with projects',
+                    'Document processes and findings',
+                    'Participate in training sessions'
+                ],
+                'apprenticeship': [
+                    'Work under the supervision of experienced professionals',
+                    'Complete assigned training modules',
+                    'Apply theoretical knowledge to practical tasks',
+                    'Maintain work logs and progress reports',
+                    'Gradually take on more responsibility as skills develop'
+                ],
+                'job': [
+                    'Execute daily operational tasks independently',
+                    'Manage and complete assigned projects',
+                    'Collaborate with team members',
+                    'Maintain quality standards',
+                    'Contribute to process improvements'
+                ],
+                'part-time': [
+                    'Support regular operations during scheduled hours',
+                    'Complete assigned tasks efficiently',
+                    'Maintain flexibility in scheduling',
+                    'Coordinate with full-time staff',
+                    'Ensure continuity of work'
+                ],
+                'training': [
+                    'Attend all scheduled sessions',
+                    'Complete practical exercises',
+                    'Participate in group discussions',
+                    'Take assessments to track progress',
+                    'Apply new skills in practical scenarios'
+                ],
+                'mentorship': [
+                    'Meet regularly with assigned mentor',
+                    'Set and work toward professional goals',
+                    'Seek and implement feedback',
+                    'Shadow mentor in professional settings',
+                    'Develop specific skills identified in mentorship plan'
+                ]
+            };
+            
+            const industrySpecificResponsibilities = {
+                'agriculture': [
+                    'Assist with planting, maintenance, and harvesting',
+                    'Monitor crop health and report issues',
+                    'Operate and maintain farm equipment',
+                    'Implement sustainable farming practices',
+                    'Help with livestock care and management'
+                ],
+                'manufacturing': [
+                    'Operate production machinery',
+                    'Assemble components according to specifications',
+                    'Perform quality control checks',
+                    'Maintain clean and safe work environment',
+                    'Track inventory and supplies'
+                ],
+                'construction': [
+                    'Assist with building and construction tasks',
+                    'Prepare construction sites and materials',
+                    'Follow safety protocols and procedures',
+                    'Use and maintain construction tools',
+                    'Read and interpret basic blueprints'
+                ],
+                'electronics': [
+                    'Assemble electronic components',
+                    'Test and troubleshoot circuits',
+                    'Solder components to circuit boards',
+                    'Document technical specifications',
+                    'Assist with product development'
+                ],
+                'automotive': [
+                    'Assist with vehicle maintenance and repairs',
+                    'Diagnose mechanical issues',
+                    'Replace and repair vehicle components',
+                    'Test vehicle systems for proper operation',
+                    'Maintain clean and organized work area'
+                ],
+                'energy': [
+                    'Assist with installation of energy systems',
+                    'Perform basic maintenance tasks',
+                    'Monitor system performance',
+                    'Follow safety protocols for energy systems',
+                    'Document energy output and efficiency'
+                ]
+            };
+            
+            // Combine type and industry specific responsibilities
+            let responsibilities = [];
+            
+            if (typeSpecificResponsibilities[type]) {
+                responsibilities = responsibilities.concat(typeSpecificResponsibilities[type].slice(0, 3));
+            }
+            
+            if (industrySpecificResponsibilities[industry]) {
+                responsibilities = responsibilities.concat(industrySpecificResponsibilities[industry].slice(0, 2));
+            }
+            
+            return responsibilities.length > 0 ? responsibilities : typeSpecificResponsibilities['internship'];
+        }
+        
+        // Shuffle array helper function
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        // Load sample data
+        function loadSampleData() {
+            // Sample opportunities
+            const sampleOpportunities = [
+                {
+                    id: 1,
+                    title: "Farm Apprentice",
+                    company: "Green Valley Farms",
+                    type: "apprenticeship",
+                    industry: "agriculture",
+                    location: "Rural District",
+                    description: "Learn sustainable farming practices through hands-on experience at our organic farm. This apprenticeship offers comprehensive training in crop cultivation, livestock management, and agricultural business operations.",
+                    posted_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
+                    duration: "6 months"
+                },
+                {
+                    id: 2,
+                    title: "Electronics Technician",
+                    company: "Tech Solutions Inc.",
+                    type: "job",
+                    industry: "electronics",
+                    location: "Urban City",
+                    description: "Join our team as an Electronics Technician responsible for assembling, testing, and troubleshooting electronic components and systems. Ideal opportunity for graduates with basic electronics training looking to start their career.",
+                    posted_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
+                    duration: "Permanent"
+                },
+                {
+                    id: 3,
+                    title: "Construction Helper",
+                    company: "BuildRight Construction",
+                    type: "internship",
+                    industry: "construction",
+                    location: "Metro Area",
+                    description: "Gain practical experience in residential and commercial construction projects. Learn about building techniques, safety protocols, and various construction trades while working alongside experienced professionals.",
+                    posted_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 8),
+                    duration: "3 months"
+                },
+                {
+                    id: 4,
+                    title: "Auto Mechanic Assistant",
+                    company: "Precision Auto Care",
+                    type: "part-time",
+                    industry: "automotive",
+                    location: "Suburban Town",
+                    description: "Part-time position assisting certified mechanics with vehicle maintenance and repairs. Perfect opportunity for automotive students to apply classroom knowledge in a real garage environment.",
+                    posted_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+                    duration: "20 hours/week"
+                }
+            ];
+            
+            displayOpportunities(sampleOpportunities);
+            
+            // Sample partners for carousel
+            const samplePartners = [
+                {
+                    id: 1,
+                    name: "Green Valley Farms",
+                    industry: "Agriculture",
+                    logo: "https://via.placeholder.com/200x100?text=Green+Valley",
+                    description: "A leading sustainable farm focused on organic produce and environmentally friendly practices. We offer training opportunities in modern agricultural techniques.",
+                    location: "Rural District",
+                    founded: 1985,
+                    opportunities: [
+                        "Apprenticeships in sustainable farming",
+                        "Seasonal employment opportunities",
+                        "Educational tours and workshops",
+                        "Research partnerships"
+                    ],
+                    website: "#"
+                },
+                {
+                    id: 2,
+                    name: "Tech Solutions Inc.",
+                    industry: "Electronics",
+                    logo: "https://via.placeholder.com/200x100?text=Tech+Solutions",
+                    description: "An innovative electronics company specializing in custom electronic solutions and repairs. We provide hands-on learning environments for future technicians.",
+                    location: "Urban City",
+                    founded: 2001,
+                    opportunities: [
+                        "Entry-level technician positions",
+                        "Internships in electronics assembly",
+                        "Advanced training in circuit design",
+                        "Mentorship programs"
+                    ],
+                    website: "#"
+                },
+                {
+                    id: 3,
+                    name: "BuildRight Construction",
+                    industry: "Construction",
+                    logo: "https://via.placeholder.com/200x100?text=BuildRight",
+                    description: "A reputable construction company with projects ranging from residential homes to commercial buildings. We are committed to training the next generation of construction professionals.",
+                    location: "Metro Area",
+                    founded: 1992,
+                    opportunities: [
+                        "Construction helper positions",
+                        "Apprenticeships in various trades",
+                        "Safety certification programs",
+                        "Career advancement paths"
+                    ],
+                    website: "#"
+                }
+            ];
+            
+            // Load partners into carousel
+            loadPartnerCarousel(samplePartners);
+            
+            // Sample upcoming events
+            const sampleEvents = [
+                {
+                    id: 1,
+                    title: "Agriculture Career Fair",
+                    date: new Date(Date.now() + 1000 * 60 * 60 * 24 * 10),
+                    location: "Community Center",
+                    description: "Meet representatives from local farms and agricultural businesses."
+                },
+                {
+                    id: 2,
+                    title: "Welding Workshop",
+                    date: new Date(Date.now() + 1000 * 60 * 60 * 24 * 5),
+                    location: "Technical College",
+                    description: "Hands-on introduction to basic welding techniques."
+                },
+                {
+                    id: 3,
+                    title: "Construction Industry Networking",
+                    date: new Date(Date.now() + 1000 * 60 * 60 * 24 * 15),
+                    location: "Builder's Association HQ",
+                    description: "Connect with construction companies looking for apprentices."
+                }
+            ];
+            
+            // Load upcoming events
+            loadUpcomingEvents(sampleEvents);
+        }
+        
+        // Load partner carousel
+        function loadPartnerCarousel(partners) {
+            partnerCarouselInner.innerHTML = '';
+            
+            partners.forEach((partner, index) => {
+                const slide = document.createElement('div');
+                slide.className = `carousel-item${index === 0 ? ' active' : ''}`;
+                
+                slide.innerHTML = `
+                    <div class="partner-slide">
+                        <div class="partner-card" data-partner-id="${partner.id}">
+                            <img src="${partner.logo}" alt="${partner.name}" class="partner-logo">
+                            <h5>${partner.name}</h5>
+                            <p class="text-muted">${partner.industry}</p>
+                            <p class="small">${partner.description.substring(0, 100)}...</p>
+                            <button class="btn btn-sm btn-outline-primary mt-2">Learn More</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event to partner card
+                slide.querySelector('.partner-card button').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPartnerDetails(partner);
+                });
+                
+                partnerCarouselInner.appendChild(slide);
+            });
+        }
+        
+        // Load upcoming events
+        function loadUpcomingEvents(events) {
+            upcomingEvents.innerHTML = '';
+            
+            if (events.length === 0) {
+                upcomingEvents.innerHTML = '<p class="text-center text-muted">No upcoming events</p>';
+                return;
+            }
+            
+            events.forEach(event => {
+                const eventDate = new Date(event.date);
+                const eventEl = document.createElement('div');
+                eventEl.className = 'event-card d-flex align-items-start mb-3';
+                
+                eventEl.innerHTML = `
+                    <div class="event-date me-3">
+                        <div class="month">${eventDate.toLocaleDateString('en-US', { month: 'short' })}</div>
+                        <div class="day">${eventDate.getDate()}</div>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">${event.title}</h6>
+                        <div class="small text-muted mb-1">
+                            <i class="fas fa-map-marker-alt me-1"></i>${event.location}
+                        </div>
+                        <p class="small mb-0">${event.description}</p>
+                    </div>
+                `;
+                
+                upcomingEvents.appendChild(eventEl);
+            });
+        }
+        
+        // Load initial data when page loads
+        loadSampleData();
+    });
+</script>
+{% endblock %} 

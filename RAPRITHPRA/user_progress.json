@@ -1,0 +1,12 @@
+{
+  "default_user": {
+    "vocational_skills": {
+      "Welding": {
+        "progress": 20.0,
+        "last_accessed": "2025-03-29T23:25:49.931927",
+        "quiz_scores": [],
+        "completion_time": 0
+      }
+    }
+  }
+}

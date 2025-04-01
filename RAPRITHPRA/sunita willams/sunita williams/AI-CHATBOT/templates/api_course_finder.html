@@ -1,0 +1,1359 @@
+{% extends "api_base.html" %}
+
+{% block title %}EDU SPARK - Course Finder{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-success">
+                        <i class="fas fa-search me-2"></i>Course Finder
+                    </h2>
+                    <p class="card-text">Find the perfect vocational courses that match your interests and career goals.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Search Filters -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0 text-success"><i class="fas fa-filter me-2"></i>Search Filters</h5>
+                </div>
+                <div class="card-body">
+                    <form id="courseSearchForm">
+                        <div class="mb-3">
+                            <label for="keywords" class="form-label">Keywords</label>
+                            <input type="text" class="form-control" id="keywords" placeholder="e.g., agriculture, welding">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category">
+                                <option value="">All Categories</option>
+                                <option value="agriculture">Agriculture</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="mechanics">Mechanics</option>
+                                <option value="construction">Construction</option>
+                                <option value="computer">Computer Skills</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="level" class="form-label">Skill Level</label>
+                            <select class="form-select" id="level">
+                                <option value="">All Levels</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Max Duration (months)</label>
+                            <input type="range" class="form-range" id="duration" min="1" max="24" value="12">
+                            <div class="d-flex justify-content-between">
+                                <span>1 month</span>
+                                <span id="durationValue">12 months</span>
+                                <span>24 months</span>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-search me-2"></i>Find Courses
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Recommended Skills -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0 text-success"><i class="fas fa-star me-2"></i>Top Skills in Demand</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge bg-primary p-2 skill-badge" data-skill="farming">Sustainable Farming</span>
+                        <span class="badge bg-success p-2 skill-badge" data-skill="welding">Welding</span>
+                        <span class="badge bg-info text-dark p-2 skill-badge" data-skill="solar">Solar Installation</span>
+                        <span class="badge bg-warning text-dark p-2 skill-badge" data-skill="irrigation">Irrigation Systems</span>
+                        <span class="badge bg-danger p-2 skill-badge" data-skill="electronics">Basic Electronics</span>
+                    </div>
+                    <p class="text-muted small">Click on a skill to find relevant courses</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Results -->
+        <div class="col-lg-8">
+            <div id="loadingResults" class="text-center py-5 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Searching for courses...</p>
+            </div>
+            
+            <div id="noResultsMessage" class="text-center py-5 d-none">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4>No courses found</h4>
+                <p>Try adjusting your search criteria or explore our recommended courses below.</p>
+            </div>
+            
+            <div id="searchResults">
+                <!-- Results will be displayed here -->
+            </div>
+            
+            <!-- Recommended Courses -->
+            <div class="mt-4 mb-3">
+                <h4 class="text-success"><i class="fas fa-thumbs-up me-2"></i>Recommended Courses</h4>
+            </div>
+            
+            <div id="recommendedCourses">
+                <!-- Recommended courses will be displayed here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Skills Assessment Section -->
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="feature-icon bg-success text-white rounded-circle p-3 me-3">
+                            <i class="fas fa-tasks fa-2x"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-success mb-1">Skills Assessment</h3>
+                            <p class="mb-0">Evaluate your strengths and find courses tailored to your abilities</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <p>Take our quick skills assessment to discover which agricultural and vocational paths align with your natural talents and interests.</p>
+                    <button class="btn btn-success" data-bs-toggle="collapse" data-bs-target="#skillsAssessment">
+                        <i class="fas fa-clipboard-check me-2"></i>Start Skills Assessment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="collapse" id="skillsAssessment">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0 text-success"><i class="fas fa-check-circle me-2"></i>Skills Assessment Questionnaire</h5>
+            </div>
+            <div class="card-body">
+                <form id="skillsAssessmentForm">
+                    <!-- Progress Bar -->
+                    <div class="progress mb-4" style="height: 10px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 20%;" id="assessmentProgress">
+                            <span class="visually-hidden">20% Complete</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Question Sections -->
+                    <div class="assessment-sections">
+                        <!-- Section 1: Practical Skills -->
+                        <div class="assessment-section active" id="section1">
+                            <h5 class="mb-3">Practical Skills</h5>
+                            <p class="text-muted mb-4">Rate your comfort level with the following activities:</p>
+                            
+                            <div class="mb-4">
+                                <label class="form-label d-block">Working with tools and machinery</label>
+                                <div class="btn-group skill-rating" role="group">
+                                    <input type="radio" class="btn-check" name="tools_machinery" id="tools1" value="1" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="tools1">1</label>
+                                    <input type="radio" class="btn-check" name="tools_machinery" id="tools2" value="2" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="tools2">2</label>
+                                    <input type="radio" class="btn-check" name="tools_machinery" id="tools3" value="3" autocomplete="off" checked>
+                                    <label class="btn btn-outline-secondary" for="tools3">3</label>
+                                    <input type="radio" class="btn-check" name="tools_machinery" id="tools4" value="4" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="tools4">4</label>
+                                    <input type="radio" class="btn-check" name="tools_machinery" id="tools5" value="5" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="tools5">5</label>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <small>Not comfortable</small>
+                                    <small>Very comfortable</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label d-block">Growing plants or crops</label>
+                                <div class="btn-group skill-rating" role="group">
+                                    <input type="radio" class="btn-check" name="growing_plants" id="plants1" value="1" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="plants1">1</label>
+                                    <input type="radio" class="btn-check" name="growing_plants" id="plants2" value="2" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="plants2">2</label>
+                                    <input type="radio" class="btn-check" name="growing_plants" id="plants3" value="3" autocomplete="off" checked>
+                                    <label class="btn btn-outline-secondary" for="plants3">3</label>
+                                    <input type="radio" class="btn-check" name="growing_plants" id="plants4" value="4" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="plants4">4</label>
+                                    <input type="radio" class="btn-check" name="growing_plants" id="plants5" value="5" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="plants5">5</label>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <small>Not comfortable</small>
+                                    <small>Very comfortable</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label d-block">Working with electrical systems</label>
+                                <div class="btn-group skill-rating" role="group">
+                                    <input type="radio" class="btn-check" name="electrical" id="elec1" value="1" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="elec1">1</label>
+                                    <input type="radio" class="btn-check" name="electrical" id="elec2" value="2" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="elec2">2</label>
+                                    <input type="radio" class="btn-check" name="electrical" id="elec3" value="3" autocomplete="off" checked>
+                                    <label class="btn btn-outline-secondary" for="elec3">3</label>
+                                    <input type="radio" class="btn-check" name="electrical" id="elec4" value="4" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="elec4">4</label>
+                                    <input type="radio" class="btn-check" name="electrical" id="elec5" value="5" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="elec5">5</label>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <small>Not comfortable</small>
+                                    <small>Very comfortable</small>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary" disabled>Previous</button>
+                                <button type="button" class="btn btn-success next-section">Next</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Section 2: Interests -->
+                        <div class="assessment-section" id="section2">
+                            <h5 class="mb-3">Interests</h5>
+                            <p class="text-muted mb-4">Select your areas of interest:</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="sustainable_farming" id="int_sustainable">
+                                        <label class="form-check-label" for="int_sustainable">Sustainable Farming</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="crop_management" id="int_crop">
+                                        <label class="form-check-label" for="int_crop">Crop Management</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="livestock" id="int_livestock">
+                                        <label class="form-check-label" for="int_livestock">Livestock Management</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="farm_equipment" id="int_equipment">
+                                        <label class="form-check-label" for="int_equipment">Farm Equipment Operation</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="irrigation" id="int_irrigation">
+                                        <label class="form-check-label" for="int_irrigation">Irrigation Systems</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="food_processing" id="int_food">
+                                        <label class="form-check-label" for="int_food">Food Processing</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="marketing" id="int_marketing">
+                                        <label class="form-check-label" for="int_marketing">Agricultural Marketing</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="interests" value="tech" id="int_tech">
+                                        <label class="form-check-label" for="int_tech">Agricultural Technology</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary prev-section">Previous</button>
+                                <button type="button" class="btn btn-success next-section">Next</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Section 3: Education & Experience -->
+                        <div class="assessment-section" id="section3">
+                            <h5 class="mb-3">Education & Experience</h5>
+                            <p class="text-muted mb-4">Tell us about your background:</p>
+                            
+                            <div class="mb-3">
+                                <label for="education" class="form-label">Highest Level of Education</label>
+                                <select class="form-select" id="education" name="education">
+                                    <option value="" selected disabled>Select an option</option>
+                                    <option value="10th">10th Grade</option>
+                                    <option value="12th">12th Grade</option>
+                                    <option value="diploma">Diploma</option>
+                                    <option value="bachelors">Bachelor's Degree</option>
+                                    <option value="masters">Master's Degree</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="experience" class="form-label">Agricultural Experience</label>
+                                <select class="form-select" id="experience" name="experience">
+                                    <option value="" selected disabled>Select an option</option>
+                                    <option value="none">No experience</option>
+                                    <option value="personal">Personal garden/farm only</option>
+                                    <option value="intern">Internship/Volunteer</option>
+                                    <option value="1-3">1-3 years professional</option>
+                                    <option value="3+">3+ years professional</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="certificates" class="form-label">Do you have any relevant certificates or training?</label>
+                                <textarea class="form-control" id="certificates" name="certificates" rows="2" placeholder="Please list any relevant certificates or training you have completed"></textarea>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary prev-section">Previous</button>
+                                <button type="button" class="btn btn-success next-section">Next</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Section 4: Goals & Preferences -->
+                        <div class="assessment-section" id="section4">
+                            <h5 class="mb-3">Goals & Preferences</h5>
+                            <p class="text-muted mb-4">Share your career aspirations:</p>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">What are your career goals?</label>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="career_goal" id="goal1" value="own_business" checked>
+                                    <label class="form-check-label" for="goal1">Start my own agricultural business</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="career_goal" id="goal2" value="employment">
+                                    <label class="form-check-label" for="goal2">Find employment in the agricultural sector</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="career_goal" id="goal3" value="family_business">
+                                    <label class="form-check-label" for="goal3">Improve skills for family business</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="career_goal" id="goal4" value="personal">
+                                    <label class="form-check-label" for="goal4">Personal interest only</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="time_commitment" class="form-label">Preferred Time Commitment</label>
+                                <select class="form-select" id="time_commitment" name="time_commitment">
+                                    <option value="" selected disabled>Select an option</option>
+                                    <option value="full_time">Full-time study</option>
+                                    <option value="part_time">Part-time study</option>
+                                    <option value="weekend">Weekend courses only</option>
+                                    <option value="online">Online/Self-paced</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="budget" class="form-label">Budget Range for Courses</label>
+                                <select class="form-select" id="budget" name="budget">
+                                    <option value="" selected disabled>Select an option</option>
+                                    <option value="free">Free courses only</option>
+                                    <option value="low">Under ₹5,000</option>
+                                    <option value="medium">₹5,000 - ₹15,000</option>
+                                    <option value="high">Above ₹15,000</option>
+                                </select>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary prev-section">Previous</button>
+                                <button type="submit" class="btn btn-success">Submit Assessment</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Results Section (Hidden initially) -->
+        <div id="assessmentResults" class="d-none">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Your Skills Assessment Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4 text-center">
+                        <div class="d-inline-block p-3 rounded-circle bg-light mb-3">
+                            <i class="fas fa-user-graduate text-success fa-3x"></i>
+                        </div>
+                        <h4 class="mb-1" id="resultName">Your Results</h4>
+                        <p class="text-muted">Based on your responses, we've identified your strengths and recommended courses</p>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3"><i class="fas fa-award text-success me-2"></i>Your Top Skills</h5>
+                                    <div id="topSkills">
+                                        <!-- Skills will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3"><i class="fas fa-seedling text-success me-2"></i>Recommended Paths</h5>
+                                    <div id="recommendedPaths">
+                                        <!-- Paths will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5 class="mb-3">Recommended Courses for You</h5>
+                    <div class="row" id="recommendedCoursesBySkills">
+                        <!-- Courses will be populated here -->
+                    </div>
+                    
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="button" class="btn btn-outline-success me-2" id="printAssessment">
+                            <i class="fas fa-print me-2"></i>Print Results
+                        </button>
+                        <button type="button" class="btn btn-success" id="saveAssessment">
+                            <i class="fas fa-save me-2"></i>Save Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Course Detail Modal -->
+<div class="modal fade" id="courseDetailModal" tabindex="-1" aria-labelledby="courseDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="courseDetailModalLabel">Course Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="courseDetailContent">
+                <!-- Course details will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="enrollButton">Enroll Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .course-card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .course-card .card-img-top {
+        height: 180px;
+        object-fit: cover;
+    }
+    
+    .skill-badge {
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .skill-badge:hover {
+        transform: scale(1.05);
+    }
+    
+    .course-meta {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    
+    .course-meta i {
+        width: 16px;
+        text-align: center;
+        margin-right: 5px;
+    }
+    
+    .course-rating {
+        color: #ffc107;
+    }
+    
+    .course-provider {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background-color: #f8f9fa;
+    }
+    
+    /* Agricultural theme colors */
+    .text-success {
+        color: #2e7d32 !important; /* Deeper, richer green for agricultural theme */
+    }
+    
+    .card-title.text-success {
+        color: #2e7d32 !important;
+        font-weight: 600;
+    }
+    
+    /* Skills Assessment Styles */
+    .assessment-section {
+        display: none;
+    }
+    
+    .assessment-section.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .skill-rating .btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: 0 5px;
+    }
+    
+    .skill-rating .btn-check:checked + .btn-outline-secondary {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .border-success {
+        border-color: var(--primary-color) !important;
+    }
+    
+    #skillsAssessment {
+        transition: all 0.5s ease-in-out;
+    }
+    
+    #assessmentResults {
+        transition: all 0.5s ease-in-out;
+    }
+    
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        
+        #assessmentResults,
+        #assessmentResults * {
+            visibility: visible;
+        }
+        
+        #assessmentResults {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        
+        #printAssessment,
+        #saveAssessment {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements
+        const courseSearchForm = document.getElementById('courseSearchForm');
+        const searchResults = document.getElementById('searchResults');
+        const recommendedCourses = document.getElementById('recommendedCourses');
+        const loadingResults = document.getElementById('loadingResults');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const durationInput = document.getElementById('duration');
+        const durationValue = document.getElementById('durationValue');
+        const skillBadges = document.querySelectorAll('.skill-badge');
+        const courseDetailModal = new bootstrap.Modal(document.getElementById('courseDetailModal'));
+        
+        // Update duration value display
+        durationInput.addEventListener('input', function() {
+            durationValue.textContent = this.value + ' months';
+        });
+        
+        // Handle skill badge clicks
+        skillBadges.forEach(badge => {
+            badge.addEventListener('click', function() {
+                const skill = this.getAttribute('data-skill');
+                document.getElementById('keywords').value = skill;
+                courseSearchForm.dispatchEvent(new Event('submit'));
+            });
+        });
+        
+        // Handle search form submission
+        courseSearchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            searchCourses();
+        });
+        
+        // Function to search courses
+        function searchCourses() {
+            const keywords = document.getElementById('keywords').value;
+            const category = document.getElementById('category').value;
+            const level = document.getElementById('level').value;
+            const duration = document.getElementById('duration').value;
+            
+            // Show loading indicator
+            loadingResults.classList.remove('d-none');
+            searchResults.innerHTML = '';
+            noResultsMessage.classList.add('d-none');
+            
+            // Make API request
+            fetch('/course_finder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    keywords: keywords,
+                    category: category,
+                    level: level,
+                    max_duration: parseInt(duration)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingResults.classList.add('d-none');
+                
+                if (data.courses && data.courses.length > 0) {
+                    displayCourses(data.courses, searchResults);
+                } else {
+                    noResultsMessage.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingResults.classList.add('d-none');
+                searchResults.innerHTML = `
+                    <div class="alert alert-danger">
+                        Error searching for courses. Please try again.
+                    </div>
+                `;
+                
+                // Load sample data if API fails
+                loadSampleData();
+            });
+        }
+        
+        // Function to display courses
+        function displayCourses(courses, container) {
+            container.innerHTML = '';
+            
+            const row = document.createElement('div');
+            row.className = 'row';
+            
+            courses.forEach(course => {
+                const courseCard = createCourseCard(course);
+                row.appendChild(courseCard);
+            });
+            
+            container.appendChild(row);
+        }
+        
+        // Function to create course card
+        function createCourseCard(course) {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 mb-4';
+            
+            // Generate random image based on category
+            let imageUrl = 'https://via.placeholder.com/500x300';
+            if (course.category === 'agriculture') {
+                imageUrl = 'https://source.unsplash.com/random/500x300/?farming,agriculture';
+            } else if (course.category === 'electronics') {
+                imageUrl = 'https://source.unsplash.com/random/500x300/?electronics,circuit';
+            } else if (course.category === 'mechanics') {
+                imageUrl = 'https://source.unsplash.com/random/500x300/?mechanic,engine';
+            } else if (course.category === 'construction') {
+                imageUrl = 'https://source.unsplash.com/random/500x300/?construction,building';
+            } else if (course.category === 'computer') {
+                imageUrl = 'https://source.unsplash.com/random/500x300/?computer,coding';
+            }
+            
+            col.innerHTML = `
+                <div class="card course-card h-100" data-course-id="${course.id}">
+                    <img src="${imageUrl}" class="card-img-top" alt="${course.title}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">${course.title}</h5>
+                            <span class="course-provider">${course.provider || 'EDU SPARK'}</span>
+                        </div>
+                        <p class="card-text">${course.description}</p>
+                        <div class="course-meta d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-layer-group"></i>${course.level}</span>
+                            <span><i class="fas fa-clock"></i>${course.duration} months</span>
+                        </div>
+                        <div class="course-meta d-flex justify-content-between">
+                            <span class="course-rating">
+                                ${generateRatingStars(course.rating || 4.5)}
+                            </span>
+                            <span class="fw-bold text-success">${course.fee ? '₹' + course.fee : 'Free'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to show course details
+            col.querySelector('.course-card').addEventListener('click', () => {
+                showCourseDetails(course);
+            });
+            
+            return col;
+        }
+        
+        // Generate rating stars
+        function generateRatingStars(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            
+            let starsHtml = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            }
+            
+            if (halfStar) {
+                starsHtml += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            for (let i = 0; i < emptyStars; i++) {
+                starsHtml += '<i class="far fa-star"></i>';
+            }
+            
+            return starsHtml + ` <span class="text-muted">(${(Math.random() * 100 + 20).toFixed(0)})</span>`;
+        }
+        
+        // Show course details in modal
+        function showCourseDetails(course) {
+            const modalTitle = document.getElementById('courseDetailModalLabel');
+            const modalContent = document.getElementById('courseDetailContent');
+            const enrollButton = document.getElementById('enrollButton');
+            
+            modalTitle.textContent = course.title;
+            
+            // Generate schedule
+            const schedule = [];
+            for (let i = 1; i <= Math.min(course.duration, 8); i++) {
+                schedule.push(`Week ${i}: ${getRandomModule(course.category)}`);
+            }
+            
+            modalContent.innerHTML = `
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>About this Course</h4>
+                        <p>${course.long_description || course.description}</p>
+                        
+                        <h5 class="mt-4">What You'll Learn</h5>
+                        <ul class="mb-4">
+                            ${generateLearningOutcomes(course.category).map(outcome => `<li>${outcome}</li>`).join('')}
+                        </ul>
+                        
+                        <h5>Requirements</h5>
+                        <ul>
+                            <li>Basic understanding of ${course.category}</li>
+                            <li>${getRandomRequirement(course.category)}</li>
+                            <li>Commitment to complete practical assignments</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Course Details</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Duration:</span>
+                                    <span class="fw-bold">${course.duration} months</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Level:</span>
+                                    <span class="fw-bold">${course.level}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Category:</span>
+                                    <span class="fw-bold">${course.category}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Fee:</span>
+                                    <span class="fw-bold text-success">${course.fee ? '$' + course.fee : 'Free'}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Certificate:</span>
+                                    <span class="fw-bold">Yes</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Next Sessions</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Starts:</span>
+                                    <span class="fw-bold">${getRandomStartDate()}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Format:</span>
+                                    <span class="fw-bold">Blended Learning</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Course Schedule</h5>
+                    <div class="list-group">
+                        ${schedule.map(week => `
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">${week.split(':')[0]}</h6>
+                                    <small>${Math.floor(Math.random() * 5 + 2)} hours</small>
+                                </div>
+                                <p class="mb-1">${week.split(':')[1]}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Set up enroll button action
+            enrollButton.onclick = function() {
+                alert(`You have successfully enrolled in ${course.title}!`);
+                courseDetailModal.hide();
+            };
+            
+            courseDetailModal.show();
+        }
+        
+        // Helper functions for generating random course data
+        function getRandomStartDate() {
+            const today = new Date();
+            const futureDate = new Date(today);
+            futureDate.setDate(today.getDate() + Math.floor(Math.random() * 30 + 1));
+            return futureDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        function getRandomModule(category) {
+            const modules = {
+                'agriculture': [
+                    'Introduction to Sustainable Farming',
+                    'Soil Management Techniques',
+                    'Crop Planning and Rotation',
+                    'Irrigation Systems',
+                    'Pest and Disease Management',
+                    'Organic Farming Practices',
+                    'Harvest and Post-harvest Handling'
+                ],
+                'electronics': [
+                    'Basic Circuit Theory',
+                    'Components and Measurements',
+                    'Digital Electronics',
+                    'Microcontrollers',
+                    'Electronic Troubleshooting',
+                    'PCB Design and Fabrication',
+                    'Practical Circuit Projects'
+                ],
+                'mechanics': [
+                    'Engine Fundamentals',
+                    'Transmission Systems',
+                    'Braking Systems',
+                    'Electrical Systems',
+                    'Diagnostic Techniques',
+                    'Preventive Maintenance',
+                    'Hydraulic Systems'
+                ],
+                'construction': [
+                    'Building Materials',
+                    'Construction Safety',
+                    'Blueprint Reading',
+                    'Masonry and Concrete Work',
+                    'Framing and Carpentry',
+                    'Electrical Wiring',
+                    'Plumbing Basics'
+                ],
+                'computer': [
+                    'Computer Hardware Basics',
+                    'Operating Systems',
+                    'Programming Fundamentals',
+                    'Web Development',
+                    'Database Management',
+                    'Network Setup and Security',
+                    'Troubleshooting and Maintenance'
+                ]
+            };
+            
+            const categoryModules = modules[category] || modules['agriculture'];
+            return categoryModules[Math.floor(Math.random() * categoryModules.length)];
+        }
+        
+        function getRandomRequirement(category) {
+            const requirements = {
+                'agriculture': 'Access to small garden plot for practical assignments',
+                'electronics': 'Basic math skills and understanding of simple tools',
+                'mechanics': 'Willingness to work with tools and mechanical systems',
+                'construction': 'Physical ability to handle construction materials',
+                'computer': 'Access to a computer with internet connection'
+            };
+            
+            return requirements[category] || 'Basic analytical and problem-solving skills';
+        }
+        
+        function generateLearningOutcomes(category) {
+            const outcomes = {
+                'agriculture': [
+                    'Implement sustainable farming techniques',
+                    'Design efficient irrigation systems',
+                    'Apply integrated pest management strategies',
+                    'Plan crop rotations for optimal soil health',
+                    'Set up small-scale agricultural enterprises'
+                ],
+                'electronics': [
+                    'Build and test basic electronic circuits',
+                    'Troubleshoot common electronic problems',
+                    'Program microcontrollers for automation',
+                    'Design PCBs for electronic projects',
+                    'Implement electronic control systems'
+                ],
+                'mechanics': [
+                    'Diagnose engine and transmission issues',
+                    'Perform routine maintenance procedures',
+                    'Repair brake and suspension systems',
+                    'Troubleshoot electrical system problems',
+                    'Maintain and repair hydraulic systems'
+                ],
+                'construction': [
+                    'Interpret construction blueprints',
+                    'Apply proper building techniques',
+                    'Implement construction safety protocols',
+                    'Install basic electrical and plumbing systems',
+                    'Estimate materials and costs for projects'
+                ],
+                'computer': [
+                    'Set up and maintain computer systems',
+                    'Create and manage websites',
+                    'Develop simple applications',
+                    'Secure networks and computer systems',
+                    'Implement database solutions'
+                ]
+            };
+            
+            return outcomes[category] || outcomes['agriculture'];
+        }
+        
+        // Load sample data for recommended courses
+        function loadSampleData() {
+            const sampleCourses = [
+                {
+                    id: 1,
+                    title: 'Sustainable Agriculture Practices',
+                    description: 'Learn modern and sustainable techniques for efficient farming with focus on environmental conservation.',
+                    category: 'agriculture',
+                    level: 'Beginner',
+                    duration: 3,
+                    rating: 4.8,
+                    provider: 'EDU SPARK',
+                    fee: 0
+                },
+                {
+                    id: 2,
+                    title: 'Basic Electronics & Circuit Building',
+                    description: 'Hands-on course covering fundamentals of electronics, circuit design and building electronic projects.',
+                    category: 'electronics',
+                    level: 'Beginner',
+                    duration: 4,
+                    rating: 4.6,
+                    provider: 'Tech Skills',
+                    fee: 25
+                },
+                {
+                    id: 3,
+                    title: 'Auto Mechanics Fundamentals',
+                    description: 'Comprehensive introduction to automotive systems, maintenance and basic repairs.',
+                    category: 'mechanics',
+                    level: 'Intermediate',
+                    duration: 6,
+                    rating: 4.7,
+                    provider: 'Motor Academy',
+                    fee: 35
+                },
+                {
+                    id: 4,
+                    title: 'Home Construction Basics',
+                    description: 'Learn essential skills for residential construction including carpentry, masonry and electrical work.',
+                    category: 'construction',
+                    level: 'Beginner',
+                    duration: 5,
+                    rating: 4.5,
+                    provider: 'Builder\'s Guild',
+                    fee: 20
+                }
+            ];
+            
+            displayCourses(sampleCourses, recommendedCourses);
+        }
+        
+        // Load recommended courses when page loads
+        loadSampleData();
+
+        // Skills Assessment Functionality
+        const assessmentForm = document.getElementById('skillsAssessmentForm');
+        const assessmentProgress = document.getElementById('assessmentProgress');
+        const assessmentSections = document.querySelectorAll('.assessment-section');
+        const nextButtons = document.querySelectorAll('.next-section');
+        const prevButtons = document.querySelectorAll('.prev-section');
+        const assessmentResults = document.getElementById('assessmentResults');
+        const printAssessment = document.getElementById('printAssessment');
+        const saveAssessment = document.getElementById('saveAssessment');
+        
+        // Handle section navigation
+        let currentSection = 0;
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentSection + 1) / assessmentSections.length) * 100;
+            assessmentProgress.style.width = `${progress}%`;
+            assessmentProgress.setAttribute('aria-valuenow', progress);
+        }
+        
+        // Show specific section
+        function showSection(index) {
+            assessmentSections.forEach(section => section.classList.remove('active'));
+            assessmentSections[index].classList.add('active');
+            currentSection = index;
+            updateProgress();
+        }
+        
+        // Next section button click
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (currentSection < assessmentSections.length - 1) {
+                    showSection(currentSection + 1);
+                }
+            });
+        });
+        
+        // Previous section button click
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (currentSection > 0) {
+                    showSection(currentSection - 1);
+                }
+            });
+        });
+        
+        // Handle form submission
+        assessmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Hide form, show results
+            document.querySelector('.card:has(#skillsAssessmentForm)').classList.add('d-none');
+            assessmentResults.classList.remove('d-none');
+            
+            // Process form data
+            const formData = new FormData(assessmentForm);
+            analyzeSkilsAndInterests(formData);
+        });
+        
+        // Analyze skills and generate results
+        function analyzeSkilsAndInterests(formData) {
+            // Get form values
+            const toolRating = parseInt(formData.get('tools_machinery') || 3);
+            const plantRating = parseInt(formData.get('growing_plants') || 3);
+            const electricalRating = parseInt(formData.get('electrical') || 3);
+            const interests = formData.getAll('interests');
+            const education = formData.get('education');
+            const experience = formData.get('experience');
+            const careerGoal = formData.get('career_goal');
+            
+            // Generate top skills based on ratings
+            const topSkills = [];
+            if (toolRating >= 4) topSkills.push({skill: 'Mechanical Skills', rating: toolRating});
+            if (plantRating >= 4) topSkills.push({skill: 'Crop Management', rating: plantRating});
+            if (electricalRating >= 4) topSkills.push({skill: 'Technical Skills', rating: electricalRating});
+            
+            // Add default skills if none are high rated
+            if (topSkills.length === 0) {
+                if (toolRating >= plantRating && toolRating >= electricalRating) {
+                    topSkills.push({skill: 'Mechanical Skills', rating: toolRating});
+                } else if (plantRating >= toolRating && plantRating >= electricalRating) {
+                    topSkills.push({skill: 'Crop Management', rating: plantRating});
+                } else {
+                    topSkills.push({skill: 'Technical Skills', rating: electricalRating});
+                }
+            }
+            
+            // Generate career paths based on skills and interests
+            const recommendedPaths = [];
+            
+            // Based on interests
+            if (interests.includes('sustainable_farming') || interests.includes('crop_management')) {
+                recommendedPaths.push('Sustainable Agriculture');
+            }
+            
+            if (interests.includes('farm_equipment') && toolRating >= 3) {
+                recommendedPaths.push('Agricultural Machinery Technician');
+            }
+            
+            if (interests.includes('irrigation') && (electricalRating >= 3 || toolRating >= 3)) {
+                recommendedPaths.push('Irrigation Specialist');
+            }
+            
+            if (interests.includes('food_processing')) {
+                recommendedPaths.push('Food Processing Technology');
+            }
+            
+            if (interests.includes('tech') && electricalRating >= 3) {
+                recommendedPaths.push('Agricultural Technology');
+            }
+            
+            // Default recommendations if nothing matches
+            if (recommendedPaths.length === 0) {
+                if (plantRating >= 3) {
+                    recommendedPaths.push('General Agriculture');
+                } else if (toolRating >= 3) {
+                    recommendedPaths.push('Farm Equipment Operator');
+                } else {
+                    recommendedPaths.push('Agricultural Business Management');
+                }
+            }
+            
+            // Limit to top 3 paths
+            recommendedPaths.splice(3);
+            
+            // Generate recommended courses
+            const recommendedCourses = generateRecommendedCourses(topSkills, recommendedPaths, interests, education, experience, careerGoal);
+            
+            // Display results
+            displayAssessmentResults(topSkills, recommendedPaths, recommendedCourses);
+        }
+        
+        // Generate recommended courses based on assessment
+        function generateRecommendedCourses(skills, paths, interests, education, experience, careerGoal) {
+            const courses = [];
+            
+            // Sample course data - in a real app, this would come from a database
+            const courseCatalog = [
+                {
+                    id: 'c1',
+                    title: 'Sustainable Farming Practices',
+                    provider: 'Agricultural Institute of India',
+                    level: 'Beginner',
+                    duration: '3 months',
+                    cost: '₹4,500',
+                    skills: ['Crop Management'],
+                    paths: ['Sustainable Agriculture', 'General Agriculture'],
+                    description: 'Learn sustainable farming methods that increase yield while preserving environmental resources.',
+                    image: 'https://placehold.co/300x200?text=Sustainable+Farming'
+                },
+                {
+                    id: 'c2',
+                    title: 'Farm Equipment Maintenance',
+                    provider: 'Technical Training Center',
+                    level: 'Intermediate',
+                    duration: '4 months',
+                    cost: '₹6,000',
+                    skills: ['Mechanical Skills'],
+                    paths: ['Agricultural Machinery Technician', 'Farm Equipment Operator'],
+                    description: 'Comprehensive training on maintaining and repairing common agricultural machinery.',
+                    image: 'https://placehold.co/300x200?text=Equipment+Maintenance'
+                },
+                {
+                    id: 'c3',
+                    title: 'Modern Irrigation Systems',
+                    provider: 'Water Management Institute',
+                    level: 'Intermediate',
+                    duration: '2 months',
+                    cost: '₹5,500',
+                    skills: ['Technical Skills'],
+                    paths: ['Irrigation Specialist'],
+                    description: 'Learn to design, install, and maintain efficient irrigation systems for various crops.',
+                    image: 'https://placehold.co/300x200?text=Irrigation+Systems'
+                },
+                {
+                    id: 'c4',
+                    title: 'Organic Crop Production',
+                    provider: 'Green Earth Academy',
+                    level: 'Beginner',
+                    duration: '3 months',
+                    cost: '₹3,800',
+                    skills: ['Crop Management'],
+                    paths: ['Sustainable Agriculture', 'General Agriculture'],
+                    description: 'Complete guide to growing organic crops with certification preparation.',
+                    image: 'https://placehold.co/300x200?text=Organic+Crops'
+                },
+                {
+                    id: 'c5',
+                    title: 'Agricultural Drone Operations',
+                    provider: 'Tech Farming Institute',
+                    level: 'Advanced',
+                    duration: '6 weeks',
+                    cost: '₹8,000',
+                    skills: ['Technical Skills'],
+                    paths: ['Agricultural Technology'],
+                    description: 'Learn to operate drones for crop monitoring, spraying, and data collection.',
+                    image: 'https://placehold.co/300x200?text=Agri+Drones'
+                },
+                {
+                    id: 'c6',
+                    title: 'Food Processing Basics',
+                    provider: 'Food Technology College',
+                    level: 'Beginner',
+                    duration: '4 months',
+                    cost: '₹7,500',
+                    skills: ['Technical Skills'],
+                    paths: ['Food Processing Technology'],
+                    description: 'Introduction to food processing techniques, safety standards, and equipment operation.',
+                    image: 'https://placehold.co/300x200?text=Food+Processing'
+                }
+            ];
+            
+            // Filter courses based on skills and paths
+            for (const course of courseCatalog) {
+                // Check if the course matches any of the user's top skills or recommended paths
+                const matchesSkill = course.skills.some(skill => skills.some(s => s.skill === skill));
+                const matchesPath = course.paths.some(path => paths.includes(path));
+                
+                if (matchesSkill || matchesPath) {
+                    courses.push(course);
+                }
+            }
+            
+            return courses;
+        }
+        
+        // Display assessment results
+        function displayAssessmentResults(skills, paths, courses) {
+            // Display top skills
+            const topSkillsContainer = document.getElementById('topSkills');
+            topSkillsContainer.innerHTML = '';
+            
+            if (skills.length === 0) {
+                topSkillsContainer.innerHTML = '<p>No outstanding skills identified. The assessment will help you discover new areas to develop.</p>';
+            } else {
+                skills.forEach(skill => {
+                    const skillEl = document.createElement('div');
+                    skillEl.className = 'mb-3';
+                    skillEl.innerHTML = `
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>${skill.skill}</span>
+                            <span class="badge bg-success">${skill.rating}/5</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                style="width: ${(skill.rating / 5) * 100}%;" 
+                                aria-valuenow="${skill.rating}" aria-valuemin="0" aria-valuemax="5"></div>
+                        </div>
+                    `;
+                    topSkillsContainer.appendChild(skillEl);
+                });
+            }
+            
+            // Display recommended paths
+            const pathsContainer = document.getElementById('recommendedPaths');
+            pathsContainer.innerHTML = '';
+            
+            if (paths.length === 0) {
+                pathsContainer.innerHTML = '<p>Based on your answers, we recommend exploring multiple fields to find your ideal path.</p>';
+            } else {
+                paths.forEach(path => {
+                    const pathEl = document.createElement('div');
+                    pathEl.className = 'mb-3 p-3 border rounded bg-light';
+                    pathEl.innerHTML = `
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-chevron-right text-success me-2"></i>
+                            <span>${path}</span>
+                        </div>
+                    `;
+                    pathsContainer.appendChild(pathEl);
+                });
+            }
+            
+            // Display recommended courses
+            const coursesContainer = document.getElementById('recommendedCoursesBySkills');
+            coursesContainer.innerHTML = '';
+            
+            if (courses.length === 0) {
+                coursesContainer.innerHTML = '<div class="col-12 text-center"><p>No specific courses match your profile. Please try broadening your interests.</p></div>';
+            } else {
+                courses.forEach(course => {
+                    const courseEl = document.createElement('div');
+                    courseEl.className = 'col-md-6 col-lg-4 mb-4';
+                    courseEl.innerHTML = `
+                        <div class="card h-100 course-card">
+                            <img src="${course.image}" class="card-img-top" alt="${course.title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${course.title}</h5>
+                                <div class="course-meta mb-2">
+                                    <div><i class="fas fa-university"></i> ${course.provider}</div>
+                                    <div><i class="fas fa-signal"></i> ${course.level}</div>
+                                    <div><i class="fas fa-clock"></i> ${course.duration}</div>
+                                    <div><i class="fas fa-rupee-sign"></i> ${course.cost}</div>
+                                </div>
+                                <p class="card-text">${course.description}</p>
+                            </div>
+                            <div class="card-footer bg-transparent text-center">
+                                <button class="btn btn-outline-success btn-sm view-course-details" data-course-id="${course.id}">
+                                    <i class="fas fa-info-circle me-1"></i>View Details
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    coursesContainer.appendChild(courseEl);
+                });
+            }
+            
+            // Scroll to results
+            assessmentResults.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Print assessment results
+        printAssessment.addEventListener('click', function() {
+            window.print();
+        });
+        
+        // Save assessment results (demo functionality)
+        saveAssessment.addEventListener('click', function() {
+            alert('Assessment results saved! You can access them from your profile.');
+        });
+    });
+</script>
+{% endblock %} 

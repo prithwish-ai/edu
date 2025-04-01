@@ -1,0 +1,164 @@
+{% extends "api_base.html" %}
+
+{% block title %}Contact Us - EduSpark{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="contact-container">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: var(--primary-color); margin-bottom: 10px;">Contact Us</h1>
+            <p style="color: #666;">Have questions or suggestions? Send us a message and we'll get back to you.</p>
+        </div>
+        
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+                <div class="form-error" id="nameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+                <div class="form-error" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea id="message" name="message" class="form-control" rows="6" required></textarea>
+                <div class="form-error" id="messageError"></div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+            
+            <div id="formStatus" style="margin-top: 20px; text-align: center; display: none;"></div>
+        </form>
+        
+        <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-color);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div style="text-align: center;">
+                    <i class="fas fa-map-marker-alt" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+                    <h3 style="margin-bottom: 10px;">Our Location</h3>
+                    <p style="color: #666;">SISTER NIVEDITA UNIVERSITY, KOLKATA</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <i class="fas fa-phone-alt" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+                    <h3 style="margin-bottom: 10px;">Phone</h3>
+                    <p style="color: #666;">9875891049</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <i class="fas fa-envelope" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+                    <h3 style="margin-bottom: 10px;">Email</h3>
+                    <p style="color: #666;">support@EduSpark.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('messageError').textContent = '';
+            formStatus.style.display = 'none';
+            
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            // Basic validation
+            let isValid = true;
+            
+            if (name.length < 2) {
+                document.getElementById('nameError').textContent = 'Please enter your full name.';
+                isValid = false;
+            }
+            
+            if (!validateEmail(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            }
+            
+            if (message.length < 10) {
+                document.getElementById('messageError').textContent = 'Please enter a message with at least 10 characters.';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Prepare headers
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            // Add token if available
+            const token = localStorage.getItem('token');
+            if (token) {
+                headers['Authorization'] = 'Bearer ' + token;
+            }
+            
+            // Send contact form
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Contact form submitted successfully!') {
+                    // Show success message
+                    formStatus.innerHTML = `
+                        <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px;">
+                            <p style="margin: 0;"><i class="fas fa-check-circle"></i> Your message has been sent successfully! We'll get back to you soon.</p>
+                        </div>
+                    `;
+                    formStatus.style.display = 'block';
+                    
+                    // Reset form
+                    contactForm.reset();
+                } else {
+                    // Show error message
+                    formStatus.innerHTML = `
+                        <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
+                            <p style="margin: 0;"><i class="fas fa-exclamation-circle"></i> ${data.message || 'An error occurred while sending your message. Please try again.'}</p>
+                        </div>
+                    `;
+                    formStatus.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Contact form error:', error);
+                formStatus.innerHTML = `
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
+                        <p style="margin: 0;"><i class="fas fa-exclamation-circle"></i> An error occurred while sending your message. Please try again later.</p>
+                    </div>
+                `;
+                formStatus.style.display = 'block';
+            });
+        });
+        
+        // Email validation function
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+    });
+</script>
+{% endblock %} 

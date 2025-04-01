@@ -1,0 +1,124 @@
+{
+  "employment_rates": {
+    "Fitter": {
+      "overall": 85,
+      "by_region": {
+        "North": 88,
+        "South": 82,
+        "East": 80,
+        "West": 90
+      },
+      "trend": "Increasing"
+    },
+    "Electrician": {
+      "overall": 92,
+      "by_region": {
+        "North": 90,
+        "South": 94,
+        "East": 88,
+        "West": 95
+      },
+      "trend": "Stable"
+    },
+    "Mechanic (Motor Vehicle)": {
+      "overall": 88,
+      "by_region": {
+        "North": 85,
+        "South": 90,
+        "East": 82,
+        "West": 92
+      },
+      "trend": "Increasing"
+    },
+    "COPA": {
+      "overall": 75,
+      "by_region": {
+        "North": 80,
+        "South": 85,
+        "East": 70,
+        "West": 78
+      },
+      "trend": "Stable"
+    },
+    "Turner": {
+      "overall": 80,
+      "by_region": {
+        "North": 82,
+        "South": 78,
+        "East": 75,
+        "West": 85
+      },
+      "trend": "Stable"
+    }
+  },
+  "industry_demand": {
+    "Manufacturing": [
+      "Fitter",
+      "Turner",
+      "Electrician"
+    ],
+    "Automobile": [
+      "Mechanic (Motor Vehicle)",
+      "Fitter",
+      "Electrician"
+    ],
+    "IT & Services": [
+      "COPA",
+      "Electronics Mechanic"
+    ],
+    "Construction": [
+      "Electrician",
+      "Fitter"
+    ],
+    "Power": [
+      "Electrician",
+      "Electronics Mechanic"
+    ]
+  },
+  "future_outlook": {
+    "Fitter": {
+      "growth_potential": "Moderate",
+      "automation_risk": "Medium",
+      "emerging_opportunities": [
+        "Smart Manufacturing",
+        "Precision Engineering"
+      ]
+    },
+    "Electrician": {
+      "growth_potential": "High",
+      "automation_risk": "Low",
+      "emerging_opportunities": [
+        "Renewable Energy",
+        "Smart Homes",
+        "EV Infrastructure"
+      ]
+    },
+    "Mechanic (Motor Vehicle)": {
+      "growth_potential": "High",
+      "automation_risk": "Medium",
+      "emerging_opportunities": [
+        "Electric Vehicles",
+        "Hybrid Technology",
+        "Autonomous Systems"
+      ]
+    },
+    "COPA": {
+      "growth_potential": "Moderate",
+      "automation_risk": "High",
+      "emerging_opportunities": [
+        "Data Analysis",
+        "Digital Marketing",
+        "E-commerce Support"
+      ]
+    },
+    "Turner": {
+      "growth_potential": "Moderate",
+      "automation_risk": "High",
+      "emerging_opportunities": [
+        "CNC Programming",
+        "Precision Components",
+        "Aerospace"
+      ]
+    }
+  }
+}

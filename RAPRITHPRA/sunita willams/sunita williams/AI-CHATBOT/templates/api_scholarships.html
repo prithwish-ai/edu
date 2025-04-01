@@ -1,0 +1,676 @@
+{% extends "api_base.html" %}
+
+{% block title %}EDU SPARK - Scholarships{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        <i class="fas fa-graduation-cap me-2"></i>Scholarships
+                    </h2>
+                    <p class="card-text">Discover financial aid opportunities to support your vocational and agricultural education journey.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Search Filters -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Find Scholarships</h5>
+                </div>
+                <div class="card-body">
+                    <form id="scholarshipSearchForm">
+                        <div class="mb-3">
+                            <label for="field" class="form-label">Field of Study</label>
+                            <select class="form-select" id="field">
+                                <option value="">All Fields</option>
+                                <option value="agriculture">Agriculture</option>
+                                <option value="mechanics">Mechanics</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="construction">Construction</option>
+                                <option value="computer">Computer Technology</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Minimum Amount</label>
+                            <select class="form-select" id="amount">
+                                <option value="0">Any Amount</option>
+                                <option value="5000">₹5,000+</option>
+                                <option value="10000">₹10,000+</option>
+                                <option value="25000">₹25,000+</option>
+                                <option value="50000">₹50,000+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="eligibility" class="form-label">Eligibility Criteria</label>
+                            <select class="form-select" id="eligibility">
+                                <option value="">All Criteria</option>
+                                <option value="merit">Merit-Based</option>
+                                <option value="need">Need-Based</option>
+                                <option value="women">Women in Vocational Fields</option>
+                                <option value="rural">Rural Background</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="onlyOpen" checked>
+                                <label class="form-check-label" for="onlyOpen">
+                                    Show only open applications
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>Search Scholarships
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Application Tips -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Application Tips</h5>
+                </div>
+                <div class="card-body">
+                    <div class="tip-item mb-3 border-bottom pb-3">
+                        <h6><i class="fas fa-check-circle text-success me-2"></i>Prepare Documents</h6>
+                        <p class="small text-muted">Keep essential documents ready: ID proof, academic records, income certificates, and recommendation letters.</p>
+                    </div>
+                    <div class="tip-item mb-3 border-bottom pb-3">
+                        <h6><i class="fas fa-check-circle text-success me-2"></i>Meet Deadlines</h6>
+                        <p class="small text-muted">Create a calendar of application deadlines and submit well before the closing date.</p>
+                    </div>
+                    <div class="tip-item mb-3 border-bottom pb-3">
+                        <h6><i class="fas fa-check-circle text-success me-2"></i>Write Compelling Essays</h6>
+                        <p class="small text-muted">Focus on your career goals, passion for the field, and how the scholarship will help you.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h6><i class="fas fa-check-circle text-success me-2"></i>Follow Up</h6>
+                        <p class="small text-muted">After submitting, check your application status regularly and respond promptly to any requests.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scholarships List -->
+        <div class="col-lg-8">
+            <div id="loadingIndicator" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Finding scholarships...</p>
+            </div>
+            
+            <div id="noResultsMessage" class="text-center py-5 d-none">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4>No scholarships found</h4>
+                <p>Try adjusting your search criteria or check back later for new opportunities.</p>
+            </div>
+            
+            <div id="scholarshipsList" class="d-none">
+                <!-- Scholarships will be displayed here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scholarship Detail Modal -->
+<div class="modal fade" id="scholarshipDetailModal" tabindex="-1" aria-labelledby="scholarshipDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scholarshipDetailModalLabel">Scholarship Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="scholarshipDetailContent">
+                <!-- Scholarship details will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="applyButton">Apply Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .scholarship-card {
+        border-radius: 10px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        border-left: 5px solid #4caf50;
+        overflow: hidden;
+    }
+    
+    .scholarship-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .scholarship-card.closing-soon {
+        border-left-color: #ff9800;
+    }
+    
+    .scholarship-card.merit-based {
+        border-left-color: #2196f3;
+    }
+    
+    .scholarship-card.need-based {
+        border-left-color: #9c27b0;
+    }
+    
+    .scholarship-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+    
+    .scholarship-amount {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #4caf50;
+    }
+    
+    .scholarship-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .badge-agriculture {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .badge-mechanics {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+    
+    .badge-electronics {
+        background-color: #ede7f6;
+        color: #5e35b1;
+    }
+    
+    .badge-construction {
+        background-color: #ffecb3;
+        color: #ff8f00;
+    }
+    
+    .badge-computer {
+        background-color: #e0f7fa;
+        color: #00838f;
+    }
+    
+    .badge-merit {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+    
+    .badge-need {
+        background-color: #f3e5f5;
+        color: #7b1fa2;
+    }
+    
+    .badge-women {
+        background-color: #fce4ec;
+        color: #c2185b;
+    }
+    
+    .badge-rural {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+    
+    .scholarship-deadline {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+    }
+    
+    .scholarship-deadline.urgent {
+        color: #f44336;
+        font-weight: 600;
+    }
+    
+    .scholarship-provider {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+    
+    .animation-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .tip-item h6 {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize elements
+        const scholarshipSearchForm = document.getElementById('scholarshipSearchForm');
+        const scholarshipsList = document.getElementById('scholarshipsList');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const scholarshipDetailModal = new bootstrap.Modal(document.getElementById('scholarshipDetailModal'));
+        
+        // Handle search form submission
+        scholarshipSearchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            searchScholarships();
+        });
+        
+        // Function to search scholarships
+        function searchScholarships() {
+            const field = document.getElementById('field').value;
+            const amount = document.getElementById('amount').value;
+            const eligibility = document.getElementById('eligibility').value;
+            const onlyOpen = document.getElementById('onlyOpen').checked;
+            
+            // Show loading indicator
+            loadingIndicator.classList.remove('d-none');
+            scholarshipsList.classList.add('d-none');
+            noResultsMessage.classList.add('d-none');
+            
+            // Make API request
+            fetch('/scholarships', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    field: field,
+                    min_amount: parseInt(amount),
+                    eligibility: eligibility,
+                    only_open: onlyOpen
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingIndicator.classList.add('d-none');
+                
+                if (data.scholarships && data.scholarships.length > 0) {
+                    displayScholarships(data.scholarships);
+                    scholarshipsList.classList.remove('d-none');
+                } else {
+                    noResultsMessage.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingIndicator.classList.add('d-none');
+                noResultsMessage.classList.remove('d-none');
+                
+                // Load sample data for demonstration
+                loadSampleData();
+            });
+        }
+        
+        // Function to display scholarships
+        function displayScholarships(scholarships) {
+            scholarshipsList.innerHTML = '';
+            
+            scholarships.forEach(scholarship => {
+                const scholarshipCard = createScholarshipCard(scholarship);
+                scholarshipsList.appendChild(scholarshipCard);
+            });
+        }
+        
+        // Function to create scholarship card
+        function createScholarshipCard(scholarship) {
+            const card = document.createElement('div');
+            card.className = `scholarship-card card shadow-sm ${isClosingSoon(scholarship.deadline) ? 'closing-soon' : ''}`;
+            card.dataset.scholarshipId = scholarship.id;
+            
+            // Check if deadline is within 7 days
+            const isUrgent = isClosingSoon(scholarship.deadline);
+            
+            // Create badges HTML
+            let badgesHtml = '';
+            if (scholarship.field) {
+                badgesHtml += `<span class="scholarship-badge badge-${scholarship.field}">${formatField(scholarship.field)}</span>`;
+            }
+            
+            if (scholarship.eligibility_criteria) {
+                scholarship.eligibility_criteria.forEach(criteria => {
+                    badgesHtml += `<span class="scholarship-badge badge-${criteria}">${formatCriteria(criteria)}</span>`;
+                });
+            }
+            
+            card.innerHTML = `
+                <div class="card-body">
+                    <div class="scholarship-header">
+                        <h5 class="card-title mb-0">${scholarship.name}</h5>
+                        <span class="scholarship-amount">₹${numberWithCommas(scholarship.amount)}</span>
+                    </div>
+                    
+                    <div class="scholarship-provider mb-2">
+                        <i class="fas fa-university me-1"></i> ${scholarship.provider}
+                    </div>
+                    
+                    <p class="card-text">${scholarship.description}</p>
+                    
+                    <div class="scholarship-badges mb-2">
+                        ${badgesHtml}
+                    </div>
+                    
+                    <div class="scholarship-deadline ${isUrgent ? 'urgent' : ''}">
+                        <i class="fas fa-calendar-alt me-1"></i> 
+                        Deadline: ${formatDate(scholarship.deadline)}
+                        ${isUrgent ? ' <span class="badge bg-danger">Closing Soon!</span>' : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to show scholarship details
+            card.addEventListener('click', () => {
+                showScholarshipDetails(scholarship);
+            });
+            
+            return card;
+        }
+        
+        // Function to check if deadline is within 7 days
+        function isClosingSoon(deadlineStr) {
+            const deadline = new Date(deadlineStr);
+            const today = new Date();
+            const diffTime = deadline - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 && diffDays <= 7;
+        }
+        
+        // Function to format field name
+        function formatField(field) {
+            const fieldMap = {
+                'agriculture': 'Agriculture',
+                'mechanics': 'Mechanics',
+                'electronics': 'Electronics',
+                'construction': 'Construction',
+                'computer': 'Computer Technology'
+            };
+            return fieldMap[field] || field;
+        }
+        
+        // Function to format criteria name
+        function formatCriteria(criteria) {
+            const criteriaMap = {
+                'merit': 'Merit-Based',
+                'need': 'Need-Based',
+                'women': 'Women in Vocational',
+                'rural': 'Rural Background'
+            };
+            return criteriaMap[criteria] || criteria;
+        }
+        
+        // Function to format date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-IN', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+        }
+        
+        // Function to format number with commas
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        
+        // Function to show scholarship details
+        function showScholarshipDetails(scholarship) {
+            const modalTitle = document.getElementById('scholarshipDetailModalLabel');
+            const modalContent = document.getElementById('scholarshipDetailContent');
+            const applyButton = document.getElementById('applyButton');
+            
+            modalTitle.textContent = scholarship.name;
+            
+            // Generate eligibility criteria HTML
+            let eligibilityHtml = '';
+            if (scholarship.eligibility_criteria && scholarship.eligibility_criteria.length > 0) {
+                eligibilityHtml = `
+                    <ul>
+                        ${generateEligibilityList(scholarship.eligibility_criteria, scholarship.field)}
+                    </ul>
+                `;
+            }
+            
+            // Generate required documents HTML
+            let documentsHtml = generateRequiredDocuments(scholarship.eligibility_criteria);
+            
+            modalContent.innerHTML = `
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="mb-3">About this Scholarship</h5>
+                        <p>${scholarship.description}</p>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Eligibility Criteria</h5>
+                            ${eligibilityHtml}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Required Documents</h5>
+                            ${documentsHtml}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Selection Process</h5>
+                            <ol>
+                                <li>Initial screening of applications</li>
+                                <li>Verification of documents</li>
+                                <li>${scholarship.eligibility_criteria && scholarship.eligibility_criteria.includes('merit') ? 'Academic merit assessment' : 'Needs assessment'}</li>
+                                <li>Final selection and notification</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Scholarship Details</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Amount:</span>
+                                    <span class="fw-bold text-success">₹${numberWithCommas(scholarship.amount)}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Provider:</span>
+                                    <span class="fw-bold">${scholarship.provider}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Field:</span>
+                                    <span class="fw-bold">${formatField(scholarship.field)}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Application Deadline:</span>
+                                    <span class="fw-bold ${isClosingSoon(scholarship.deadline) ? 'text-danger' : ''}">${formatDate(scholarship.deadline)}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Status:</span>
+                                    <span class="fw-bold text-success">Open for Applications</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Contact Information</h5>
+                                <p class="mb-2"><i class="fas fa-envelope me-2"></i> scholarships@${scholarship.provider.toLowerCase().replace(/\s+/g, '')}.org</p>
+                                <p class="mb-2"><i class="fas fa-phone-alt me-2"></i> +91 ${Math.floor(Math.random() * 9000000000) + 1000000000}</p>
+                                <p><i class="fas fa-globe me-2"></i> www.${scholarship.provider.toLowerCase().replace(/\s+/g, '')}.org</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Set up apply button action
+            applyButton.onclick = function() {
+                alert(`Your application for "${scholarship.name}" has been submitted successfully!`);
+                scholarshipDetailModal.hide();
+            };
+            
+            scholarshipDetailModal.show();
+        }
+        
+        // Function to generate eligibility list
+        function generateEligibilityList(criteria, field) {
+            let eligibilityList = '';
+            
+            if (criteria.includes('merit')) {
+                eligibilityList += `<li>Minimum academic score of 70% in previous education</li>`;
+            }
+            
+            if (criteria.includes('need')) {
+                eligibilityList += `<li>Annual family income below ₹3,00,000</li>`;
+            }
+            
+            if (criteria.includes('women')) {
+                eligibilityList += `<li>Female candidates pursuing vocational education</li>`;
+            }
+            
+            if (criteria.includes('rural')) {
+                eligibilityList += `<li>Candidates from rural backgrounds with valid rural residency proof</li>`;
+            }
+            
+            // Add field-specific requirements
+            if (field === 'agriculture') {
+                eligibilityList += `<li>Enrolled in agricultural studies or related vocational courses</li>`;
+            } else if (field === 'mechanics') {
+                eligibilityList += `<li>Enrolled in mechanical engineering or related vocational courses</li>`;
+            } else if (field === 'electronics') {
+                eligibilityList += `<li>Enrolled in electronics or electrical engineering courses</li>`;
+            } else if (field === 'construction') {
+                eligibilityList += `<li>Enrolled in civil engineering or construction-related courses</li>`;
+            } else if (field === 'computer') {
+                eligibilityList += `<li>Enrolled in computer technology or IT-related courses</li>`;
+            } else {
+                eligibilityList += `<li>Enrolled in vocational education courses</li>`;
+            }
+            
+            eligibilityList += `<li>Indian citizen</li>`;
+            
+            return eligibilityList;
+        }
+        
+        // Function to generate required documents
+        function generateRequiredDocuments(criteria) {
+            let documents = `
+                <ul>
+                    <li>Completed application form</li>
+                    <li>Government-issued photo ID proof (Aadhaar/PAN/Passport)</li>
+                    <li>Recent passport-sized photographs</li>
+                    <li>Academic records/mark sheets of previous education</li>
+                    <li>Proof of admission/enrollment in the current course</li>
+            `;
+            
+            if (criteria && criteria.includes('need')) {
+                documents += `<li>Income certificate issued by competent authority</li>`;
+            }
+            
+            if (criteria && criteria.includes('rural')) {
+                documents += `<li>Rural residency certificate</li>`;
+            }
+            
+            documents += `
+                    <li>Personal statement/essay about career goals</li>
+                    <li>Letter of recommendation (if applicable)</li>
+                </ul>
+            `;
+            
+            return documents;
+        }
+        
+        // Load sample data
+        function loadSampleData() {
+            const sampleScholarships = [
+                {
+                    id: 1,
+                    name: "National Agriculture Talent Scholarship",
+                    provider: "Ministry of Agriculture",
+                    description: "Financial support for students pursuing agricultural vocational courses to promote innovation in farming techniques and sustainable agriculture.",
+                    amount: 25000,
+                    field: "agriculture",
+                    eligibility_criteria: ["merit", "rural"],
+                    deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 15).toISOString() // 15 days from now
+                },
+                {
+                    id: 2,
+                    name: "Women in Technical Trades Scholarship",
+                    provider: "Technical Education Council",
+                    description: "Supporting women entering technical and vocational fields like electronics, mechanics, and construction to promote gender diversity in these sectors.",
+                    amount: 30000,
+                    field: "electronics",
+                    eligibility_criteria: ["women", "merit"],
+                    deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 5).toISOString() // 5 days from now
+                },
+                {
+                    id: 3,
+                    name: "Rural Skills Development Grant",
+                    provider: "Rural Development Foundation",
+                    description: "Financial assistance for students from rural areas pursuing vocational education to bring skills back to their communities and support rural development.",
+                    amount: 15000,
+                    field: "mechanics",
+                    eligibility_criteria: ["need", "rural"],
+                    deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString() // 30 days from now
+                },
+                {
+                    id: 4,
+                    name: "Digital India Scholarship",
+                    provider: "Tech for India Initiative",
+                    description: "Supporting students pursuing computer technology and IT courses to build digital skills and contribute to India's technological advancement.",
+                    amount: 40000,
+                    field: "computer",
+                    eligibility_criteria: ["merit"],
+                    deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 10).toISOString() // 10 days from now
+                },
+                {
+                    id: 5,
+                    name: "Construction Skills Fellowship",
+                    provider: "Builders Association of India",
+                    description: "Financial support for students learning construction trades including masonry, carpentry, plumbing, and related vocational skills.",
+                    amount: 20000,
+                    field: "construction",
+                    eligibility_criteria: ["need"],
+                    deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 20).toISOString() // 20 days from now
+                }
+            ];
+            
+            displayScholarships(sampleScholarships);
+            scholarshipsList.classList.remove('d-none');
+        }
+        
+        // Load scholarships when page loads
+        loadSampleData();
+    });
+</script>
+{% endblock %} 

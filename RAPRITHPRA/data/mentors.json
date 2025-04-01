@@ -1,0 +1,223 @@
+{
+  "MEN-001": {
+    "id": "MEN-001",
+    "name": "Rajiv Mehta",
+    "profile_picture": "rajiv_mehta.jpg",
+    "current_position": "Senior Production Engineer",
+    "company": "Tata Motors",
+    "years_of_experience": 15,
+    "iti_background": true,
+    "trade_expertise": [
+      "Fitter",
+      "Machinist"
+    ],
+    "education": [
+      "ITI in Fitter from Government ITI, Mumbai (1998)",
+      "Diploma in Mechanical Engineering (2005)"
+    ],
+    "career_highlights": [
+      "Started as ITI apprentice at Tata Motors",
+      "Led major automation project that increased production efficiency by 25%",
+      "Mentored over 30 ITI graduates in the past 8 years"
+    ],
+    "mentorship_areas": [
+      "Career planning for ITI graduates",
+      "Advanced industrial fitting techniques",
+      "Transitioning from technician to engineering roles"
+    ],
+    "availability": "Weekends, 2 hours per week",
+    "mentorship_style": "Practical guidance with focus on hands-on learning and industry-relevant skills",
+    "languages": [
+      "English",
+      "Hindi",
+      "Marathi"
+    ],
+    "contact_info": {
+      "email": "rajiv.mehta@example.com",
+      "phone": "+91-9876543210"
+    },
+    "testimonials": [
+      {
+        "mentee_name": "Amit Kumar",
+        "testimonial": "Mr. Mehta's guidance helped me transition from being a shop floor technician to a supervisor role. His practical advice and industry insights were invaluable."
+      }
+    ]
+  },
+  "MEN-002": {
+    "id": "MEN-002",
+    "name": "Priya Desai",
+    "profile_picture": "priya_desai.jpg",
+    "current_position": "Technical Trainer",
+    "company": "Larsen & Toubro",
+    "years_of_experience": 12,
+    "iti_background": true,
+    "trade_expertise": [
+      "Electrician",
+      "Electronics Mechanic"
+    ],
+    "education": [
+      "ITI in Electrician from Government ITI, Pune (2002)",
+      "B.Tech in Electrical Engineering (2010)"
+    ],
+    "career_highlights": [
+      "First female electrician in her division at L&T",
+      "Developed training program for new ITI apprentices",
+      "Won 'Best Trainer' award in 2018"
+    ],
+    "mentorship_areas": [
+      "Women in technical trades",
+      "Advanced electrical troubleshooting",
+      "Continuing education opportunities for ITI graduates"
+    ],
+    "availability": "Weekday evenings, 3 hours per week",
+    "mentorship_style": "Supportive and encouraging, with focus on building confidence and technical competence",
+    "languages": [
+      "English",
+      "Hindi",
+      "Gujarati"
+    ],
+    "contact_info": {
+      "email": "priya.desai@example.com",
+      "phone": "+91-9876543211"
+    },
+    "testimonials": [
+      {
+        "mentee_name": "Neha Sharma",
+        "testimonial": "As a female student in a male-dominated trade, Ms. Desai's mentorship was exactly what I needed. She helped me navigate industry challenges and build my technical capabilities."
+      }
+    ]
+  },
+  "MEN-003": {
+    "id": "MEN-003",
+    "name": "Mohammed Khan",
+    "profile_picture": "mohammed_khan.jpg",
+    "current_position": "Service Center Head",
+    "company": "Maruti Suzuki",
+    "years_of_experience": 18,
+    "iti_background": true,
+    "trade_expertise": [
+      "Mechanic (Motor Vehicle)",
+      "Diesel Mechanic"
+    ],
+    "education": [
+      "ITI in Mechanic (Motor Vehicle) from Government ITI, Delhi (1996)",
+      "Advanced Certification in Automotive Technology (2005)"
+    ],
+    "career_highlights": [
+      "Started as apprentice mechanic and rose to head a major service center",
+      "Specialized in hybrid vehicle technology",
+      "Trains over 50 mechanics annually"
+    ],
+    "mentorship_areas": [
+      "Automotive industry career growth",
+      "Latest trends in vehicle technology",
+      "Customer service for technical professionals"
+    ],
+    "availability": "Flexible, 4 hours per week",
+    "mentorship_style": "Direct and practical, with focus on real-world problem solving and customer satisfaction",
+    "languages": [
+      "English",
+      "Hindi",
+      "Urdu"
+    ],
+    "contact_info": {
+      "email": "mohammed.khan@example.com",
+      "phone": "+91-9876543212"
+    },
+    "testimonials": [
+      {
+        "mentee_name": "Ravi Singh",
+        "testimonial": "Mr. Khan's mentorship transformed my approach to automotive repairs. His emphasis on both technical excellence and customer service helped me secure a position at a premium car dealership."
+      }
+    ]
+  },
+  "MEN-004": {
+    "id": "MEN-004",
+    "name": "Sunita Verma",
+    "profile_picture": "sunita_verma.jpg",
+    "current_position": "IT Program Manager",
+    "company": "Tech Mahindra",
+    "years_of_experience": 10,
+    "iti_background": true,
+    "trade_expertise": [
+      "COPA",
+      "Information Technology"
+    ],
+    "education": [
+      "ITI in COPA from Government ITI, Bengaluru (2005)",
+      "BCA (2009)",
+      "MBA in IT Management (2013)"
+    ],
+    "career_highlights": [
+      "Transitioned from ITI COPA graduate to IT management",
+      "Leads Tech Mahindra's ITI graduate recruitment program",
+      "Developed bridge course for ITI graduates entering IT sector"
+    ],
+    "mentorship_areas": [
+      "IT career pathways for ITI graduates",
+      "Skill enhancement for IT industry",
+      "Higher education opportunities while working"
+    ],
+    "availability": "Online mentoring, 5 hours per week",
+    "mentorship_style": "Goal-oriented and structured, with focus on clear career planning and skill development",
+    "languages": [
+      "English",
+      "Hindi",
+      "Kannada"
+    ],
+    "contact_info": {
+      "email": "sunita.verma@example.com",
+      "phone": "+91-9876543213"
+    },
+    "testimonials": [
+      {
+        "mentee_name": "Prakash Nair",
+        "testimonial": "Ms. Verma helped me create a clear roadmap from my ITI COPA qualification to a successful IT career. Her guidance on additional certifications and skills was spot-on."
+      }
+    ]
+  },
+  "MEN-005": {
+    "id": "MEN-005",
+    "name": "Harpreet Singh",
+    "profile_picture": "harpreet_singh.jpg",
+    "current_position": "Lead Welder",
+    "company": "BHEL",
+    "years_of_experience": 14,
+    "iti_background": true,
+    "trade_expertise": [
+      "Welder",
+      "Sheet Metal Worker"
+    ],
+    "education": [
+      "ITI in Welder from Government ITI, Amritsar (2000)",
+      "Advanced Welding Certification (2008)"
+    ],
+    "career_highlights": [
+      "Specialized in high-pressure welding for power plants",
+      "Recipient of BHEL's 'Craftsman of the Year' award twice",
+      "Represented India at International Skills Competition"
+    ],
+    "mentorship_areas": [
+      "Advanced welding techniques",
+      "Safety protocols in high-risk environments",
+      "Certification preparation for welders"
+    ],
+    "availability": "Weekends, 3 hours per week",
+    "mentorship_style": "Hands-on demonstration and practice, with strict emphasis on quality and safety",
+    "languages": [
+      "English",
+      "Hindi",
+      "Punjabi"
+    ],
+    "contact_info": {
+      "email": "harpreet.singh@example.com",
+      "phone": "+91-9876543214"
+    },
+    "testimonials": [
+      {
+        "mentee_name": "Manoj Kumar",
+        "testimonial": "Mr. Singh's attention to detail and emphasis on quality transformed my welding skills. His mentorship helped me qualify for specialized welding positions that I wouldn't have been eligible for otherwise."
+      }
+    ]
+  }
+}

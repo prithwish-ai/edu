@@ -1,0 +1,1381 @@
+{% extends "api_base.html" %}
+
+{% block title %}Weather Forecast - EDU SPARK{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm animate__animated animate__fadeIn">
+                <div class="card-body text-center">
+                    <h1 class="display-5 text-success mb-3">
+                        <i class="fas fa-cloud-sun me-2"></i>Agricultural Weather Forecast
+                    </h1>
+                    <p class="lead">Get weather forecasts and customized farming recommendations based on local conditions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Location Input Panel -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm animate__animated animate__fadeInLeft">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Your Location</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="searchLocation" class="form-label">Search Location</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchLocation" placeholder="Enter city or address">
+                            <button class="btn btn-success" type="button" id="searchButton">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Or use your current location</label>
+                        <button id="getCurrentLocation" class="btn btn-outline-success w-100">
+                            <i class="fas fa-location-arrow me-2"></i>Use My Location
+                        </button>
+                    </div>
+                    
+                    <div id="mapContainer" class="mt-4" style="height: 250px; border-radius: 8px; overflow: hidden;">
+                        <!-- Map will be loaded here -->
+                    </div>
+                    
+                    <div class="mt-3" id="selectedLocationInfo">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-map-pin text-danger me-2"></i>
+                            <span id="selectedLocationText">No location selected</span>
+                        </div>
+                        <div class="d-none" id="coordinates">
+                            <small class="text-muted">
+                                Lat: <span id="latitudeValue">--</span>, Lng: <span id="longitudeValue">--</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#helpModal">
+                            <i class="fas fa-question-circle me-1"></i>How to use
+                        </a>
+                        <button id="useExampleLocation" class="btn btn-sm btn-outline-success">
+                            <i class="fas fa-lightbulb me-1"></i>Use Example Location
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weather Resources Card -->
+            <div class="card shadow-sm mt-4 animate__animated animate__fadeInLeft animate__delay-1s">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-book me-2"></i>Weather Resources</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-cloud me-2 text-primary"></i>Seasonal Weather Patterns
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-tint me-2 text-info"></i>Rainfall Prediction Guide
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-temperature-high me-2 text-danger"></i>Temperature Effects on Crops
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-wind me-2 text-secondary"></i>Wind Protection Strategies
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Weather Forecast Display Panel -->
+        <div class="col-lg-8">
+            <div id="loadingPanel" class="text-center py-5">
+                <div class="spinner-grow text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Fetching weather forecast data...</p>
+            </div>
+            
+            <div id="weatherPanel" class="d-none">
+                <!-- Current Weather Card -->
+                <div class="card shadow-sm mb-4 animate__animated animate__fadeInUp">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h3 id="locationName">Location Name</h3>
+                                <div class="d-flex align-items-center">
+                                    <div id="currentWeatherIcon" class="me-3" style="font-size: 3rem;">
+                                        <i class="fas fa-cloud-sun"></i>
+                                    </div>
+                                    <div>
+                                        <h2 id="currentTemp" class="mb-0">--°C</h2>
+                                        <p id="weatherDescription" class="mb-0">Weather condition</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="current-details mt-3 mt-md-0">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="detail-item">
+                                                <i class="fas fa-tint text-primary me-2"></i>
+                                                <span>Humidity: <span id="currentHumidity">--%</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="detail-item">
+                                                <i class="fas fa-wind text-secondary me-2"></i>
+                                                <span>Wind: <span id="currentWind">-- km/h</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <div class="detail-item">
+                                                <i class="fas fa-temperature-low text-info me-2"></i>
+                                                <span>Min: <span id="currentTempMin">--°C</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="detail-item">
+                                                <i class="fas fa-temperature-high text-danger me-2"></i>
+                                                <span>Max: <span id="currentTempMax">--°C</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 7-Day Forecast -->
+                <div class="card shadow-sm mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>7-Day Forecast</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="daily-forecast-container" id="dailyForecast">
+                            <!-- Daily forecasts will be populated here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Agricultural Recommendations -->
+                <div class="card shadow-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0"><i class="fas fa-seedling me-2"></i>Farming Recommendations</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="recommendations-list" id="farmingRecommendations">
+                            <!-- Recommendations will be populated here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+                    <button id="printWeather" class="btn btn-outline-primary">
+                        <i class="fas fa-print me-2"></i>Print Forecast
+                    </button>
+                    <button id="shareWeather" class="btn btn-outline-success">
+                        <i class="fas fa-share-alt me-2"></i>Share
+                    </button>
+                    <button id="resetWeather" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo me-2"></i>New Location
+                    </button>
+                </div>
+                
+                <!-- Market Selling Points -->
+                <div class="card shadow-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0"><i class="fas fa-store me-2"></i>Nearby Market Selling Points</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <p>Find the best places to sell your agricultural produce based on current market prices:</p>
+                            <div id="marketsMapContainer" style="height: 300px; border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                                <!-- Markets map will be loaded here -->
+                            </div>
+                        </div>
+                        <div id="marketsList">
+                            <!-- Markets list will be populated here dynamically -->
+                            <div class="text-center py-4" id="marketsLoading">
+                                <div class="spinner-border text-success" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Searching for nearby markets...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="helpModalLabel">How to Use the Weather Forecast Tool</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Finding Your Location</h5>
+                        <ol>
+                            <li>Search for a location by typing in the search box</li>
+                            <li>OR use the "Use My Location" button to automatically detect your position</li>
+                            <li>You can also click directly on the map to select a location</li>
+                            <li>Once a location is selected, the forecast will automatically load</li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Understanding the Forecast</h5>
+                        <ol>
+                            <li>Current conditions show the present weather at your location</li>
+                            <li>The 7-day forecast provides an outlook for the coming week</li>
+                            <li>Farming recommendations are customized based on weather patterns</li>
+                            <li>Use these insights to plan your agricultural activities</li>
+                        </ol>
+                    </div>
+                </div>
+                <hr>
+                <h5 class="mt-3">Weather-Based Farming Tips</h5>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Rain forecasted:</strong> Delay fertilizer application and pesticide spraying</li>
+                            <li><strong>Hot periods:</strong> Increase irrigation frequency and provide shade for sensitive crops</li>
+                            <li><strong>Cold snaps:</strong> Protect seedlings and temperature-sensitive plants</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Windy conditions:</strong> Postpone spraying activities and secure structures</li>
+                            <li><strong>High humidity:</strong> Monitor for fungal diseases and improve air circulation</li>
+                            <li><strong>Drought conditions:</strong> Implement water conservation strategies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for weather forecast -->
+<style>
+    /* Daily forecast styling */
+    .daily-forecast-container {
+        display: flex;
+        overflow-x: auto;
+        padding: 15px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-light) var(--light-color);
+    }
+    
+    .daily-forecast-container::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .daily-forecast-container::-webkit-scrollbar-thumb {
+        background-color: var(--primary-light);
+        border-radius: 4px;
+    }
+    
+    .daily-forecast-container::-webkit-scrollbar-track {
+        background-color: var(--light-color);
+    }
+    
+    .daily-forecast-item {
+        min-width: 120px;
+        text-align: center;
+        padding: 10px;
+        border-right: 1px solid var(--border-color);
+        flex: 1;
+    }
+    
+    .daily-forecast-item:last-child {
+        border-right: none;
+    }
+    
+    .forecast-day {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+    
+    .forecast-date {
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+    
+    .forecast-icon {
+        font-size: 2rem;
+        margin: 10px 0;
+    }
+    
+    .forecast-temp {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .forecast-temp-max {
+        font-weight: 600;
+    }
+    
+    .forecast-temp-min {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    /* Recommendations styling */
+    .recommendations-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .recommendation-item {
+        background-color: var(--light-color);
+        border-left: 4px solid var(--primary-color);
+        padding: 15px;
+        border-radius: 6px;
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .recommendation-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-right: 15px;
+        margin-top: 3px;
+    }
+    
+    /* Current weather details */
+    .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    
+    /* Map container */
+    #mapContainer {
+        border: 1px solid var(--border-color);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Weather icon containers */
+    .weather-icon-container {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    /* Markets styling */
+    .market-card {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+    
+    .market-card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transform: translateY(-3px);
+    }
+    
+    .market-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .market-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+    
+    .market-distance {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    .market-rating {
+        display: flex;
+        align-items: center;
+        color: #ff9800;
+        font-size: 0.9rem;
+    }
+    
+    .produce-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .produce-item {
+        background-color: var(--light-color);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        position: relative;
+    }
+    
+    .produce-name {
+        font-weight: 500;
+    }
+    
+    .produce-price {
+        display: inline-block;
+        margin-left: 5px;
+    }
+    
+    .price-trend {
+        margin-left: 5px;
+    }
+    
+    .trend-up {
+        color: var(--danger-color);
+    }
+    
+    .trend-down {
+        color: var(--success-color);
+    }
+    
+    .trend-stable {
+        color: var(--text-light);
+    }
+    
+    .best-price-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--danger-color);
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 5px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    .market-info-window {
+        padding: 5px;
+    }
+    
+    .view-market-btn {
+        text-align: center;
+        margin-top: 10px;
+    }
+    
+    /* Highlight effect for market cards when clicked from map */
+    @keyframes highlight-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+    }
+    
+    .market-card.highlight {
+        animation: highlight-pulse 1.5s ease-out;
+        border-color: var(--primary-color);
+    }
+</style>
+
+<!-- JavaScript for the weather forecast functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // DOM Elements - add null checks when accessing these later
+        const searchButton = document.getElementById('searchButton');
+        const searchLocation = document.getElementById('searchLocation');
+        const getCurrentLocationBtn = document.getElementById('getCurrentLocation');
+        const useExampleLocationBtn = document.getElementById('useExampleLocation');
+        const loadingPanel = document.getElementById('loadingPanel');
+        const weatherPanel = document.getElementById('weatherPanel');
+        const selectedLocationText = document.getElementById('selectedLocationText');
+        const coordinates = document.getElementById('coordinates');
+        const latitudeValue = document.getElementById('latitudeValue');
+        const longitudeValue = document.getElementById('longitudeValue');
+        const resetWeatherBtn = document.getElementById('resetWeather');
+        
+        // Check if elements exist
+        if (!loadingPanel || !weatherPanel) {
+            console.error("Critical elements missing from the DOM");
+            return;
+        }
+        
+        // Initialize with a hidden loading panel initially
+        loadingPanel.classList.add('d-none');
+        
+        // Global map variable
+        let map;
+        let marker;
+        
+        // Initialize the map
+        function initMap() {
+            console.log("Map initializing...");
+            try {
+                // Default center (India)
+                const defaultCenter = { lat: 20.5937, lng: 78.9629 };
+                
+                // Create the map
+                map = new google.maps.Map(document.getElementById('mapContainer'), {
+                    center: defaultCenter,
+                    zoom: 5,
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    fullscreenControl: false
+                });
+                
+                // Add click event to the map
+                map.addListener('click', function(event) {
+                    console.log("Map clicked at:", event.latLng.lat(), event.latLng.lng());
+                    const clickedLat = event.latLng.lat();
+                    const clickedLng = event.latLng.lng();
+                    placeMarker(event.latLng);
+                    getWeatherForLocation(clickedLat, clickedLng);
+                });
+                
+                console.log("Map initialized successfully");
+                
+                // Use example location to start
+                setTimeout(() => {
+                    const exampleLocation = { lat: 28.6139, lng: 77.2090 };
+                    placeMarker(new google.maps.LatLng(exampleLocation.lat, exampleLocation.lng));
+                    getWeatherForLocation(exampleLocation.lat, exampleLocation.lng);
+                }, 1000);
+                
+            } catch (error) {
+                console.error("Error initializing map:", error);
+            }
+        }
+        
+        // Function to place marker on the map
+        function placeMarker(location) {
+            console.log("Placing marker at:", location);
+            try {
+                if (marker) {
+                    marker.setMap(null);
+                }
+                
+                marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                });
+                
+                map.setCenter(location);
+                map.setZoom(10);
+                
+                // Update coordinates display
+                const lat = typeof location.lat === 'function' ? location.lat() : location.lat;
+                const lng = typeof location.lng === 'function' ? location.lng() : location.lng;
+                
+                latitudeValue.textContent = lat.toFixed(4);
+                longitudeValue.textContent = lng.toFixed(4);
+                coordinates.classList.remove('d-none');
+                
+                // Use reverse geocoding to get location name
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ location: location }, function(results, status) {
+                    console.log("Reverse geocoding result:", status, results);
+                    if (status === 'OK' && results[0]) {
+                        selectedLocationText.textContent = results[0].formatted_address;
+                    } else {
+                        selectedLocationText.textContent = `Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+                    }
+                });
+            } catch (error) {
+                console.error("Error placing marker:", error);
+            }
+        }
+        
+        // Function to get current location
+        getCurrentLocationBtn.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                loadingPanel.classList.remove('d-none');
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    
+                    // Place marker and get weather
+                    placeMarker(userLocation);
+                    getWeatherForLocation(userLocation.lat, userLocation.lng);
+                    
+                }, function(error) {
+                    alert('Error getting your location: ' + error.message);
+                    loadingPanel.classList.add('d-none');
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                });
+            } else {
+                alert('Geolocation is not supported by your browser');
+            }
+        });
+        
+        // Search button click event
+        searchButton.addEventListener('click', function() {
+            searchLocationFunc();
+        });
+        
+        // Enter key in search box
+        searchLocation.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                searchLocationFunc();
+            }
+        });
+        
+        // Search location function
+        function searchLocationFunc() {
+            console.log("Search function called with query:", searchLocation.value);
+            const searchQuery = searchLocation.value.trim();
+            if (searchQuery) {
+                loadingPanel.classList.remove('d-none');
+                
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address: searchQuery }, function(results, status) {
+                    console.log("Geocoding results:", status, results);
+                    if (status === 'OK' && results[0]) {
+                        const location = results[0].geometry.location;
+                        placeMarker(location);
+                        getWeatherForLocation(location.lat(), location.lng());
+                    } else {
+                        alert('Location not found: ' + status);
+                        loadingPanel.classList.add('d-none');
+                    }
+                });
+            }
+        }
+        
+        // Use example location
+        useExampleLocationBtn.addEventListener('click', function() {
+            console.log("Using example location");
+            // Example location (New Delhi)
+            const exampleLocation = { lat: 28.6139, lng: 77.2090 };
+            placeMarker(new google.maps.LatLng(exampleLocation.lat, exampleLocation.lng));
+            getWeatherForLocation(exampleLocation.lat, exampleLocation.lng);
+        });
+        
+        // Function to get weather data for a location
+        function getWeatherForLocation(lat, lng) {
+            console.log("Fetching weather data for:", lat, lng);
+            
+            // Ensure we have numeric coordinates
+            const latitude = typeof lat === 'function' ? lat() : lat;
+            const longitude = typeof lng === 'function' ? lng() : lng;
+            
+            // Add null checks before accessing classList
+            if (!loadingPanel || !weatherPanel) {
+                console.error("Loading or weather panel elements not found");
+                return;
+            }
+            
+            loadingPanel.classList.remove('d-none');
+            weatherPanel.classList.add('d-none');
+            
+            // Fetch weather data from our API
+            fetch('/api/weather_forecast', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    latitude: latitude,
+                    longitude: longitude
+                })
+            })
+            .then(response => {
+                console.log("Weather API response status:", response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("Weather data received:", data);
+                if (data.status === 'success') {
+                    displayWeatherData(data.data);
+                    
+                    // Add null checks before accessing classList
+                    if (loadingPanel) loadingPanel.classList.add('d-none');
+                    if (weatherPanel) weatherPanel.classList.remove('d-none');
+                    
+                    // After weather loads, load market data
+                    loadNearbyMarkets(latitude, longitude);
+                } else {
+                    console.error("API error:", data.message, data.error);
+                    throw new Error(data.message || 'Failed to fetch weather data');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+                
+                // Use fallback mock data when API fails
+                console.log("Using fallback weather data");
+                const fallbackData = getFallbackWeatherData(latitude, longitude);
+                displayWeatherData(fallbackData);
+                
+                if (loadingPanel) loadingPanel.classList.add('d-none');
+                if (weatherPanel) weatherPanel.classList.remove('d-none');
+                
+                // After weather loads, load market data
+                loadNearbyMarkets(latitude, longitude);
+                
+                // Show a small notification about using offline data
+                const weatherPanel = document.getElementById('weatherPanel');
+                if (weatherPanel) {
+                    const offlineAlert = document.createElement('div');
+                    offlineAlert.className = 'alert alert-warning alert-dismissible fade show';
+                    offlineAlert.innerHTML = `
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Using offline weather data. Some information may not be accurate.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    weatherPanel.prepend(offlineAlert);
+                }
+            });
+        }
+        
+        // Fallback weather data function
+        function getFallbackWeatherData(latitude, longitude) {
+            const currentDate = new Date();
+            const dailyData = [];
+            
+            // Generate 7 days of fallback weather data
+            for (let i = 0; i < 7; i++) {
+                dailyData.push({
+                    "dt": Math.floor(currentDate.getTime() / 1000) + (i * 86400),
+                    "temp": {
+                        "day": 25 + Math.floor(Math.random() * 10) - 5,
+                        "min": 18 + Math.floor(Math.random() * 6) - 3,
+                        "max": 28 + Math.floor(Math.random() * 4) - 2
+                    },
+                    "humidity": 65 + Math.floor(Math.random() * 30) - 15,
+                    "wind_speed": 5.2 + (Math.random() * 4) - 2,
+                    "weather": [
+                        {
+                            "main": ["Clear", "Clouds", "Rain"][Math.floor(Math.random() * 3)],
+                            "description": ["clear sky", "scattered clouds", "light rain"][Math.floor(Math.random() * 3)],
+                            "icon": ["01d", "02d", "10d"][Math.floor(Math.random() * 3)]
+                        }
+                    ]
+                });
+            }
+            
+            return {
+                "current": {
+                    "dt": Math.floor(currentDate.getTime() / 1000),
+                    "temp": 25,
+                    "humidity": 65,
+                    "wind_speed": 5.2,
+                    "weather": [{"main": "Clear", "description": "clear sky", "icon": "01d"}]
+                },
+                "daily": dailyData,
+                "location": {
+                    "name": "Offline Mode",
+                    "country": ""
+                },
+                "farming_recommendations": [
+                    "Using offline mode. Please check online for accurate farming recommendations.",
+                    "Ensure regular monitoring of your crops' water needs.",
+                    "Consider implementing integrated pest management practices."
+                ]
+            };
+        }
+        
+        // Display weather data in the UI
+        function displayWeatherData(weatherData) {
+            // Set location name
+            document.getElementById('locationName').textContent = weatherData.location.name;
+            
+            // Set current weather
+            document.getElementById('currentTemp').textContent = `${Math.round(weatherData.current.temp)}°C`;
+            document.getElementById('weatherDescription').textContent = weatherData.current.weather[0].description;
+            document.getElementById('currentHumidity').textContent = `${weatherData.current.humidity}%`;
+            document.getElementById('currentWind').textContent = `${weatherData.current.wind_speed} km/h`;
+            
+            // Get min/max from daily forecast for today
+            if (weatherData.daily && weatherData.daily.length > 0) {
+                document.getElementById('currentTempMin').textContent = `${Math.round(weatherData.daily[0].temp.min)}°C`;
+                document.getElementById('currentTempMax').textContent = `${Math.round(weatherData.daily[0].temp.max)}°C`;
+            }
+            
+            // Set weather icon
+            const weatherIcon = getWeatherIcon(weatherData.current.weather[0].icon);
+            document.getElementById('currentWeatherIcon').innerHTML = weatherIcon;
+            
+            // Display daily forecast
+            displayDailyForecast(weatherData.daily);
+            
+            // Display farming recommendations
+            displayRecommendations(weatherData.farming_recommendations);
+        }
+        
+        // Display daily forecast
+        function displayDailyForecast(dailyData) {
+            const dailyForecastContainer = document.getElementById('dailyForecast');
+            dailyForecastContainer.innerHTML = '';
+            
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            
+            dailyData.forEach((day, index) => {
+                const date = new Date(day.dt * 1000);
+                const dayName = days[date.getDay()];
+                const dateString = `${date.getDate()}/${date.getMonth() + 1}`;
+                
+                const dailyItem = document.createElement('div');
+                dailyItem.className = 'daily-forecast-item';
+                
+                dailyItem.innerHTML = `
+                    <div class="forecast-day">${index === 0 ? 'Today' : dayName}</div>
+                    <div class="forecast-date">${dateString}</div>
+                    <div class="forecast-icon">${getWeatherIcon(day.weather[0].icon)}</div>
+                    <div class="forecast-description">${day.weather[0].description}</div>
+                    <div class="forecast-temp">
+                        <span class="forecast-temp-max">${Math.round(day.temp.max)}°</span>
+                        <span class="forecast-temp-min">${Math.round(day.temp.min)}°</span>
+                    </div>
+                    <div class="forecast-details">
+                        <small>Humidity: ${day.humidity}%</small>
+                    </div>
+                `;
+                
+                dailyForecastContainer.appendChild(dailyItem);
+            });
+        }
+        
+        // Display farming recommendations
+        function displayRecommendations(recommendations) {
+            const recommendationsContainer = document.getElementById('farmingRecommendations');
+            recommendationsContainer.innerHTML = '';
+            
+            if (!recommendations || recommendations.length === 0) {
+                recommendationsContainer.innerHTML = '<p>No specific recommendations available for the current forecast.</p>';
+                return;
+            }
+            
+            recommendations.forEach(recommendation => {
+                const recommendationItem = document.createElement('div');
+                recommendationItem.className = 'recommendation-item';
+                
+                // Determine icon based on recommendation content
+                let icon = 'seedling';
+                if (recommendation.toLowerCase().includes('rain')) icon = 'cloud-rain';
+                if (recommendation.toLowerCase().includes('temperature')) icon = 'temperature-high';
+                if (recommendation.toLowerCase().includes('wind')) icon = 'wind';
+                if (recommendation.toLowerCase().includes('irrigation')) icon = 'tint';
+                
+                recommendationItem.innerHTML = `
+                    <div class="recommendation-icon">
+                        <i class="fas fa-${icon}"></i>
+                    </div>
+                    <div class="recommendation-text">
+                        ${recommendation}
+                    </div>
+                `;
+                
+                recommendationsContainer.appendChild(recommendationItem);
+            });
+        }
+        
+        // Helper function to get weather icon HTML
+        function getWeatherIcon(iconCode) {
+            const iconMap = {
+                '01d': '<i class="fas fa-sun text-warning"></i>',
+                '01n': '<i class="fas fa-moon text-secondary"></i>',
+                '02d': '<i class="fas fa-cloud-sun text-warning"></i>',
+                '02n': '<i class="fas fa-cloud-moon text-secondary"></i>',
+                '03d': '<i class="fas fa-cloud text-secondary"></i>',
+                '03n': '<i class="fas fa-cloud text-secondary"></i>',
+                '04d': '<i class="fas fa-cloud text-secondary"></i>',
+                '04n': '<i class="fas fa-cloud text-secondary"></i>',
+                '09d': '<i class="fas fa-cloud-rain text-info"></i>',
+                '09n': '<i class="fas fa-cloud-rain text-info"></i>',
+                '10d': '<i class="fas fa-cloud-sun-rain text-info"></i>',
+                '10n': '<i class="fas fa-cloud-moon-rain text-info"></i>',
+                '11d': '<i class="fas fa-bolt text-warning"></i>',
+                '11n': '<i class="fas fa-bolt text-warning"></i>',
+                '13d': '<i class="fas fa-snowflake text-info"></i>',
+                '13n': '<i class="fas fa-snowflake text-info"></i>',
+                '50d': '<i class="fas fa-smog text-secondary"></i>',
+                '50n': '<i class="fas fa-smog text-secondary"></i>'
+            };
+            
+            return iconMap[iconCode] || '<i class="fas fa-cloud text-secondary"></i>';
+        }
+        
+        // Reset button
+        resetWeatherBtn.addEventListener('click', function() {
+            // Clear marker
+            if (marker) {
+                marker.setMap(null);
+                marker = null;
+            }
+            
+            // Reset map view
+            map.setCenter({ lat: 20.5937, lng: 78.9629 });
+            map.setZoom(5);
+            
+            // Hide weather panel
+            weatherPanel.classList.add('d-none');
+            
+            // Reset location text
+            selectedLocationText.textContent = 'No location selected';
+            coordinates.classList.add('d-none');
+            
+            // Clear search input
+            searchLocation.value = '';
+        });
+        
+        // Print button
+        document.getElementById('printWeather').addEventListener('click', function() {
+            window.print();
+        });
+        
+        // Share button
+        document.getElementById('shareWeather').addEventListener('click', function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Weather Forecast',
+                    text: `Weather forecast for ${document.getElementById('locationName').textContent}`,
+                    url: window.location.href
+                })
+                .catch(error => console.log('Error sharing:', error));
+            } else {
+                alert('Sharing is not supported on this browser. You can copy the URL from the address bar.');
+            }
+        });
+        
+        // Global variable for markets map
+        let marketsMap;
+        let marketMarkers = [];
+        
+        // Function to fetch and display nearby markets
+        function loadNearbyMarkets(lat, lng) {
+            console.log("Loading nearby markets for:", lat, lng);
+            
+            // Make sure marketsLoading element exists before accessing it
+            const marketsLoadingElement = document.getElementById('marketsLoading');
+            if (marketsLoadingElement) {
+                marketsLoadingElement.classList.remove('d-none');
+            }
+            
+            // Check if marketsMapContainer exists
+            const marketsMapContainer = document.getElementById('marketsMapContainer');
+            if (!marketsMapContainer) {
+                console.error("Markets map container not found!");
+                return;
+            }
+            
+            try {
+                // Initialize the markets map
+                marketsMap = new google.maps.Map(marketsMapContainer, {
+                    center: { lat: parseFloat(lat), lng: parseFloat(lng) },
+                    zoom: 11,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    fullscreenControl: true
+                });
+                
+                // Add user location marker
+                const userMarker = new google.maps.Marker({
+                    position: { lat: parseFloat(lat), lng: parseFloat(lng) },
+                    map: marketsMap,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: "#4285F4",
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                        strokeColor: "#FFFFFF"
+                    },
+                    title: "Your Location"
+                });
+            } catch (error) {
+                console.error("Error initializing markets map:", error);
+                // Continue anyway to fetch market data
+            }
+            
+            // Fetch market data
+            fetch('/api/nearby_selling_points', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    latitude: parseFloat(lat),
+                    longitude: parseFloat(lng),
+                    radius: 10000 // 10km
+                })
+            })
+            .then(response => {
+                console.log("Markets API response status:", response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("Markets data received:", data);
+                if (data.status === 'success') {
+                    displayMarkets(data.data);
+                    displayMarketSummary(data.summary);
+                    if (marketsLoadingElement) {
+                        marketsLoadingElement.classList.add('d-none');
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to fetch market data');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching market data:', error);
+                const marketsListElement = document.getElementById('marketsList');
+                if (marketsListElement) {
+                    marketsListElement.innerHTML = 
+                        `<div class="alert alert-danger">Error loading market data: ${error.message}</div>`;
+                }
+                if (marketsLoadingElement) {
+                    marketsLoadingElement.classList.add('d-none');
+                }
+            });
+        }
+        
+        // Function to display market summary
+        function displayMarketSummary(summary) {
+            if (!summary) return;
+            
+            const statusElement = document.getElementById('marketStatusPanel');
+            const trendsElement = document.getElementById('marketTrendsPanel');
+            
+            if (statusElement) {
+                // Format and display market status
+                const trendClass = summary.overall_trend === 'rising' ? 'text-success' : 
+                                  (summary.overall_trend === 'falling' ? 'text-danger' : 'text-warning');
+                                  
+                const trendSign = summary.overall_trend === 'rising' ? '+' : 
+                                 (summary.overall_trend === 'falling' ? '-' : '');
+                                 
+                const priceRange = summary.price_range || { min: 0, max: 0, avg: 0, unit: '₹/kg' };
+                
+                statusElement.innerHTML = `
+                    <div class="trend-indicator ${trendClass}">
+                        ${trendSign}${priceRange.avg} ${priceRange.unit}
+                    </div>
+                    <div class="market-status-detail">${priceRange.unit}</div>
+                    <div class="mt-3">Current Market Price</div>
+                    <div class="price-value">${priceRange.avg} ${priceRange.unit.split('/')[0]}</div>
+                `;
+            }
+            
+            if (trendsElement) {
+                // Format and display market trends
+                const trendClass = summary.overall_trend === 'rising' ? 'text-success' : 
+                                  (summary.overall_trend === 'falling' ? 'text-danger' : 'text-warning');
+                                  
+                const trendSign = summary.overall_trend === 'rising' ? '+' : 
+                                 (summary.overall_trend === 'falling' ? '-' : '');
+                                 
+                const priceRange = summary.price_range || { min: 0, max: 0, avg: 0, unit: '₹/kg' };
+                
+                trendsElement.innerHTML = `
+                    <div class="trend-indicator ${trendClass}">
+                        ${trendSign}${priceRange.avg} ${priceRange.unit}
+                    </div>
+                    <div class="market-trend-detail">${priceRange.unit}</div>
+                    <div class="mt-3">Current Market Price</div>
+                    <div class="price-value">${priceRange.avg} ${priceRange.unit.split('/')[0]}</div>
+                `;
+            }
+            
+            // Display recommendation if available
+            if (summary.recommendation) {
+                const recommendationElement = document.getElementById('marketRecommendation');
+                if (recommendationElement) {
+                    recommendationElement.innerHTML = `
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            ${summary.recommendation}
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Function to display markets
+        function displayMarkets(markets) {
+            const marketsListContainer = document.getElementById('marketsList');
+            marketsListContainer.innerHTML = '';
+            
+            if (!markets || markets.length === 0) {
+                marketsListContainer.innerHTML = '<p class="text-center">No markets found in your area.</p>';
+                return;
+            }
+            
+            // Clear existing markers
+            marketMarkers.forEach(marker => marker.setMap(null));
+            marketMarkers = [];
+            
+            // Create bounds object to fit all markers
+            const bounds = new google.maps.LatLngBounds();
+            
+            // Add user location to bounds
+            bounds.extend(marketsMap.getCenter());
+            
+            // Sort markets by distance
+            markets.sort((a, b) => a.distance - b.distance);
+            
+            // Also update the market status and trends panels with the first market's data
+            if (markets.length > 0 && markets[0].market_status) {
+                const statusData = markets[0].market_status;
+                const trendsData = markets[0].market_trends || statusData;
+                
+                const statusElement = document.getElementById('marketStatusPanel');
+                const trendsElement = document.getElementById('marketTrendsPanel');
+                
+                if (statusElement && statusData) {
+                    const trendClass = statusData.trend === 'up' ? 'text-success' : 
+                                      (statusData.trend === 'down' ? 'text-danger' : 'text-warning');
+                                      
+                    const trendSign = statusData.trend === 'up' ? '+' : 
+                                     (statusData.trend === 'down' ? '-' : '');
+                                     
+                    statusElement.innerHTML = `
+                        <div class="trend-indicator ${trendClass}">
+                            ${trendSign}${statusData.change_percent || 0}%
+                        </div>
+                        <div class="market-status-detail">${statusData.unit}</div>
+                        <div class="mt-3">Current Market Price</div>
+                        <div class="price-value">${statusData.current_price} ₹</div>
+                    `;
+                }
+                
+                if (trendsElement && trendsData) {
+                    const trendClass = trendsData.forecast === 'rising' ? 'text-success' : 
+                                      (trendsData.forecast === 'falling' ? 'text-danger' : 'text-warning');
+                                      
+                    const trendSign = trendsData.forecast === 'rising' ? '+' : 
+                                     (trendsData.forecast === 'falling' ? '-' : '');
+                                     
+                    trendsElement.innerHTML = `
+                        <div class="trend-indicator ${trendClass}">
+                            ${trendSign}${trendsData.change_percent || 0}%
+                        </div>
+                        <div class="market-trend-detail">${trendsData.unit}</div>
+                        <div class="mt-3">Current Market Price</div>
+                        <div class="price-value">${trendsData.current_price} ₹</div>
+                    `;
+                }
+            }
+            
+            // Process each market
+            markets.forEach(market => {
+                // Create marker
+                const marker = new google.maps.Marker({
+                    position: market.location,
+                    map: marketsMap,
+                    title: market.name,
+                    animation: google.maps.Animation.DROP,
+                    icon: {
+                        url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                    }
+                });
+                
+                // Extend bounds
+                bounds.extend(marker.getPosition());
+                
+                // Create info window content
+                const bestPriceItems = market.produce.filter(p => p.best_price).map(p => p.name);
+                const infoContent = `
+                    <div class="market-info-window">
+                        <h5>${market.name}</h5>
+                        <p><i class="fas fa-road me-1"></i> ${market.distance} km away</p>
+                        ${bestPriceItems.length > 0 ? 
+                            `<p><i class="fas fa-tag me-1 text-success"></i> Best price for: ${bestPriceItems.join(', ')}</p>` : 
+                            ''}
+                    </div>
+                `;
+                
+                // Create info window
+                const infoWindow = new google.maps.InfoWindow({
+                    content: infoContent
+                });
+                
+                // Add click listener to marker
+                marker.addListener('click', () => {
+                    // Close all other info windows
+                    marketMarkers.forEach(m => m.infoWindow.close());
+                    
+                    // Open this info window
+                    infoWindow.open(marketsMap, marker);
+                    
+                    // Scroll to the market in the list
+                    const marketElement = document.getElementById(`market-${market.id}`);
+                    if (marketElement) {
+                        marketElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        marketElement.classList.add('highlight');
+                        setTimeout(() => marketElement.classList.remove('highlight'), 1500);
+                    }
+                });
+                
+                // Store info window with marker
+                marker.infoWindow = infoWindow;
+                marketMarkers.push(marker);
+                
+                // Create market card
+                const marketCard = document.createElement('div');
+                marketCard.className = 'market-card';
+                marketCard.id = `market-${market.id}`;
+                
+                // Rating stars
+                const stars = Array(5).fill().map((_, i) => 
+                    i < Math.floor(market.rating) ? 
+                        '<i class="fas fa-star"></i>' : 
+                        (i < market.rating ? '<i class="fas fa-star-half-alt"></i>' : '<i class="far fa-star"></i>')
+                ).join('');
+                
+                // Create produce items with trend icons
+                const produceItems = market.produce.map(produce => {
+                    const trendIcon = produce.trend === 'up' ? 
+                        '<i class="fas fa-arrow-up trend-up"></i>' : 
+                        (produce.trend === 'down' ? 
+                            '<i class="fas fa-arrow-down trend-down"></i>' : 
+                            '<i class="fas fa-equals trend-stable"></i>');
+                    
+                    return `
+                        <div class="produce-item">
+                            <span class="produce-name">${produce.name}</span>
+                            <span class="produce-price">₹${produce.price}/${produce.unit}</span>
+                            <span class="price-trend">${trendIcon}</span>
+                            ${produce.best_price ? '<span class="best-price-badge">Best Price</span>' : ''}
+                        </div>
+                    `;
+                }).join('');
+                
+                marketCard.innerHTML = `
+                    <div class="market-header">
+                        <h4 class="market-name">${market.name}</h4>
+                        <span class="market-distance"><i class="fas fa-map-marker-alt me-1"></i>${market.distance} km</span>
+                    </div>
+                    <div class="market-rating">
+                        ${stars} <span class="ms-1">${market.rating.toFixed(1)}</span>
+                    </div>
+                    <div class="produce-list">
+                        ${produceItems}
+                    </div>
+                    <div class="view-market-btn">
+                        <button class="btn btn-sm btn-outline-success view-on-map-btn" data-market-id="${market.id}">
+                            <i class="fas fa-map-marked-alt me-1"></i>View on Map
+                        </button>
+                    </div>
+                `;
+                
+                marketsListContainer.appendChild(marketCard);
+                
+                // Add click event for view on map button
+                marketCard.querySelector('.view-on-map-btn').addEventListener('click', () => {
+                    // Center map on market
+                    marketsMap.setCenter(market.location);
+                    marketsMap.setZoom(15);
+                    
+                    // Trigger marker click
+                    google.maps.event.trigger(marker, 'click');
+                });
+            });
+            
+            // Fit map to bounds
+            marketsMap.fitBounds(bounds);
+            
+            // Add a legend to the map
+            const legend = document.createElement('div');
+            legend.className = 'map-legend';
+            legend.innerHTML = `
+                <div style="background-color: white; padding: 10px; margin: 10px; border-radius: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); max-width: 200px;">
+                    <div style="margin-bottom: 5px;"><img src="https://maps.google.com/mapfiles/ms/icons/blue-dot.png" height="16"> Your Location</div>
+                    <div><img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" height="16"> Market Locations</div>
+                </div>
+            `;
+            marketsMap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+        }
+        
+        // Initialize map when the Google Maps API is loaded
+        window.initMap = initMap;
+        
+        // Load Google Maps API
+        function loadGoogleMapsAPI() {
+            console.log("Loading Google Maps API...");
+            const script = document.createElement('script');
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD2BP1-noOR5ddbxmoqM8t3ioWUNS25pMU&libraries=places&callback=initMap";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+        
+        // Load Google Maps API
+        loadGoogleMapsAPI();
+        
+        // Self-test function to debug
+        setTimeout(function() {
+            console.log("Running self-test...");
+            
+            // Test direct API calls without the map
+            fetch('/api/weather_forecast', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    latitude: 28.6139,
+                    longitude: 77.2090
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Self-test weather API response:", data);
+            })
+            .catch(error => {
+                console.error("Self-test weather API error:", error);
+            });
+            
+            // Test markets API
+            fetch('/api/nearby_selling_points', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    latitude: 28.6139,
+                    longitude: 77.2090
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Self-test markets API response:", data);
+            })
+            .catch(error => {
+                console.error("Self-test markets API error:", error);
+            });
+        }, 3000);
+    });
+</script>
+{% endblock %} 

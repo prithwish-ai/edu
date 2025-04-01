@@ -1,0 +1,430 @@
+{% extends "base.html" %}
+
+{% block title %}ITI & Agricultural Education - Home{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/static/images/agriculture-bg.jpg');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 5rem 0;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .feature-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .testimonial-section {
+        background-color: #f8f9fa;
+        padding: 4rem 0;
+    }
+    
+    .testimonial-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        padding: 1.5rem;
+        height: 100%;
+    }
+    
+    .testimonial-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1rem;
+    }
+    
+    .stats-item {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .stats-label {
+        color: var(--text-color);
+        font-size: 1rem;
+    }
+    
+    .cta-section {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+    }
+    
+    .services-section {
+        padding: 4rem 0;
+    }
+    
+    .service-pill {
+        display: inline-block;
+        background-color: #f0f0f0;
+        border-radius: 30px;
+        padding: 0.5rem 1rem;
+        margin: 0.3rem;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .service-pill:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .tabs-container {
+        margin-top: 2rem;
+    }
+    
+    .tab-content {
+        padding: 1.5rem;
+        background: white;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1 class="hero-title">Revolutionizing Agricultural Education</h1>
+        <p class="hero-subtitle">Empowering farmers with advanced AI technology and personalized learning experiences for sustainable and productive farming.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">Start Learning</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Our Features</h2>
+            <p class="section-subtitle">Cutting-edge tools and resources for agricultural education</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI-Powered Learning</h3>
+                    <p>Personalized conversations and adaptive learning paths based on your interests and progress.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Plant Disease Detection</h3>
+                    <p>Instantly identify plant diseases from images and get treatment recommendations.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Market Data Analysis</h3>
+                    <p>Access real-time crop prices, market trends, and price predictions for better decision-making.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>Interactive Quizzes</h3>
+                    <p>Test your knowledge with custom quizzes that adapt to your learning level.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Multilingual Support</h3>
+                    <p>Learn in your preferred language with our translation capabilities.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Comprehensive Study Materials</h3>
+                    <p>Access detailed learning resources including videos, summaries, and practice exercises.</p>
+                </div>
+            </div>
+            
+            <!-- Additional Feature 7 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Admission Management</h3>
+                    <p>Streamlined application process for agricultural education programs and courses.</p>
+                </div>
+            </div>
+            
+            <!-- Additional Feature 8 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Course Finder</h3>
+                    <p>Find the perfect courses matched to your interests, location, and career goals.</p>
+                </div>
+            </div>
+            
+            <!-- Additional Feature 9 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3>Exam Preparation</h3>
+                    <p>Targeted materials and practice tests for agricultural certification exams.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Services Section -->
+<section class="services-section bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Comprehensive Services</h2>
+            <p class="section-subtitle">Everything you need for agricultural education and success</p>
+        </div>
+        
+        <div class="text-center mb-4">
+            <a href="#" class="service-pill">Mentorship Programs</a>
+            <a href="#" class="service-pill">Scholarship Management</a>
+            <a href="#" class="service-pill">Industry Connections</a>
+            <a href="#" class="service-pill">Market Prediction</a>
+            <a href="#" class="service-pill">Practical Assessments</a>
+            <a href="#" class="service-pill">Progress Tracking</a>
+            <a href="#" class="service-pill">Voice Management</a>
+            <a href="#" class="service-pill">Trade Comparison</a>
+            <a href="#" class="service-pill">Task Management</a>
+        </div>
+        
+        <div class="tabs-container">
+            <ul class="nav nav-tabs" id="servicesTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="mentorship-tab" data-bs-toggle="tab" data-bs-target="#mentorship-content" type="button" role="tab">Mentorship</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="market-tab" data-bs-toggle="tab" data-bs-target="#market-content" type="button" role="tab">Market Analysis</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="industry-tab" data-bs-toggle="tab" data-bs-target="#industry-content" type="button" role="tab">Industry</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="scholarships-tab" data-bs-toggle="tab" data-bs-target="#scholarships-content" type="button" role="tab">Scholarships</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="servicesTabsContent">
+                <div class="tab-pane fade show active" id="mentorship-content" role="tabpanel">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h3>Personalized Mentorship Programs</h3>
+                            <p>Connect with experienced agricultural professionals who can guide your learning journey and career path. Our mentors provide personalized advice, feedback on your progress, and real-world insights.</p>
+                            <a href="{{ url_for('mentorship') }}" class="btn btn-outline-primary">Find a Mentor</a>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="https://images.unsplash.com/photo-1591628001888-76cc02e0c626" class="img-fluid rounded" alt="Mentorship">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="market-content" role="tabpanel">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h3>Advanced Market Prediction</h3>
+                            <p>Make informed decisions with our AI-powered market analysis tools. Get price predictions, market trends, and optimization suggestions for your crops to maximize profitability.</p>
+                            <a href="#" class="btn btn-outline-primary">Explore Market Tools</a>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="https://images.unsplash.com/photo-1611095973763-414019e72400" class="img-fluid rounded" alt="Market Analysis">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="industry-content" role="tabpanel">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h3>Industry Connections</h3>
+                            <p>Bridge the gap between education and employment with our industry connection services. Access job opportunities, internships, and partnerships with leading agricultural companies.</p>
+                            <a href="{{ url_for('industry_connections') }}" class="btn btn-outline-primary">Connect with Industry</a>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="https://images.unsplash.com/photo-1593113598332-cd59a93f9724" class="img-fluid rounded" alt="Industry Connections">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="scholarships-content" role="tabpanel">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h3>Scholarship Management</h3>
+                            <p>Discover and apply for agricultural scholarships tailored to your background and goals. Our system helps you track application deadlines, requirements, and status updates.</p>
+                            <a href="{{ url_for('scholarships') }}" class="btn btn-outline-primary">Find Scholarships</a>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173" class="img-fluid rounded" alt="Scholarships">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <div class="stats-number">10,000+</div>
+                    <div class="stats-label">Farmers Educated</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <div class="stats-number">50+</div>
+                    <div class="stats-label">Agricultural Topics</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <div class="stats-number">95%</div>
+                    <div class="stats-label">Success Rate</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <div class="stats-number">24/7</div>
+                    <div class="stats-label">Availability</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonial-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">What Farmers Say</h2>
+            <p class="section-subtitle">Real success stories from our community</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Testimonial 1 -->
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="testimonial-avatar">
+                        <div>
+                            <h5 class="mb-0">Rajesh Kumar</h5>
+                            <small class="text-muted">Rice Farmer, Bihar</small>
+                        </div>
+                    </div>
+                    <p>"The plant disease detection feature saved my entire rice crop last season. I identified the disease early and applied the recommended treatment."</p>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="testimonial-avatar">
+                        <div>
+                            <h5 class="mb-0">Anita Singh</h5>
+                            <small class="text-muted">Vegetable Grower, Punjab</small>
+                        </div>
+                    </div>
+                    <p>"The market price predictions helped me plan my harvest times better. I was able to increase my profit by 30% by selling at the right time."</p>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://randomuser.me/api/portraits/men/68.jpg" alt="User" class="testimonial-avatar">
+                        <div>
+                            <h5 class="mb-0">Mohammed Ali</h5>
+                            <small class="text-muted">Cotton Farmer, Gujarat</small>
+                        </div>
+                    </div>
+                    <p>"I learned so much about sustainable farming practices that I was able to reduce my water usage by 40% while maintaining the same yield."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="mb-4">Ready to Transform Your Agricultural Knowledge?</h2>
+        <p class="mb-4">Join thousands of farmers who are using our AI assistant to improve their farming practices.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-light btn-lg">Get Started Now</a>
+    </div>
+</section>
+{% endblock %} 

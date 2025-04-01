@@ -1,0 +1,221 @@
+{
+  "Fitter": {
+    "duration": "1 year",
+    "fees": {
+      "government": "₹5,000 - ₹8,000 per year",
+      "private": "₹15,000 - ₹25,000 per year"
+    },
+    "job_prospects": {
+      "demand_rating": 4.2,
+      "sectors": [
+        "Manufacturing",
+        "Automobile",
+        "Railways",
+        "Construction"
+      ],
+      "roles": [
+        "Maintenance Fitter",
+        "Assembly Fitter",
+        "Production Fitter"
+      ]
+    },
+    "salary": {
+      "entry_level": "₹12,000 - ₹18,000 per month",
+      "experienced": "₹20,000 - ₹35,000 per month",
+      "highly_skilled": "₹35,000 - ₹50,000 per month"
+    },
+    "skills_gained": [
+      "Blueprint reading",
+      "Precision measurement",
+      "Hand tools operation",
+      "Assembly techniques",
+      "Troubleshooting"
+    ],
+    "certification_exams": [
+      "NCVT (National Council for Vocational Training)",
+      "SCVT (State Council for Vocational Training)"
+    ],
+    "advancement_paths": [
+      "Supervisor",
+      "Foreman",
+      "Quality Inspector",
+      "Technical Trainer"
+    ]
+  },
+  "Electrician": {
+    "duration": "2 years",
+    "fees": {
+      "government": "₹5,000 - ₹10,000 per year",
+      "private": "₹20,000 - ₹30,000 per year"
+    },
+    "job_prospects": {
+      "demand_rating": 4.5,
+      "sectors": [
+        "Power",
+        "Manufacturing",
+        "Construction",
+        "Railways",
+        "Telecom"
+      ],
+      "roles": [
+        "Maintenance Electrician",
+        "Wiring Technician",
+        "Panel Operator"
+      ]
+    },
+    "salary": {
+      "entry_level": "₹15,000 - ₹20,000 per month",
+      "experienced": "₹25,000 - ₹40,000 per month",
+      "highly_skilled": "₹40,000 - ₹60,000 per month"
+    },
+    "skills_gained": [
+      "Electrical wiring",
+      "Circuit design",
+      "Troubleshooting",
+      "Safety protocols",
+      "Power distribution"
+    ],
+    "certification_exams": [
+      "NCVT (National Council for Vocational Training)",
+      "SCVT (State Council for Vocational Training)",
+      "Electrical License Exam"
+    ],
+    "advancement_paths": [
+      "Supervisor",
+      "Contractor",
+      "Electrical Inspector",
+      "Technical Trainer"
+    ]
+  },
+  "Mechanic (Motor Vehicle)": {
+    "duration": "2 years",
+    "fees": {
+      "government": "₹5,000 - ₹10,000 per year",
+      "private": "₹20,000 - ₹35,000 per year"
+    },
+    "job_prospects": {
+      "demand_rating": 4.3,
+      "sectors": [
+        "Automobile",
+        "Transport",
+        "Service Stations",
+        "Manufacturing"
+      ],
+      "roles": [
+        "Automobile Mechanic",
+        "Service Technician",
+        "Diagnostic Technician"
+      ]
+    },
+    "salary": {
+      "entry_level": "₹12,000 - ₹20,000 per month",
+      "experienced": "₹25,000 - ₹40,000 per month",
+      "highly_skilled": "₹40,000 - ₹60,000 per month"
+    },
+    "skills_gained": [
+      "Engine repair",
+      "Diagnostics",
+      "Electrical systems",
+      "Transmission systems",
+      "Preventive maintenance"
+    ],
+    "certification_exams": [
+      "NCVT (National Council for Vocational Training)",
+      "SCVT (State Council for Vocational Training)",
+      "ASE (Automotive Service Excellence) equivalent"
+    ],
+    "advancement_paths": [
+      "Service Manager",
+      "Workshop Owner",
+      "Technical Specialist",
+      "Automotive Trainer"
+    ]
+  },
+  "COPA (Computer Operator & Programming Assistant)": {
+    "duration": "1 year",
+    "fees": {
+      "government": "₹5,000 - ₹8,000 per year",
+      "private": "₹15,000 - ₹25,000 per year"
+    },
+    "job_prospects": {
+      "demand_rating": 4.0,
+      "sectors": [
+        "IT",
+        "Office Administration",
+        "Education",
+        "Retail"
+      ],
+      "roles": [
+        "Computer Operator",
+        "Data Entry Operator",
+        "Office Assistant"
+      ]
+    },
+    "salary": {
+      "entry_level": "₹10,000 - ₹18,000 per month",
+      "experienced": "₹20,000 - ₹30,000 per month",
+      "highly_skilled": "₹30,000 - ₹45,000 per month"
+    },
+    "skills_gained": [
+      "Office software",
+      "Basic programming",
+      "Data management",
+      "Computer hardware",
+      "Troubleshooting"
+    ],
+    "certification_exams": [
+      "NCVT (National Council for Vocational Training)",
+      "SCVT (State Council for Vocational Training)",
+      "Microsoft Office Specialist"
+    ],
+    "advancement_paths": [
+      "Office Administrator",
+      "Technical Support",
+      "Junior Programmer",
+      "IT Coordinator"
+    ]
+  },
+  "Turner": {
+    "duration": "1 year",
+    "fees": {
+      "government": "₹5,000 - ₹8,000 per year",
+      "private": "₹15,000 - ₹25,000 per year"
+    },
+    "job_prospects": {
+      "demand_rating": 4.0,
+      "sectors": [
+        "Manufacturing",
+        "Tool Rooms",
+        "Production Units",
+        "Automobile"
+      ],
+      "roles": [
+        "Turner",
+        "Lathe Operator",
+        "CNC Operator"
+      ]
+    },
+    "salary": {
+      "entry_level": "₹12,000 - ₹18,000 per month",
+      "experienced": "₹20,000 - ₹35,000 per month",
+      "highly_skilled": "₹35,000 - ₹50,000 per month"
+    },
+    "skills_gained": [
+      "Lathe operation",
+      "Precision measurement",
+      "Blueprint reading",
+      "Cutting tools knowledge",
+      "Quality control"
+    ],
+    "certification_exams": [
+      "NCVT (National Council for Vocational Training)",
+      "SCVT (State Council for Vocational Training)"
+    ],
+    "advancement_paths": [
+      "Supervisor",
+      "CNC Programmer",
+      "Quality Inspector",
+      "Technical Trainer"
+    ]
+  }
+}

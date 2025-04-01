@@ -1,0 +1,92 @@
+{
+  "semester_exams": [
+    {
+      "trade": "Electrician",
+      "semester": 1,
+      "date": "2025-05-15",
+      "subjects": [
+        {
+          "name": "Trade Theory",
+          "date": "2025-05-15",
+          "time": "10:00 AM"
+        },
+        {
+          "name": "Workshop Calculation",
+          "date": "2025-05-16",
+          "time": "10:00 AM"
+        },
+        {
+          "name": "Engineering Drawing",
+          "date": "2025-05-17",
+          "time": "10:00 AM"
+        }
+      ]
+    },
+    {
+      "trade": "Fitter",
+      "semester": 1,
+      "date": "2025-05-20",
+      "subjects": [
+        {
+          "name": "Trade Theory",
+          "date": "2025-05-20",
+          "time": "10:00 AM"
+        },
+        {
+          "name": "Workshop Calculation",
+          "date": "2025-05-21",
+          "time": "10:00 AM"
+        },
+        {
+          "name": "Engineering Drawing",
+          "date": "2025-05-22",
+          "time": "10:00 AM"
+        }
+      ]
+    }
+  ],
+  "all_india_trade_tests": [
+    {
+      "trade": "All Trades",
+      "year": 2025,
+      "season": "Summer",
+      "start_date": "2025-06-29",
+      "end_date": "2025-07-29",
+      "registration_deadline": "2025-04-30"
+    },
+    {
+      "trade": "All Trades",
+      "year": 2025,
+      "season": "Winter",
+      "start_date": "2025-09-27",
+      "end_date": "2025-10-27",
+      "registration_deadline": "2025-07-29"
+    }
+  ],
+  "practical_exams": [
+    {
+      "trade": "Electrician",
+      "semester": 1,
+      "date": "2025-05-30",
+      "time": "9:00 AM",
+      "venue": "Main Workshop",
+      "requirements": [
+        "Safety equipment",
+        "Basic tools",
+        "ID card"
+      ]
+    },
+    {
+      "trade": "Fitter",
+      "semester": 1,
+      "date": "2025-06-04",
+      "time": "9:00 AM",
+      "venue": "Fitting Workshop",
+      "requirements": [
+        "Safety equipment",
+        "Basic tools",
+        "ID card"
+      ]
+    }
+  ]
+}

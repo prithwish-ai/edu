@@ -1,0 +1,365 @@
+{
+  "government_scholarships": [
+    {
+      "name": "National Scholarship Portal (NSP) Scholarships",
+      "provider": "Ministry of Skill Development and Entrepreneurship",
+      "description": "Centralized scholarship program for ITI students from economically weaker sections.",
+      "eligibility": [
+        "Family income less than ₹2.5 lakh per annum",
+        "Minimum 75% attendance",
+        "Regular ITI student in government recognized institute"
+      ],
+      "benefits": [
+        "Tuition fee reimbursement",
+        "Monthly stipend of ₹1000-₹1500",
+        "One-time book allowance"
+      ],
+      "documents_required": [
+        "Income certificate",
+        "Caste certificate (if applicable)",
+        "Aadhaar card",
+        "Bank account details",
+        "Latest marksheet",
+        "Admission letter from ITI"
+      ],
+      "application_process": "Apply online through National Scholarship Portal (www.scholarships.gov.in)",
+      "deadline": "2025-04-26",
+      "website": "https://scholarships.gov.in",
+      "contact": "helpdesk@nsp.gov.in",
+      "success_rate": "70% of eligible applicants receive the scholarship"
+    },
+    {
+      "name": "Post-Matric Scholarship for SC/ST Students",
+      "provider": "Ministry of Social Justice and Empowerment",
+      "description": "Financial assistance for SC/ST students pursuing ITI courses.",
+      "eligibility": [
+        "Belong to SC/ST category",
+        "Family income below ₹2.5 lakh per annum",
+        "Enrolled in recognized ITI"
+      ],
+      "benefits": [
+        "Full tuition fee reimbursement",
+        "Monthly maintenance allowance of ₹1200",
+        "Annual book grant of ₹1500"
+      ],
+      "documents_required": [
+        "Caste certificate",
+        "Income certificate",
+        "Previous education certificates",
+        "Bank account linked with Aadhaar",
+        "Passport size photographs",
+        "ITI admission proof"
+      ],
+      "application_process": "Apply through National Scholarship Portal or state-specific portals",
+      "deadline": "2025-05-26",
+      "website": "https://scholarships.gov.in",
+      "contact": "scsthelpdesk@gov.in",
+      "success_rate": "85% of eligible applicants receive the scholarship"
+    },
+    {
+      "name": "Prime Minister's Scholarship Scheme for ITI Students",
+      "provider": "Ministry of Skill Development",
+      "description": "Special scholarship for students pursuing high-demand trades in ITIs.",
+      "eligibility": [
+        "Enrolled in recognized ITI",
+        "Pursuing courses in high-demand sectors (manufacturing, healthcare, automotive)",
+        "Minimum 70% marks in 10th standard",
+        "Family income below ₹8 lakh per annum"
+      ],
+      "benefits": [
+        "Tuition fee waiver up to ₹20,000 per year",
+        "Monthly stipend of ₹2000",
+        "One-time tool kit allowance of ₹5000"
+      ],
+      "documents_required": [
+        "Income certificate",
+        "10th marksheet",
+        "Aadhaar card",
+        "Domicile certificate",
+        "ITI admission letter",
+        "Passport size photographs"
+      ],
+      "application_process": "Apply online through Skill Development Ministry portal or through ITI institute",
+      "deadline": "2025-06-25",
+      "website": "https://msde.gov.in/en/schemes-initiatives",
+      "contact": "pmss.helpdesk@gov.in",
+      "success_rate": "60% of eligible applicants receive the scholarship"
+    }
+  ],
+  "state_scholarships": [
+    {
+      "name": "State Merit Scholarship for ITI Students",
+      "provider": "State Directorate of Technical Education",
+      "description": "Merit-based scholarship for top-performing ITI students in each state.",
+      "eligibility": [
+        "Top 10% rank in ITI entrance exam or previous semester",
+        "Minimum 85% attendance",
+        "State resident"
+      ],
+      "benefits": [
+        "₹10,000 per semester",
+        "Recognition certificate",
+        "Priority in industry placements"
+      ],
+      "documents_required": [
+        "Domicile certificate",
+        "ITI ID card",
+        "Previous semester marksheet",
+        "Bank account details",
+        "Aadhaar card"
+      ],
+      "application_process": "Apply through respective state technical education portal or through ITI institute",
+      "deadline": "Varies by state, check with local ITI",
+      "website": "Check respective state technical education website",
+      "contact": "Contact state directorate of technical education",
+      "success_rate": "Top 10% students in each trade receive the scholarship"
+    },
+    {
+      "name": "Minority Community Scholarship for ITI",
+      "provider": "State Minority Welfare Department",
+      "description": "Financial assistance for students from minority communities pursuing ITI courses.",
+      "eligibility": [
+        "Belong to notified minority community",
+        "Family income below ₹3 lakh per annum",
+        "Enrolled in recognized ITI",
+        "Minimum 60% marks in previous education"
+      ],
+      "benefits": [
+        "Tuition fee reimbursement up to ₹15,000",
+        "Maintenance allowance of ₹1000 per month",
+        "Book and stationery allowance"
+      ],
+      "documents_required": [
+        "Minority community certificate",
+        "Income certificate",
+        "Previous education certificates",
+        "Bank account details",
+        "ITI admission proof",
+        "Passport size photographs"
+      ],
+      "application_process": "Apply through State Minority Welfare Department or online state scholarship portal",
+      "deadline": "2025-04-26",
+      "website": "Check respective state minority welfare department website",
+      "contact": "Contact state minority welfare department",
+      "success_rate": "75% of eligible applicants receive the scholarship"
+    }
+  ],
+  "industry_scholarships": [
+    {
+      "name": "Tata Motors ITI Scholarship Program",
+      "provider": "Tata Motors",
+      "description": "Industry-sponsored scholarship for ITI students pursuing automobile related trades.",
+      "eligibility": [
+        "Enrolled in automobile related trades (Mechanic Motor Vehicle, Electrician, Machinist)",
+        "Minimum 70% marks in 10th standard",
+        "Family income below ₹5 lakh per annum",
+        "ITI located in operational areas of Tata Motors"
+      ],
+      "benefits": [
+        "Full tuition fee coverage",
+        "Monthly stipend of ₹2500",
+        "On-job training opportunities",
+        "Priority in placement"
+      ],
+      "documents_required": [
+        "Income certificate",
+        "10th marksheet",
+        "ITI admission proof",
+        "Aadhaar card",
+        "Recommendation letter from ITI principal",
+        "Bank account details"
+      ],
+      "application_process": "Apply through ITI institution or directly to Tata Motors CSR division",
+      "deadline": "2025-05-26",
+      "website": "https://www.tatamotors.com/csr/",
+      "contact": "education.csr@tatamotors.com",
+      "success_rate": "50% of applicants receive the scholarship"
+    },
+    {
+      "name": "Maruti Suzuki Technical Scholarship",
+      "provider": "Maruti Suzuki India Limited",
+      "description": "Scholarship for promising ITI students in automotive and allied trades.",
+      "eligibility": [
+        "Pursuing Mechanic Motor Vehicle, Mechanic Auto Electrical & Electronics trades",
+        "Minimum 65% marks in 10th standard",
+        "ITIs located near Maruti Suzuki facilities",
+        "Demonstrated technical aptitude"
+      ],
+      "benefits": [
+        "Tuition fee support up to ₹20,000 per year",
+        "Monthly allowance of ₹1500",
+        "Internship opportunity at Maruti Suzuki facilities",
+        "Skill development workshops"
+      ],
+      "documents_required": [
+        "10th marksheet",
+        "ITI admission letter",
+        "Aadhaar card",
+        "Passport size photographs",
+        "Bank account details",
+        "Technical aptitude test score"
+      ],
+      "application_process": "Apply through ITI institution or Maruti Suzuki authorized center",
+      "deadline": "2025-06-25",
+      "website": "https://www.marutisuzuki.com/corporate/csr",
+      "contact": "technical.scholarship@maruti.co.in",
+      "success_rate": "40% of applicants receive the scholarship"
+    },
+    {
+      "name": "Larsen & Toubro Construction Skills Scholarship",
+      "provider": "L&T Construction",
+      "description": "Scholarship for ITI students in construction-related trades.",
+      "eligibility": [
+        "Pursuing Civil, Electrical, or Plumbing trades",
+        "Economically disadvantaged background",
+        "Minimum 60% marks in previous education",
+        "Good physical fitness"
+      ],
+      "benefits": [
+        "Full tuition fee coverage",
+        "Monthly stipend of ₹3000",
+        "On-site training at L&T projects",
+        "Tool kit worth ₹10,000",
+        "Employment opportunity after course completion"
+      ],
+      "documents_required": [
+        "Income certificate",
+        "Previous education certificates",
+        "ITI admission proof",
+        "Aadhaar card",
+        "Medical fitness certificate",
+        "Bank account details"
+      ],
+      "application_process": "Apply through ITI institution or L&T Construction Skills Training Centers",
+      "deadline": "2025-04-26",
+      "website": "https://www.lntecc.com/csr-initiatives/",
+      "contact": "skillscholarship@lntecc.com",
+      "success_rate": "60% of eligible applicants receive the scholarship"
+    }
+  ],
+  "special_category_scholarships": [
+    {
+      "name": "Scholarship for Women in Technical Education",
+      "provider": "Ministry of Women and Child Development",
+      "description": "Special scholarship to encourage women to pursue ITI courses and technical education.",
+      "eligibility": [
+        "Female candidates enrolled in any ITI trade",
+        "Minimum 60% marks in 10th standard",
+        "Family income below ₹6 lakh per annum"
+      ],
+      "benefits": [
+        "Tuition fee reimbursement up to ₹25,000 per year",
+        "Monthly stipend of ₹2000",
+        "One-time contingency grant of ₹5000",
+        "Career counseling and mentorship"
+      ],
+      "documents_required": [
+        "10th marksheet",
+        "Income certificate",
+        "ITI admission proof",
+        "Aadhaar card",
+        "Bank account details",
+        "Passport size photographs"
+      ],
+      "application_process": "Apply online through National Scholarship Portal or Women and Child Development portal",
+      "deadline": "2025-05-26",
+      "website": "https://wcd.nic.in/schemes-listing/2405",
+      "contact": "women.tech@wcd.gov.in",
+      "success_rate": "80% of eligible applicants receive the scholarship"
+    },
+    {
+      "name": "Divyangjan ITI Scholarship Scheme",
+      "provider": "Department of Empowerment of Persons with Disabilities",
+      "description": "Scholarship for differently-abled students pursuing ITI courses.",
+      "eligibility": [
+        "Persons with disabilities (40% or more disability)",
+        "Enrolled in recognized ITI",
+        "Family income below ₹3 lakh per annum"
+      ],
+      "benefits": [
+        "Full tuition fee waiver",
+        "Monthly maintenance allowance of ₹2500",
+        "Reader allowance for visually impaired students",
+        "Escort allowance for severely disabled students",
+        "Special equipment allowance"
+      ],
+      "documents_required": [
+        "Disability certificate",
+        "Income certificate",
+        "ITI admission proof",
+        "Aadhaar card",
+        "Bank account details",
+        "Previous education certificates"
+      ],
+      "application_process": "Apply through National Scholarship Portal or Department of Empowerment of Persons with Disabilities",
+      "deadline": "2025-04-26",
+      "website": "https://disabilityaffairs.gov.in/content/page/scholarships.php",
+      "contact": "scholarship-depwd@gov.in",
+      "success_rate": "90% of eligible applicants receive the scholarship"
+    },
+    {
+      "name": "Scholarship for Wards of Construction Workers",
+      "provider": "Construction Workers Welfare Board",
+      "description": "Scholarship for children of registered construction workers pursuing ITI courses.",
+      "eligibility": [
+        "Parent/guardian registered with Construction Workers Welfare Board for at least 1 year",
+        "Enrolled in any ITI trade",
+        "Minimum 55% marks in previous education"
+      ],
+      "benefits": [
+        "Tuition fee reimbursement up to ₹20,000 per year",
+        "Monthly stipend of ₹1500",
+        "Tool kit allowance of ₹5000",
+        "One-time travel allowance"
+      ],
+      "documents_required": [
+        "Parent's Construction Worker registration certificate",
+        "Relationship proof with registered worker",
+        "ITI admission proof",
+        "Previous education certificates",
+        "Aadhaar card",
+        "Bank account details"
+      ],
+      "application_process": "Apply through State Construction Workers Welfare Board office or authorized ITI nodal officer",
+      "deadline": "Rolling applications, check with local welfare board",
+      "website": "Check respective state construction workers welfare board website",
+      "contact": "Contact state construction workers welfare board",
+      "success_rate": "75% of eligible applicants receive the scholarship"
+    }
+  ],
+  "international_scholarships": [
+    {
+      "name": "Indo-German Dual Vocational Training Scholarship",
+      "provider": "German Society for International Cooperation (GIZ)",
+      "description": "Scholarship for exceptional ITI students to undergo dual training in Germany.",
+      "eligibility": [
+        "Top 5% performers in specified ITI trades",
+        "Excellent communication skills",
+        "Minimum 70% marks in ITI coursework",
+        "Basic understanding of German language (preferred)",
+        "Age between 18-25 years"
+      ],
+      "benefits": [
+        "Fully funded training in Germany for 3-6 months",
+        "International certification",
+        "Monthly stipend of €750",
+        "Return airfare",
+        "Health insurance",
+        "Accommodation assistance"
+      ],
+      "documents_required": [
+        "ITI performance certificate",
+        "Recommendation letter from ITI principal",
+        "Valid passport",
+        "Medical fitness certificate",
+        "Statement of purpose",
+        "Language proficiency certificate (if available)"
+      ],
+      "application_process": "Apply through Ministry of Skill Development or GIZ India office",
+      "deadline": "2025-06-25",
+      "website": "https://www.giz.de/en/worldwide/368.html",
+      "contact": "indo-german.scholarship@giz.de",
+      "success_rate": "Highly competitive, approximately 20 scholarships awarded annually"
+    }
+  ]
+}

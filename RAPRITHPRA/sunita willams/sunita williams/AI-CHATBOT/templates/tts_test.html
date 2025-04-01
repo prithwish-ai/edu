@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .language-section {
+            margin-top: 15px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 100px;
+        }
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+        .log {
+            background-color: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+            font-family: monospace;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Text-to-Speech API Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Simple TTS Test</h2>
+        <p>Test the basic functionality of the TTS API.</p>
+        
+        <div class="language-section">
+            <label for="language">Select Language:</label>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="bn">Bengali</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="mr">Marathi</option>
+                <option value="kn">Kannada</option>
+            </select>
+            
+            <div>
+                <label for="test-text">Enter Text:</label>
+                <textarea id="test-text">This is a test of the text-to-speech system.</textarea>
+            </div>
+            
+            <button id="test-api-button">Test API Directly</button>
+            <button id="test-gtts-button">Test /api/tts-test</button>
+            <button id="test-browser-button">Test Browser TTS</button>
+        </div>
+        
+        <div id="log" class="log"></div>
+        
+        <div id="results" class="results">
+            <h3>Results</h3>
+            <div id="result-content">No tests run yet.</div>
+        </div>
+    </div>
+    
+    <script>
+        // Utility function to log messages
+        function log(message) {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        // Test the TTS API directly
+        document.getElementById('test-api-button').addEventListener('click', function() {
+            const text = document.getElementById('test-text').value;
+            const language = document.getElementById('language').value;
+            
+            if (!text.trim()) {
+                alert('Please enter some text to test.');
+                return;
+            }
+            
+            log(`Testing API with text: "${text}" in language: ${language}`);
+            
+            // Make the API call
+            fetch('/api/text-to-speech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: text,
+                    language: language
+                })
+            })
+            .then(response => {
+                log(`API response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status: ${response.status}`);
+                }
+                
+                return response.blob();
+            })
+            .then(audioBlob => {
+                log(`Received audio blob: ${audioBlob.type}, size: ${audioBlob.size} bytes`);
+                
+                // Create an audio element to play the response
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                
+                // Play the audio
+                audio.play()
+                    .then(() => {
+                        log('Audio playing successfully');
+                    })
+                    .catch(e => {
+                        log(`Error playing audio: ${e.message}`);
+                    });
+                
+                // Update results
+                document.getElementById('result-content').innerHTML = `
+                    <p>API call successful!</p>
+                    <p>Audio type: ${audioBlob.type}</p>
+                    <p>Audio size: ${audioBlob.size} bytes</p>
+                    <audio controls src="${audioUrl}"></audio>
+                `;
+            })
+            .catch(error => {
+                log(`Error: ${error.message}`);
+                document.getElementById('result-content').innerHTML = `
+                    <p style="color: red;">Error: ${error.message}</p>
+                `;
+            });
+        });
+        
+        // Test the /api/tts-test endpoint
+        document.getElementById('test-gtts-button').addEventListener('click', function() {
+            log('Testing /api/tts-test endpoint...');
+            
+            fetch('/api/tts-test')
+                .then(response => {
+                    log(`API response status: ${response.status}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`API returned status: ${response.status}`);
+                    }
+                    
+                    return response.blob();
+                })
+                .then(audioBlob => {
+                    log(`Received test audio blob: ${audioBlob.type}, size: ${audioBlob.size} bytes`);
+                    
+                    // Create an audio element to play the response
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    
+                    // Play the audio
+                    audio.play()
+                        .then(() => {
+                            log('Test audio playing successfully');
+                        })
+                        .catch(e => {
+                            log(`Error playing test audio: ${e.message}`);
+                        });
+                    
+                    // Update results
+                    document.getElementById('result-content').innerHTML = `
+                        <p>Test API call successful!</p>
+                        <p>Audio type: ${audioBlob.type}</p>
+                        <p>Audio size: ${audioBlob.size} bytes</p>
+                        <audio controls src="${audioUrl}"></audio>
+                    `;
+                })
+                .catch(error => {
+                    log(`Error: ${error.message}`);
+                    document.getElementById('result-content').innerHTML = `
+                        <p style="color: red;">Error: ${error.message}</p>
+                    `;
+                });
+        });
+        
+        // Test browser's native TTS
+        document.getElementById('test-browser-button').addEventListener('click', function() {
+            const text = document.getElementById('test-text').value;
+            const language = document.getElementById('language').value;
+            
+            if (!text.trim()) {
+                alert('Please enter some text to test.');
+                return;
+            }
+            
+            // Check if browser supports speech synthesis
+            if ('speechSynthesis' in window) {
+                log(`Testing browser TTS with text: "${text}" in language: ${language}`);
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Map language codes to BCP 47 language tags
+                const langMap = {
+                    'en': 'en-US',
+                    'hi': 'hi-IN',
+                    'bn': 'bn-IN',
+                    'ta': 'ta-IN',
+                    'te': 'te-IN',
+                    'mr': 'mr-IN',
+                    'kn': 'kn-IN'
+                };
+                
+                utterance.lang = langMap[language] || 'en-US';
+                log(`Using browser TTS with language: ${utterance.lang}`);
+                
+                // List available voices
+                const voices = window.speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    log(`Available voices: ${voices.length}`);
+                    
+                    // Try to find a voice for the selected language
+                    const voice = voices.find(v => v.lang.startsWith(utterance.lang.split('-')[0]));
+                    if (voice) {
+                        utterance.voice = voice;
+                        log(`Selected voice: ${voice.name} (${voice.lang})`);
+                    }
+                }
+                
+                // Speak the text
+                window.speechSynthesis.speak(utterance);
+                
+                // Update results
+                document.getElementById('result-content').innerHTML = `
+                    <p>Browser TTS initiated</p>
+                    <p>Language: ${utterance.lang}</p>
+                    <p>Text: ${text}</p>
+                `;
+                
+                // Log when speech has ended
+                utterance.onend = function() {
+                    log('Browser TTS speech completed');
+                };
+                
+                // Log any errors
+                utterance.onerror = function(event) {
+                    log(`Browser TTS error: ${event.error}`);
+                };
+            } else {
+                log('Browser does not support Speech Synthesis API');
+                alert('Your browser does not support speech synthesis.');
+            }
+        });
+        
+        // Initialize the page
+        window.onload = function() {
+            log('TTS Test Page loaded. Ready to test.');
+            
+            // Check if browser supports speech synthesis
+            if ('speechSynthesis' in window) {
+                log('Browser supports Speech Synthesis API');
+            } else {
+                log('WARNING: Browser does not support Speech Synthesis API');
+            }
+            
+            // Set default text in different languages
+            document.getElementById('language').addEventListener('change', function() {
+                const language = this.value;
+                let sampleText = 'This is a test of the text-to-speech system.';
+                
+                switch (language) {
+                    case 'hi':
+                        sampleText = 'यह टेक्स्ट-टू-स्पीच सिस्टम का एक परीक्षण है।';
+                        break;
+                    case 'bn':
+                        sampleText = 'এটি টেক্সট-টু-স্পিচ সিস্টেমের একটি পরীক্ষা।';
+                        break;
+                    case 'ta':
+                        sampleText = 'இது உரை-பேச்சு அமைப்பின் ஒரு சோதனை.';
+                        break;
+                    case 'te':
+                        sampleText = 'ఇది టెక్స్ట్-టు-స్పీచ్ సిస్టమ్ యొక్క పరీక్ష.';
+                        break;
+                    case 'mr':
+                        sampleText = 'ही टेक्स्ट-टू-स्पीच सिस्टमची एक चाचणी आहे.';
+                        break;
+                    case 'kn':
+                        sampleText = 'ಇದು ಟೆಕ್ಸ್ಟ್-ಟು-ಸ್ಪೀಚ್ ಸಿಸ್ಟಮ್‌ನ ಪರೀಕ್ಷೆಯಾಗಿದೆ.';
+                        break;
+                }
+                
+                document.getElementById('test-text').value = sampleText;
+            });
+        };
+        
+        // Add GTTS package version check
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show a loading indicator while we fetch version info
+            const resultContent = document.getElementById('result-content');
+            resultContent.innerHTML = '<p>Checking gTTS version...</p>';
+            
+            // Make a request to check gTTS version
+            fetch('/api/tts-test')
+                .then(response => {
+                    if (!response.ok) {
+                        log(`Version check failed with status: ${response.status}`);
+                        throw new Error(`API returned status: ${response.status}`);
+                    }
+                    
+                    log('gTTS version check successful!');
+                    resultContent.innerHTML = '<p>gTTS version check succeeded. TTS endpoint seems to be working.</p>';
+                    
+                    // Try to play the test audio
+                    return response.blob();
+                })
+                .then(audioBlob => {
+                    log(`Received test audio blob: ${audioBlob.type}, size: ${audioBlob.size} bytes`);
+                    
+                    // Create an audio element to play the response
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    
+                    // Play the audio
+                    audio.play()
+                        .then(() => {
+                            log('Test audio playing successfully');
+                            resultContent.innerHTML += `
+                                <p>Test audio playback successful!</p>
+                                <p>Audio type: ${audioBlob.type}</p>
+                                <p>Audio size: ${audioBlob.size} bytes</p>
+                                <audio controls src="${audioUrl}"></audio>
+                            `;
+                        })
+                        .catch(e => {
+                            log(`Error playing test audio: ${e.message}`);
+                            resultContent.innerHTML += `
+                                <p style="color: red;">Error playing audio: ${e.message}</p>
+                                <p>Try playing manually:</p>
+                                <audio controls src="${audioUrl}"></audio>
+                            `;
+                        });
+                })
+                .catch(error => {
+                    log(`Version check error: ${error.message}`);
+                    resultContent.innerHTML = `
+                        <p style="color: red;">Version check failed: ${error.message}</p>
+                        <p>This indicates the TTS API may not be functioning correctly.</p>
+                    `;
+                });
+            
+            // Show browser voice information
+            if ('speechSynthesis' in window) {
+                log('Browser supports Speech Synthesis API');
+                
+                // List available voices
+                let voices = speechSynthesis.getVoices();
+                if (voices.length === 0) {
+                    // Firefox needs this event to get voices
+                    speechSynthesis.addEventListener('voiceschanged', function() {
+                        voices = speechSynthesis.getVoices();
+                        logVoices(voices);
+                    });
+                    
+                    // Try once more after a delay for Chrome
+                    setTimeout(() => {
+                        if (voices.length === 0) {
+                            voices = speechSynthesis.getVoices();
+                            logVoices(voices);
+                        }
+                    }, 500);
+                } else {
+                    logVoices(voices);
+                }
+            }
+        });
+        
+        function logVoices(voices) {
+            if (voices.length > 0) {
+                log(`Found ${voices.length} browser voices`);
+                
+                // Add a new section to show available voices
+                const testSection = document.querySelector('.test-section');
+                const voiceSection = document.createElement('div');
+                voiceSection.className = 'results';
+                voiceSection.innerHTML = `
+                    <h3>Browser Voice Support</h3>
+                    <p>Your browser supports ${voices.length} voices:</p>
+                    <ul id="voice-list" style="max-height: 200px; overflow-y: auto;"></ul>
+                `;
+                testSection.appendChild(voiceSection);
+                
+                const voiceList = document.getElementById('voice-list');
+                voices.forEach(voice => {
+                    const li = document.createElement('li');
+                    li.textContent = `${voice.name} (${voice.lang})${voice.default ? ' - DEFAULT' : ''}`;
+                    voiceList.appendChild(li);
+                    
+                    log(`Voice: ${voice.name} (${voice.lang})${voice.default ? ' - DEFAULT' : ''}`);
+                });
+            } else {
+                log('No browser voices found');
+            }
+        }
+    </script>
+</body>
+</html> 

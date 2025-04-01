@@ -1,0 +1,8 @@
+{
+  "language": "ur",
+  "response_length": "medium",
+  "difficulty_level": "easy",
+  "voice_enabled": true,
+  "voice_wake_word": "assistant",
+  "theme": "default"
+}

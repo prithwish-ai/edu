@@ -1,0 +1,42 @@
+{
+  "default_user": {
+    "vocational_skills": {
+      "Welding": {
+        "progress": 29.044999999999998,
+        "last_accessed": "2025-03-27T10:29:44.007910",
+        "quiz_scores": [],
+        "completion_time": 0
+      }
+    }
+  },
+  "user_5d696fec": {
+    "vocational_skills": {
+      "Welding": {
+        "progress": 5.0,
+        "last_accessed": "2025-03-26T21:47:14.470672",
+        "quiz_scores": [],
+        "completion_time": 0
+      }
+    }
+  },
+  "user_7779266c": {
+    "vocational_skills": {
+      "Food Processing": {
+        "progress": 5.0,
+        "last_accessed": "2025-03-26T23:00:37.579646",
+        "quiz_scores": [],
+        "completion_time": 0
+      }
+    }
+  },
+  "user_bad5df5f": {
+    "vocational_skills": {
+      "Welding": {
+        "progress": 10.0,
+        "last_accessed": "2025-03-26T23:15:49.242471",
+        "quiz_scores": [],
+        "completion_time": 0
+      }
+    }
+  }
+}

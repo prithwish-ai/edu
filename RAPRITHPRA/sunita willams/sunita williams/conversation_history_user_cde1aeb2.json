@@ -1,0 +1,16 @@
+[
+  {
+    "user": "hello",
+    "assistant": "Hello there! It's nice to hear from you.\n\nHow can I assist you today? I'm ready to help with questions related to ITI subjects, modern farming techniques, or other vocational skills.",
+    "timestamp": "2025-03-26T21:34:34.031494",
+    "intent": null,
+    "entities": null,
+    "context_used": [],
+    "language": "en"
+  },
+  {
+    "user": "hello",
+    "assistant": "Hello there! It's nice to hear from you.\n\nHow can I assist you today? I'm ready to help with questions related to ITI subjects, modern farming techniques, or other vocational skills.",
+    "timestamp": "2025-03-26T21:34:34.139407"
+  }
+]

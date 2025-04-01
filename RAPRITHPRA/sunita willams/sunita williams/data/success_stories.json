@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Rajesh Kumar",
+    "trade": "Electrician",
+    "graduation_year": "2018",
+    "institute": "Government ITI, Delhi",
+    "current_position": "Senior Electrician",
+    "company": "BHEL",
+    "story": "After completing my ITI in Electrician trade, I joined BHEL as an apprentice. I worked hard and learned advanced skills in industrial electrical systems. After my apprenticeship, I was offered a permanent position and have since been promoted to Senior Electrician. I now lead a team of 5 electricians and oversee electrical installations for major power plant projects. My ITI training gave me the strong foundation I needed to succeed in this field.",
+    "achievements": [
+      "Promoted to team leader within 3 years",
+      "Received 'Best Performer' award in 2020",
+      "Completed advanced certification in Industrial Automation"
+    ],
+    "advice_for_students": "Focus on practical skills during your ITI training. Don't hesitate to ask questions and seek additional knowledge. Always be open to learning new technologies as the field is constantly evolving."
+  },
+  {
+    "name": "Priya Sharma",
+    "trade": "COPA",
+    "graduation_year": "2019",
+    "institute": "Government ITI, Pune",
+    "current_position": "IT Support Specialist",
+    "company": "Tech Mahindra",
+    "story": "I joined the ITI COPA program because I was interested in computers but couldn't afford a full engineering degree. After completing my ITI, I enrolled in Tech Mahindra's skills enhancement program specifically designed for ITI graduates. The program helped me bridge the gap between my ITI skills and industry requirements. I was hired by Tech Mahindra after the program and now work as an IT Support Specialist, assisting clients with technical issues and solutions.",
+    "achievements": [
+      "Selected for international client project within 1 year",
+      "Completed additional certifications in networking",
+      "Recognized for highest customer satisfaction ratings"
+    ],
+    "advice_for_students": "Don't limit yourself to just what's taught in the curriculum. Explore additional resources online, practice coding regularly, and stay updated with technology trends. Soft skills like communication are also crucial in the IT industry."
+  },
+  {
+    "name": "Mohammed Farhan",
+    "trade": "Mechanic (Motor Vehicle)",
+    "graduation_year": "2017",
+    "institute": "Government ITI, Gurugram",
+    "current_position": "Service Center Manager",
+    "company": "Maruti Suzuki",
+    "story": "I've always been passionate about automobiles, which led me to pursue ITI in Motor Vehicle Mechanics. After completing my course, I joined Maruti Suzuki as a trainee technician. My technical skills combined with my interest in customer service helped me progress quickly. Within four years, I was promoted to Service Advisor and then to Service Center Manager. I now manage a team of 15 technicians and oversee the entire service operations at our center in Gurugram.",
+    "achievements": [
+      "Increased service center efficiency by 30%",
+      "Received 'Excellence in Customer Service' award",
+      "Completed advanced training in hybrid vehicle technology"
+    ],
+    "advice_for_students": "Technical skills are important, but don't neglect developing your management and communication abilities. These will be crucial as you advance in your career. Always focus on solving customers' problems efficiently."
+  },
+  {
+    "name": "Anita Desai",
+    "trade": "Fitter",
+    "graduation_year": "2016",
+    "institute": "Government ITI, Mumbai",
+    "current_position": "Production Supervisor",
+    "company": "Tata Motors",
+    "story": "Coming from a farming family, ITI was my pathway to industrial employment. I joined Tata Motors as an apprentice after completing my ITI in Fitter trade. My attention to detail and problem-solving abilities were noticed by management, which led to me being offered a permanent position after my apprenticeship. I've since been promoted to Production Supervisor, overseeing critical assembly operations. I've also completed a part-time diploma while working, which has further enhanced my career prospects.",
+    "achievements": [
+      "Led team that improved assembly line efficiency by 25%",
+      "Implemented cost-saving measures worth ₹10 lakhs annually",
+      "Pursuing part-time mechanical engineering degree"
+    ],
+    "advice_for_students": "Be persistent and maintain a positive attitude even when facing challenges. Take initiative and suggest improvements whenever you see an opportunity. Continuous learning is essential for growth in manufacturing."
+  }
+]

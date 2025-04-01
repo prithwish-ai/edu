@@ -1,0 +1,463 @@
+{
+  "Electrician": [
+    {
+      "title": "House Wiring Installation",
+      "difficulty": "Medium",
+      "duration": "3 hours",
+      "tools_required": [
+        "Screwdriver set",
+        "Wire cutter",
+        "Wire stripper",
+        "Multimeter",
+        "Pliers"
+      ],
+      "materials_required": [
+        "Electrical wires",
+        "Switch board",
+        "MCB",
+        "Switch",
+        "Socket"
+      ],
+      "safety_equipment": [
+        "Insulated gloves",
+        "Safety goggles"
+      ],
+      "steps": [
+        {
+          "step_number": 1,
+          "description": "Prepare the wiring diagram and identify points for switches and sockets",
+          "details": "Use blueprint to mark all connection points on the wall. Ensure proper spacing.",
+          "common_mistakes": [
+            "Incorrect spacing between components",
+            "Not following local electrical codes"
+          ]
+        },
+        {
+          "step_number": 2,
+          "description": "Install the distribution board",
+          "details": "Mount the distribution board securely on the wall, ensuring it's level.",
+          "common_mistakes": [
+            "Mounting too low or too high",
+            "Not securing properly"
+          ]
+        },
+        {
+          "step_number": 3,
+          "description": "Run conduit or casing for wires",
+          "details": "Install protective conduit for all wiring paths.",
+          "common_mistakes": [
+            "Sharp bends in conduit",
+            "Inadequate support"
+          ]
+        },
+        {
+          "step_number": 4,
+          "description": "Pull wires through conduit",
+          "details": "Use pull wire to draw electrical cables through conduit. Label each wire.",
+          "common_mistakes": [
+            "Damaging wire insulation",
+            "Not labeling wires",
+            "Exceeding conduit capacity"
+          ]
+        },
+        {
+          "step_number": 5,
+          "description": "Install outlet boxes and switches",
+          "details": "Mount boxes securely and connect appropriate wires.",
+          "common_mistakes": [
+            "Loose connections",
+            "Reversed polarity"
+          ]
+        },
+        {
+          "step_number": 6,
+          "description": "Connect to main distribution board",
+          "details": "Connect circuit wires to appropriate MCBs.",
+          "common_mistakes": [
+            "Incorrect circuit rating",
+            "Poor termination"
+          ]
+        },
+        {
+          "step_number": 7,
+          "description": "Test the installation",
+          "details": "Use multimeter to check continuity, insulation, and correct voltage.",
+          "common_mistakes": [
+            "Skipping tests",
+            "Not checking for earth continuity"
+          ]
+        }
+      ],
+      "assessment_criteria": [
+        "Accuracy of connections",
+        "Neatness of wiring",
+        "Proper labeling",
+        "Functionality of all circuits",
+        "Adherence to safety standards",
+        "Time management"
+      ],
+      "reference_diagrams": [
+        "house_wiring_diagram.png",
+        "distribution_board_connections.png"
+      ],
+      "tips": [
+        "Always double-check polarity before powering the circuit",
+        "Use wire colors according to electrical code standards",
+        "Label all wires at both ends for future maintenance"
+      ]
+    },
+    {
+      "title": "Motor Starter Installation and Testing",
+      "difficulty": "Hard",
+      "duration": "4 hours",
+      "tools_required": [
+        "Screwdriver set",
+        "Spanner set",
+        "Multimeter",
+        "Megger",
+        "Crimping tool"
+      ],
+      "materials_required": [
+        "3-phase motor",
+        "DOL starter",
+        "Control cables",
+        "Power cables",
+        "Terminal connectors"
+      ],
+      "safety_equipment": [
+        "Insulated gloves",
+        "Safety goggles",
+        "Insulated footwear"
+      ],
+      "steps": [
+        {
+          "step_number": 1,
+          "description": "Prepare the installation plan",
+          "details": "Study the circuit diagram and identify all components.",
+          "common_mistakes": [
+            "Not understanding the control circuit",
+            "Misinterpreting diagram"
+          ]
+        },
+        {
+          "step_number": 2,
+          "description": "Mount the starter panel",
+          "details": "Securely fix the starter panel at appropriate height.",
+          "common_mistakes": [
+            "Improper alignment",
+            "Inadequate fixing"
+          ]
+        },
+        {
+          "step_number": 3,
+          "description": "Connect power circuit",
+          "details": "Connect 3-phase supply to input terminals and motor connections to output.",
+          "common_mistakes": [
+            "Incorrect phase sequence",
+            "Loose terminations"
+          ]
+        },
+        {
+          "step_number": 4,
+          "description": "Wire the control circuit",
+          "details": "Connect start/stop buttons, thermal overload, and indicators.",
+          "common_mistakes": [
+            "Incorrect control voltage",
+            "Wrong contactor coil connections"
+          ]
+        },
+        {
+          "step_number": 5,
+          "description": "Set the overload relay",
+          "details": "Adjust thermal overload according to motor rating.",
+          "common_mistakes": [
+            "Setting too high or too low",
+            "Not considering ambient temperature"
+          ]
+        },
+        {
+          "step_number": 6,
+          "description": "Test the control circuit",
+          "details": "Check operation of start/stop buttons and indicators without power circuit.",
+          "common_mistakes": [
+            "Testing with power before control check",
+            "Not verifying indicator function"
+          ]
+        },
+        {
+          "step_number": 7,
+          "description": "Test full operation",
+          "details": "Connect motor and verify rotation, starting current, and protection features.",
+          "common_mistakes": [
+            "Not checking rotation direction",
+            "Ignoring unusual noises or vibrations"
+          ]
+        }
+      ],
+      "assessment_criteria": [
+        "Correct wiring connections",
+        "Proper component mounting",
+        "Accurate overload setting",
+        "Functional operation of all controls",
+        "Motor parameters within normal range",
+        "Safety considerations"
+      ],
+      "reference_diagrams": [
+        "motor_starter_wiring.png",
+        "control_circuit_diagram.png"
+      ],
+      "tips": [
+        "Always disconnect power before making any changes",
+        "Test control circuit operation before connecting to motor",
+        "Verify thermal overload settings match motor nameplate"
+      ]
+    }
+  ],
+  "Fitter": [
+    {
+      "title": "V-Block Machining and Filing",
+      "difficulty": "Medium",
+      "duration": "5 hours",
+      "tools_required": [
+        "Files (flat, triangular)",
+        "Try square",
+        "Steel rule",
+        "Vernier caliper",
+        "Scriber",
+        "Center punch",
+        "Hammer"
+      ],
+      "materials_required": [
+        "Mild steel block",
+        "Engineer's blue",
+        "Marking table"
+      ],
+      "safety_equipment": [
+        "Safety goggles",
+        "Work gloves",
+        "Apron"
+      ],
+      "steps": [
+        {
+          "step_number": 1,
+          "description": "Study the drawing and prepare the material",
+          "details": "Understand dimensions and tolerances from drawing. Clean the raw stock.",
+          "common_mistakes": [
+            "Not checking stock dimensions",
+            "Misinterpreting tolerances"
+          ]
+        },
+        {
+          "step_number": 2,
+          "description": "Mark out the workpiece",
+          "details": "Apply engineer's blue. Mark dimensions using height gauge and scriber.",
+          "common_mistakes": [
+            "Inaccurate marking",
+            "Not using center lines",
+            "Poor visibility of lines"
+          ]
+        },
+        {
+          "step_number": 3,
+          "description": "File the primary datum surface",
+          "details": "File one surface flat and check with try square and surface plate.",
+          "common_mistakes": [
+            "Uneven pressure while filing",
+            "Not checking flatness frequently"
+          ]
+        },
+        {
+          "step_number": 4,
+          "description": "Create perpendicular surfaces",
+          "details": "File adjacent surfaces perpendicular to the datum surface.",
+          "common_mistakes": [
+            "Not maintaining perpendicularity",
+            "Rounding edges"
+          ]
+        },
+        {
+          "step_number": 5,
+          "description": "Mark and machine the V-groove",
+          "details": "Mark the center line and angle lines for V-groove. File carefully to the lines.",
+          "common_mistakes": [
+            "Uneven V-groove angles",
+            "Not checking symmetry regularly"
+          ]
+        },
+        {
+          "step_number": 6,
+          "description": "File to final dimensions",
+          "details": "Use fine file for finishing all surfaces within tolerance.",
+          "common_mistakes": [
+            "Removing too much material",
+            "Poor surface finish"
+          ]
+        },
+        {
+          "step_number": 7,
+          "description": "Check final dimensions and finish",
+          "details": "Verify all dimensions with calipers and angle gauges. Check surface finish quality.",
+          "common_mistakes": [
+            "Not checking all dimensions",
+            "Ignoring surface finish requirements"
+          ]
+        }
+      ],
+      "assessment_criteria": [
+        "Dimensional accuracy",
+        "Flatness of datum surface",
+        "Perpendicularity of sides",
+        "Accuracy of V-groove angle",
+        "Symmetry of V-groove",
+        "Surface finish quality",
+        "Time management"
+      ],
+      "reference_diagrams": [
+        "v_block_drawing.png",
+        "filing_technique.png"
+      ],
+      "tips": [
+        "Periodically check with try square while filing",
+        "Keep files clean using a file card",
+        "Use chalk on files to prevent clogging when filing soft metals",
+        "Apply even pressure and maintain correct posture while filing"
+      ]
+    }
+  ],
+  "Mechanic (Motor Vehicle)": [
+    {
+      "title": "Engine Timing Belt Replacement",
+      "difficulty": "Hard",
+      "duration": "4 hours",
+      "tools_required": [
+        "Socket set",
+        "Torque wrench",
+        "Timing pins",
+        "Crankshaft holding tool",
+        "Breaker bar"
+      ],
+      "materials_required": [
+        "Timing belt kit",
+        "Coolant",
+        "Gaskets",
+        "Seals"
+      ],
+      "safety_equipment": [
+        "Safety goggles",
+        "Work gloves",
+        "Protective footwear"
+      ],
+      "steps": [
+        {
+          "step_number": 1,
+          "description": "Prepare the vehicle",
+          "details": "Position on lift, disconnect battery, drain coolant if required.",
+          "common_mistakes": [
+            "Not disconnecting battery",
+            "Incomplete coolant drainage"
+          ]
+        },
+        {
+          "step_number": 2,
+          "description": "Remove accessories for access",
+          "details": "Remove necessary covers, belts, and components to access timing cover.",
+          "common_mistakes": [
+            "Damaging accessories during removal",
+            "Not labeling parts and bolts"
+          ]
+        },
+        {
+          "step_number": 3,
+          "description": "Position engine at TDC",
+          "details": "Rotate crankshaft to Top Dead Center for cylinder #1. Verify with timing marks.",
+          "common_mistakes": [
+            "Incorrect TDC identification",
+            "Not verifying camshaft position"
+          ]
+        },
+        {
+          "step_number": 4,
+          "description": "Lock engine timing",
+          "details": "Insert timing pins/tools to lock crankshaft and camshaft in correct positions.",
+          "common_mistakes": [
+            "Using wrong timing pins",
+            "Forcing pins into position"
+          ]
+        },
+        {
+          "step_number": 5,
+          "description": "Remove timing belt",
+          "details": "Release tensioner and carefully remove old timing belt.",
+          "common_mistakes": [
+            "Forcing belt removal",
+            "Disturbing locked positions"
+          ]
+        },
+        {
+          "step_number": 6,
+          "description": "Inspect and replace components",
+          "details": "Check tensioners, pulleys, and water pump for wear. Replace as required.",
+          "common_mistakes": [
+            "Reusing worn components",
+            "Improper installation of new parts"
+          ]
+        },
+        {
+          "step_number": 7,
+          "description": "Install new timing belt",
+          "details": "Follow manufacturer's routing diagram, starting at crankshaft.",
+          "common_mistakes": [
+            "Incorrect routing sequence",
+            "Incorrect tension"
+          ]
+        },
+        {
+          "step_number": 8,
+          "description": "Set belt tension",
+          "details": "Adjust tensioner to correct specification and secure in position.",
+          "common_mistakes": [
+            "Over or under tensioning",
+            "Not following tensioner procedure"
+          ]
+        },
+        {
+          "step_number": 9,
+          "description": "Verify timing and remove locking tools",
+          "details": "Double-check all timing marks align. Remove timing pins/tools.",
+          "common_mistakes": [
+            "Not verifying alignment before finalizing",
+            "Incomplete pin removal"
+          ]
+        },
+        {
+          "step_number": 10,
+          "description": "Reinstall accessories and finalize",
+          "details": "Reinstall all components, refill coolant, reconnect battery.",
+          "common_mistakes": [
+            "Missing parts during reassembly",
+            "Incorrect torque specifications"
+          ]
+        }
+      ],
+      "assessment_criteria": [
+        "Correct positioning of timing marks",
+        "Proper belt tension",
+        "Proper component installation",
+        "Complete reassembly",
+        "Engine operation after service",
+        "Work area organization",
+        "Time management"
+      ],
+      "reference_diagrams": [
+        "timing_belt_routing.png",
+        "tdc_timing_marks.png"
+      ],
+      "tips": [
+        "Take photos before disassembly for reference",
+        "Always rotate engine by hand for two complete revolutions after installation",
+        "Replace water pump when changing timing belt if it's driven by the timing belt",
+        "Follow manufacturer's specific procedures as they vary by engine model"
+      ]
+    }
+  ]
+}

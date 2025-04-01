@@ -1,0 +1,16 @@
+[
+  {
+    "user": "hello",
+    "assistant": "Hello there!\n\nIt's great to connect with you. As an AI assistant specializing in ITI subjects, modern farming techniques, and vocational skills, I'm here to help you learn and solve problems.\n\nHow can I assist you today? Do you have a question about a specific ITI trade, a farming technique, or perhaps a vocational skill you'd like to develop? Let me know!",
+    "timestamp": "2025-03-27T02:55:19.937939",
+    "intent": null,
+    "entities": {},
+    "context_used": [],
+    "language": "en"
+  },
+  {
+    "user": "hello",
+    "assistant": "Hello there!\n\nIt's great to connect with you. As an AI assistant specializing in ITI subjects, modern farming techniques, and vocational skills, I'm here to help you learn and solve problems.\n\nHow can I assist you today? Do you have a question about a specific ITI trade, a farming technique, or perhaps a vocational skill you'd like to develop? Let me know!",
+    "timestamp": "2025-03-27T02:55:20.105653"
+  }
+]

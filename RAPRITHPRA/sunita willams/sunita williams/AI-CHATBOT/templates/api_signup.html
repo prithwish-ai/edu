@@ -1,0 +1,135 @@
+{% extends "api_base.html" %}
+
+{% block title %}Sign Up - EduSpark{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Create an Account</h1>
+            <p class="auth-subtitle">Join EduSpark to access all features and services</p>
+        </div>
+        
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+                <div class="form-error" id="usernameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+                <div class="form-error" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+                <div class="form-error" id="passwordError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-control" required>
+                <div class="form-error" id="confirmPasswordError"></div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+            
+            <div class="form-error" id="formError" style="margin-top: 20px; text-align: center;"></div>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Already have an account? <a href="/api_login.html">Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const signupForm = document.getElementById('signupForm');
+        
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+            document.getElementById('confirmPasswordError').textContent = '';
+            document.getElementById('formError').textContent = '';
+            
+            // Get form values
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Basic validation
+            let isValid = true;
+            
+            if (username.length < 3) {
+                document.getElementById('usernameError').textContent = 'Username must be at least 3 characters.';
+                isValid = false;
+            }
+            
+            if (!validateEmail(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            }
+            
+            if (password.length < 6) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
+                isValid = false;
+            }
+            
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Send signup request
+            fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'User registered successfully!') {
+                    // Store token
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Redirect to dashboard
+                    window.location.href = '/api_dashboard.html';
+                } else {
+                    // Show error message
+                    document.getElementById('formError').textContent = data.message || 'Signup failed. Please try again.';
+                }
+            })
+            .catch(error => {
+                console.error('Signup error:', error);
+                document.getElementById('formError').textContent = 'An error occurred. Please try again.';
+            });
+        });
+        
+        // Email validation function
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+    });
+</script>
+{% endblock %} 

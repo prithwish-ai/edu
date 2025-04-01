@@ -1,0 +1,106 @@
+{
+  "apprenticeships": [
+    {
+      "id": "app-001",
+      "company": "Tata Motors",
+      "title": "Apprentice Fitter",
+      "location": "Pune, Maharashtra",
+      "trade": "Fitter",
+      "duration": "1 year",
+      "stipend": "₹10,000 - ₹12,000 per month",
+      "description": "Learn industrial fitting skills in automobile manufacturing setting.",
+      "requirements": [
+        "ITI certificate in Fitter trade",
+        "Good mechanical aptitude",
+        "Basic computer knowledge"
+      ],
+      "application_deadline": "2023-12-31",
+      "start_date": "2024-02-01",
+      "how_to_apply": "Apply online at careers.tatamotors.com or through your ITI placement cell.",
+      "additional_info": "Selected candidates will receive professional certification upon successful completion."
+    },
+    {
+      "id": "app-002",
+      "company": "BHEL",
+      "title": "Electrician Apprentice",
+      "location": "Trichy, Tamil Nadu",
+      "trade": "Electrician",
+      "duration": "1 year",
+      "stipend": "₹9,000 - ₹11,000 per month",
+      "description": "Comprehensive apprenticeship in industrial electrical systems for power plants.",
+      "requirements": [
+        "ITI certificate in Electrician trade",
+        "Basic understanding of electrical systems",
+        "Willing to work in shifts"
+      ],
+      "application_deadline": "2023-11-30",
+      "start_date": "2024-01-15",
+      "how_to_apply": "Submit application through BHEL recruitment portal.",
+      "additional_info": "Possibility of permanent employment for top performers."
+    }
+  ],
+  "job_openings": [
+    {
+      "id": "job-001",
+      "company": "Maruti Suzuki",
+      "title": "Automobile Technician",
+      "location": "Gurugram, Haryana",
+      "trade": "Mechanic (Motor Vehicle)",
+      "experience": "0-2 years",
+      "salary": "₹18,000 - ₹25,000 per month",
+      "description": "Perform maintenance and repair of automobiles at Maruti Suzuki service center.",
+      "requirements": [
+        "ITI certificate in Mechanic (Motor Vehicle)",
+        "Knowledge of modern vehicle systems",
+        "Good communication skills"
+      ],
+      "application_deadline": "2023-12-15",
+      "how_to_apply": "Email resume to careers@maruti.co.in with subject 'Automobile Technician Application'.",
+      "additional_info": "Training in Maruti Suzuki technologies will be provided."
+    },
+    {
+      "id": "job-002",
+      "company": "Larsen & Toubro",
+      "title": "Junior Welder",
+      "location": "Mumbai, Maharashtra",
+      "trade": "Welder",
+      "experience": "1-3 years",
+      "salary": "₹20,000 - ₹28,000 per month",
+      "description": "Perform welding operations for construction and manufacturing projects.",
+      "requirements": [
+        "ITI certificate in Welder trade",
+        "Experience with various welding techniques",
+        "Ability to read engineering drawings"
+      ],
+      "application_deadline": "2023-11-20",
+      "how_to_apply": "Apply through L&T careers portal.",
+      "additional_info": "Site allowance and accommodation provided for outstation work."
+    }
+  ],
+  "training_programs": [
+    {
+      "id": "tp-001",
+      "company": "Tech Mahindra",
+      "title": "IT Skills Enhancement Program for ITI Graduates",
+      "location": "Pune, Maharashtra",
+      "eligible_trades": [
+        "COPA",
+        "Electronics Mechanic"
+      ],
+      "duration": "3 months",
+      "stipend": "₹8,000 per month during training",
+      "description": "Intensive training program to bridge the gap between ITI skills and IT industry requirements.",
+      "curriculum": [
+        "Basic programming",
+        "Network fundamentals",
+        "Hardware troubleshooting",
+        "IT support skills"
+      ],
+      "application_deadline": "2023-12-10",
+      "start_date": "2024-01-10",
+      "placement_assistance": true,
+      "how_to_apply": "Submit application through Tech Mahindra Foundation website.",
+      "additional_info": "Placement opportunity for successful candidates."
+    }
+  ]
+}

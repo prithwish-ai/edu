@@ -1,0 +1,56 @@
+{
+  "Maharashtra": [
+    {
+      "name": "Government ITI, Mumbai",
+      "address": "Mumbai, Maharashtra",
+      "courses": [
+        "Fitter",
+        "Turner",
+        "Electrician",
+        "COPA"
+      ],
+      "contact": "022-12345678",
+      "website": "https://itimumbai.gov.in"
+    },
+    {
+      "name": "Government ITI, Pune",
+      "address": "Pune, Maharashtra",
+      "courses": [
+        "Fitter",
+        "Turner",
+        "Electrician",
+        "Mechanic (Motor Vehicle)"
+      ],
+      "contact": "020-12345678",
+      "website": "https://itipune.gov.in"
+    }
+  ],
+  "Delhi": [
+    {
+      "name": "Government ITI, Delhi",
+      "address": "Delhi",
+      "courses": [
+        "Fitter",
+        "Electrician",
+        "COPA",
+        "Digital Photography"
+      ],
+      "contact": "011-12345678",
+      "website": "https://itidelhi.gov.in"
+    }
+  ],
+  "Tamil Nadu": [
+    {
+      "name": "Government ITI, Chennai",
+      "address": "Chennai, Tamil Nadu",
+      "courses": [
+        "Fitter",
+        "Turner",
+        "Electrician",
+        "Dress Making"
+      ],
+      "contact": "044-12345678",
+      "website": "https://itichennai.gov.in"
+    }
+  ]
+}

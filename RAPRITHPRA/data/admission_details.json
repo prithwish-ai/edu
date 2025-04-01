@@ -1,0 +1,387 @@
+{
+  "general_information": {
+    "about_iti": "Industrial Training Institutes (ITIs) are post-secondary schools in India that provide technical education and training across various trades. These institutes are governed by the Directorate General of Training (DGT) under the Ministry of Skill Development and Entrepreneurship. ITIs offer certificate courses in technical, non-technical, and vocational subjects to prepare students for employment in specific trades or for self-employment.",
+    "course_duration": "ITI courses typically range from 6 months to 2 years depending on the trade and specialization. Engineering trades usually have a duration of 1-2 years, while non-engineering trades may be 6 months to 1 year.",
+    "certification": "Upon successful completion of ITI courses, students receive National Trade Certificates (NTC) recognized by the National Council for Vocational Training (NCVT) or State Trade Certificates (STC) recognized by the State Council for Vocational Training (SCVT)."
+  },
+  "eligibility_criteria": {
+    "minimum_qualification": {
+      "engineering_trades": "10th pass (Secondary School Certificate) with Science and Mathematics",
+      "non_engineering_trades": "8th pass for select trades, 10th pass for most trades",
+      "advanced_courses": "10th or 12th pass depending on the specific course"
+    },
+    "age_criteria": {
+      "minimum_age": 14,
+      "maximum_age": 40,
+      "relaxation": {
+        "SC_ST": "5 years age relaxation",
+        "OBC": "3 years age relaxation",
+        "PwD": "10 years age relaxation"
+      }
+    },
+    "physical_fitness": "Candidates must be physically fit and meet specific physical standards depending on the trade. Certain trades may have specific requirements for vision, height, weight, etc.",
+    "reservation_policy": {
+      "SC": "15% of seats reserved",
+      "ST": "7.5% of seats reserved",
+      "OBC": "27% of seats reserved",
+      "EWS": "10% of seats reserved",
+      "PwD": "4% of seats reserved",
+      "Women": "30% horizontal reservation in many states"
+    }
+  },
+  "admission_process": {
+    "steps": [
+      {
+        "step": 1,
+        "name": "Application Form Submission",
+        "description": "Candidates must fill and submit the application form either online through the official ITI admission portal or offline at designated centers. Application forms are usually available from May to June each year.",
+        "start_date": "2025-05-15",
+        "end_date": "2025-06-30",
+        "fees": {
+          "general": "₹300",
+          "sc_st": "₹150"
+        }
+      },
+      {
+        "step": 2,
+        "name": "Entrance Examination/Merit List",
+        "description": "Some states conduct entrance examinations for ITI admissions, while others prepare merit lists based on qualifying examination marks. The entrance exam typically tests basic mathematics, science, reasoning, and general knowledge.",
+        "exam_date": "2025-07-15",
+        "result_date": "2025-07-31"
+      },
+      {
+        "step": 3,
+        "name": "Counseling and Seat Allotment",
+        "description": "Qualified candidates participate in counseling sessions for trade and institute selection. Seat allotment is based on rank, preference, and seat availability. Multiple rounds of counseling may be conducted.",
+        "start_date": "2025-08-10",
+        "end_date": "2025-08-25"
+      },
+      {
+        "step": 4,
+        "name": "Document Verification",
+        "description": "Candidates must present original documents for verification at the allotted ITI. This includes educational certificates, identity proof, address proof, category certificates (if applicable), etc."
+      },
+      {
+        "step": 5,
+        "name": "Fee Payment",
+        "description": "After document verification, candidates must pay the required fees to confirm their admission. Fee structures vary by state, institute, and trade."
+      },
+      {
+        "step": 6,
+        "name": "Admission Confirmation and Course Commencement",
+        "description": "Upon fee payment, admission is confirmed. Classes usually begin in August or September.",
+        "session_start_date": "2025-09-01"
+      }
+    ]
+  },
+  "required_documents": [
+    {
+      "name": "Educational Certificates",
+      "description": "Original and photocopies of 8th/10th/12th marksheets and certificates as per the eligibility requirement"
+    },
+    {
+      "name": "Identity Proof",
+      "description": "Aadhaar Card, Voter ID, Passport, or any other valid government-issued ID"
+    },
+    {
+      "name": "Address Proof",
+      "description": "Utility bills, Passport, Ration Card, or any other valid address proof"
+    },
+    {
+      "name": "Passport-sized Photographs",
+      "description": "Recent color photographs (typically 4-6 photos required)"
+    },
+    {
+      "name": "Category Certificate",
+      "description": "For SC/ST/OBC/EWS candidates, valid category certificate issued by competent authority"
+    },
+    {
+      "name": "Disability Certificate",
+      "description": "For PwD candidates, disability certificate issued by a recognized medical authority"
+    },
+    {
+      "name": "Domicile/Residency Certificate",
+      "description": "Proof of residency in the state where admission is sought"
+    },
+    {
+      "name": "Income Certificate",
+      "description": "For fee concessions or scholarships (if applicable)"
+    },
+    {
+      "name": "Migration Certificate",
+      "description": "If the candidate has studied outside the state"
+    },
+    {
+      "name": "Character Certificate",
+      "description": "From the last attended educational institution"
+    }
+  ],
+  "fee_structure": {
+    "government_itis": {
+      "admission_fee": "₹500-₹2,000 (varies by state and trade)",
+      "tuition_fee": "₹1,000-₹5,000 per semester/year (varies by state and trade)",
+      "caution_deposit": "₹500-₹1,000 (refundable)",
+      "exam_fee": "₹100-₹500 per semester/year",
+      "other_charges": "Library, development, identity card, etc. (varies by institute)"
+    },
+    "private_itis": {
+      "fee_range": "₹15,000-₹50,000 per year (varies by institute, location, and trade)"
+    },
+    "fee_concessions": {
+      "SC_ST": "Full or partial tuition fee waiver in many states",
+      "OBC": "Partial fee concession in some states",
+      "PwD": "Fee concessions as per state policy",
+      "EWS": "Fee concessions as per state policy",
+      "Girls": "Special fee concessions for female candidates in many states"
+    }
+  },
+  "entrance_examination": {
+    "exam_pattern": {
+      "sections": [
+        {
+          "name": "Mathematics",
+          "topics": [
+            "Arithmetic",
+            "Algebra",
+            "Geometry",
+            "Mensuration",
+            "Trigonometry"
+          ],
+          "questions": 25,
+          "marks": 25
+        },
+        {
+          "name": "Science",
+          "topics": [
+            "Physics",
+            "Chemistry",
+            "Biology (Basic)"
+          ],
+          "questions": 25,
+          "marks": 25
+        },
+        {
+          "name": "General Knowledge",
+          "topics": [
+            "Current Affairs",
+            "Static GK",
+            "Logical Reasoning"
+          ],
+          "questions": 25,
+          "marks": 25
+        },
+        {
+          "name": "Language Comprehension",
+          "topics": [
+            "Reading Comprehension",
+            "Basic Grammar",
+            "Vocabulary"
+          ],
+          "questions": 25,
+          "marks": 25
+        }
+      ],
+      "total_marks": 100,
+      "duration": "2 hours",
+      "negative_marking": "No negative marking in most states"
+    },
+    "preparation_tips": [
+      "Focus on 10th standard Mathematics and Science syllabus",
+      "Practice previous years' question papers",
+      "Strengthen basic arithmetic, algebra, and geometry concepts",
+      "Study fundamental physics and chemistry concepts",
+      "Stay updated with current affairs and general knowledge",
+      "Improve reading comprehension and language skills",
+      "Manage time effectively during the exam",
+      "Focus on accuracy rather than speed"
+    ],
+    "sample_questions": {
+      "mathematics": [
+        {
+          "question": "If a = 5 and b = 3, find the value of a² + b².",
+          "options": [
+            "25",
+            "34",
+            "8",
+            "64"
+          ],
+          "correct_answer": 1,
+          "explanation": "a² + b² = 5² + 3² = 25 + 9 = 34"
+        },
+        {
+          "question": "Find the area of a circle with radius 7 cm.",
+          "options": [
+            "44 cm²",
+            "49 cm²",
+            "154 cm²",
+            "22 cm²"
+          ],
+          "correct_answer": 2,
+          "explanation": "Area = πr² = 3.14 × 7² = 3.14 × 49 ≈ 154 cm²"
+        }
+      ],
+      "science": [
+        {
+          "question": "Which of the following is the unit of electric current?",
+          "options": [
+            "Volt",
+            "Watt",
+            "Ampere",
+            "Ohm"
+          ],
+          "correct_answer": 2,
+          "explanation": "Ampere is the SI unit of electric current."
+        },
+        {
+          "question": "What is the chemical formula for water?",
+          "options": [
+            "H₂O",
+            "CO₂",
+            "O₂",
+            "N₂"
+          ],
+          "correct_answer": 0,
+          "explanation": "Water has the chemical formula H₂O."
+        }
+      ]
+    }
+  },
+  "trade_selection_guidance": {
+    "factors_to_consider": [
+      "Personal interest and aptitude",
+      "Physical fitness and capabilities",
+      "Future job prospects and market demand",
+      "Salary potential in the industry",
+      "Opportunities for further education and career advancement",
+      "Geographical mobility and job locations"
+    ],
+    "popular_trades": {
+      "engineering": [
+        {
+          "name": "Electrician",
+          "eligibility": "10th pass with Science and Mathematics",
+          "duration": "2 years",
+          "job_prospects": "Excellent",
+          "key_skills_gained": "Electrical wiring, motor repair, basic electronics"
+        },
+        {
+          "name": "Fitter",
+          "eligibility": "10th pass with Science and Mathematics",
+          "duration": "2 years",
+          "job_prospects": "Very good",
+          "key_skills_gained": "Fitting, assembling, reading engineering drawings"
+        },
+        {
+          "name": "Mechanic (Motor Vehicle)",
+          "eligibility": "10th pass with Science and Mathematics",
+          "duration": "2 years",
+          "job_prospects": "Excellent",
+          "key_skills_gained": "Automobile repair, engine maintenance, diagnostics"
+        },
+        {
+          "name": "COPA (Computer Operator & Programming Assistant)",
+          "eligibility": "10th pass",
+          "duration": "1 year",
+          "job_prospects": "Good",
+          "key_skills_gained": "Computer operations, office applications, basic programming"
+        },
+        {
+          "name": "Welder",
+          "eligibility": "8th pass",
+          "duration": "1 year",
+          "job_prospects": "Very good",
+          "key_skills_gained": "Various welding techniques, metal joining"
+        }
+      ],
+      "non_engineering": [
+        {
+          "name": "Dress Making",
+          "eligibility": "8th pass",
+          "duration": "1 year",
+          "job_prospects": "Good",
+          "key_skills_gained": "Cutting, stitching, garment design"
+        },
+        {
+          "name": "Stenography",
+          "eligibility": "10th pass",
+          "duration": "1 year",
+          "job_prospects": "Moderate",
+          "key_skills_gained": "Shorthand, typing, office management"
+        },
+        {
+          "name": "Hair & Skin Care",
+          "eligibility": "8th pass",
+          "duration": "1 year",
+          "job_prospects": "Good",
+          "key_skills_gained": "Hair styling, skincare techniques, salon management"
+        }
+      ]
+    }
+  },
+  "important_dates": {
+    "application_start": "2025-05-15",
+    "application_end": "2025-06-30",
+    "entrance_exam": "2025-07-15",
+    "result_declaration": "2025-07-31",
+    "counseling_start": "2025-08-10",
+    "counseling_end": "2025-08-25",
+    "session_commencement": "2025-09-01"
+  },
+  "common_faqs": [
+    {
+      "question": "What is the minimum educational qualification for ITI courses?",
+      "answer": "The minimum qualification varies by trade. For engineering trades, it's typically 10th pass with Science and Mathematics. For some non-engineering trades, 8th pass may be sufficient."
+    },
+    {
+      "question": "Can I pursue further education after completing an ITI course?",
+      "answer": "Yes, ITI graduates can pursue further education. They can appear for AITT (All India Trade Test) to get a National Trade Certificate. With this, they can seek admission in diploma courses through lateral entry or prepare for Advanced Vocational Training Scheme (AVTS). They can also appear for Senior Secondary (Class 12) examinations through National Institute of Open Schooling (NIOS)."
+    },
+    {
+      "question": "Are there any age restrictions for ITI admission?",
+      "answer": "The general age criterion is 14-40 years, though there may be variations across states. Age relaxation is provided for reserved categories: 5 years for SC/ST, 3 years for OBC, and 10 years for PwD candidates."
+    },
+    {
+      "question": "How can I choose the right trade for ITI admission?",
+      "answer": "Consider your personal interests, aptitude, physical capabilities, market demand for the trade, salary potential, and future career growth opportunities. Also, research the specific skills you'll gain in each trade and their relevance to your career goals."
+    },
+    {
+      "question": "What is the fee structure for ITI courses?",
+      "answer": "Fees vary significantly between government and private ITIs. Government ITIs have lower fees, ranging from ₹1,000-₹7,000 per year depending on the state and trade. Private ITIs can charge ₹15,000-₹50,000 per year. Many states offer fee concessions for SC/ST, OBC, PwD, EWS, and female candidates."
+    },
+    {
+      "question": "Is there an entrance exam for ITI admission?",
+      "answer": "It depends on the state. Some states conduct entrance examinations, while others admit students based on merit lists prepared using qualifying examination (8th/10th) marks. When conducted, entrance exams typically test Mathematics, Science, General Knowledge, and Language Comprehension."
+    },
+    {
+      "question": "What documents are required for ITI admission?",
+      "answer": "Required documents include educational certificates (8th/10th/12th), identity proof, address proof, passport-sized photographs, category certificate (if applicable), disability certificate (if applicable), domicile certificate, income certificate (if applicable), migration certificate (if from another state), and character certificate."
+    },
+    {
+      "question": "Can I transfer from one ITI to another?",
+      "answer": "Transfer between ITIs is possible but subject to seat availability in the desired ITI and approval from both institutes. The transfer process typically requires an application to the Directorate of Training or similar authority in your state."
+    },
+    {
+      "question": "What is the difference between NCVT and SCVT certification?",
+      "answer": "NCVT (National Council for Vocational Training) certification is nationally recognized and preferred for central government jobs, interstate employment, and international opportunities. SCVT (State Council for Vocational Training) certification is primarily recognized within the state and for state government jobs."
+    },
+    {
+      "question": "Are there any scholarships available for ITI students?",
+      "answer": "Yes, several scholarships are available for ITI students, including central government schemes through the National Scholarship Portal, state government scholarships, SC/ST/OBC scholarships, scholarships for women in technical education, and industry-sponsored scholarships. Eligibility varies by scheme."
+    }
+  ],
+  "application_tips": [
+    "Apply early to avoid last-minute technical issues or server overloads",
+    "Double-check all information before final submission",
+    "Keep digital copies of all required documents ready before starting the application",
+    "Use a valid, regularly checked email address and phone number",
+    "Take note of application number/registration ID for future reference",
+    "Pay application fees through recommended payment methods only",
+    "Keep printed copies of the completed application form and payment receipt",
+    "Regularly check the official website for updates on your application status",
+    "Select multiple trade preferences to increase chances of admission",
+    "Research institutes thoroughly before selecting preferences"
+  ],
+  "state_specific_information": {
+    "note": "ITI admission processes may vary by state. The information provided here is general. For state-specific details, please visit the official website of the State Directorate of Technical Education or Employment."
+  }
+}

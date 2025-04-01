@@ -1,0 +1,685 @@
+{% extends "base.html" %}
+
+{% block title %}ITI & Agricultural Education AI Assistant - Chat{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 160px);
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .chat-header {
+        padding: 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .chat-header h4 {
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .chat-body {
+        flex: 1;
+        padding: 1rem;
+        overflow-y: auto;
+        background-color: #f8f9fa;
+    }
+    
+    .chat-footer {
+        padding: 1rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .message {
+        margin-bottom: 1rem;
+        max-width: 80%;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        position: relative;
+    }
+    
+    .user-message {
+        background-color: #e3f2fd;
+        margin-left: auto;
+        border-bottom-right-radius: 0;
+    }
+    
+    .assistant-message {
+        background-color: #f1f1f1;
+        margin-right: auto;
+        border-bottom-left-radius: 0;
+    }
+    
+    .message-input {
+        flex: 1;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: none;
+        font-size: 16px;
+    }
+    
+    .voice-btn {
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    .send-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    .voice-btn:hover, .send-btn:hover {
+        opacity: 0.9;
+    }
+    
+    .voice-btn.active {
+        background-color: var(--accent-color);
+        animation: pulse 1.5s infinite;
+    }
+    
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    .youtube-resources {
+        margin-top: 1rem;
+        background: #fff;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .youtube-video {
+        display: flex;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        background: #f8f9fa;
+        border-radius: 5px;
+        gap: 0.75rem;
+        align-items: center;
+    }
+    
+    .youtube-thumbnail {
+        width: 80px;
+        height: 45px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .youtube-info {
+        flex: 1;
+    }
+    
+    .youtube-title {
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.25rem;
+        display: block;
+    }
+    
+    .youtube-channel {
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    .voice-indicator {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 0.5rem;
+        color: var(--accent-color);
+    }
+    
+    .voice-wave {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+    
+    .voice-bar {
+        width: 3px;
+        height: 9px;
+        background-color: currentColor;
+        border-radius: 1px;
+        animation: voice-wave 1s infinite;
+    }
+    
+    .voice-bar:nth-child(1) { animation-delay: 0s; }
+    .voice-bar:nth-child(2) { animation-delay: 0.2s; }
+    .voice-bar:nth-child(3) { animation-delay: 0.4s; }
+    .voice-bar:nth-child(4) { animation-delay: 0.6s; }
+    
+    @keyframes voice-wave {
+        0%, 100% { transform: scaleY(0.5); }
+        50% { transform: scaleY(1); }
+    }
+    
+    .chat-sidebar {
+        position: fixed;
+        right: -320px;
+        top: 80px;
+        bottom: 0;
+        width: 320px;
+        background: white;
+        border-left: 1px solid #eee;
+        z-index: 100;
+        transition: right 0.3s ease;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        padding: 1rem;
+        overflow-y: auto;
+    }
+    
+    .chat-sidebar.open {
+        right: 0;
+    }
+    
+    .sidebar-toggle {
+        position: absolute;
+        left: -40px;
+        top: 20px;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 5px 0 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h4><i class="fas fa-robot me-2"></i> ITI & Agricultural Education Assistant</h4>
+                    <div class="controls">
+                        <button id="sidebarToggle" class="btn btn-sm btn-light">
+                            <i class="fas fa-sliders-h"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chat-body" id="chatMessages">
+                    <!-- Messages will be displayed here -->
+                </div>
+                
+                <div class="chat-footer">
+                    <textarea class="message-input" id="messageInput" placeholder="Type your message here..." rows="1"></textarea>
+                    <button class="voice-btn" id="chatVoiceBtn">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chat Sidebar -->
+<div class="chat-sidebar" id="chatSidebar">
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    
+    <h5 class="mb-3">Quick Topics</h5>
+    <div class="quick-topics mb-4">
+        <div class="list-group">
+            <button class="list-group-item list-group-item-action" data-topic="Tell me about rice cultivation techniques">Rice Cultivation</button>
+            <button class="list-group-item list-group-item-action" data-topic="What are sustainable farming practices?">Sustainable Farming</button>
+            <button class="list-group-item list-group-item-action" data-topic="How to identify and treat common plant diseases">Plant Diseases</button>
+            <button class="list-group-item list-group-item-action" data-topic="Current market prices for common crops">Market Prices</button>
+            <button class="list-group-item list-group-item-action" data-topic="Explain irrigation systems and water management">Irrigation Systems</button>
+        </div>
+    </div>
+    
+    <h5 class="mb-3">Tools</h5>
+    <div class="tools-section mb-4">
+        <button class="btn btn-outline-primary mb-2 w-100" id="generateQuizBtn">
+            <i class="fas fa-question-circle me-2"></i>Generate Quiz
+        </button>
+        <button class="btn btn-outline-primary mb-2 w-100" id="studyMaterialsBtn">
+            <i class="fas fa-book me-2"></i>Study Materials
+        </button>
+        <button class="btn btn-outline-primary mb-2 w-100" id="plantDiseaseBtn">
+            <i class="fas fa-leaf me-2"></i>Detect Plant Disease
+        </button>
+    </div>
+    
+    <div id="plantDiseaseUpload" class="mb-4" style="display: none;">
+        <h6>Upload Plant Image</h6>
+        <form id="plantDiseaseForm">
+            <div class="mb-3">
+                <input type="file" class="form-control" id="plantImage" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Analyze</button>
+        </form>
+    </div>
+    
+    <h5 class="mb-3">Your Progress</h5>
+    <div id="userProgress">
+        <!-- Progress bars will be loaded here -->
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        const chatMessages = $('#chatMessages');
+        const messageInput = $('#messageInput');
+        const sendBtn = $('#sendBtn');
+        const chatVoiceBtn = $('#chatVoiceBtn');
+        const sidebarToggle = $('#sidebarToggle');
+        const chatSidebar = $('#chatSidebar');
+        const quickTopics = $('.quick-topics button');
+        const plantDiseaseBtn = $('#plantDiseaseBtn');
+        const plantDiseaseUpload = $('#plantDiseaseUpload');
+        
+        // Auto-resize textarea
+        messageInput.on('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Toggle sidebar
+        sidebarToggle.click(function() {
+            chatSidebar.toggleClass('open');
+            const icon = $(this).find('i');
+            if (chatSidebar.hasClass('open')) {
+                icon.removeClass('fa-sliders-h').addClass('fa-chevron-left');
+            } else {
+                icon.removeClass('fa-chevron-left').addClass('fa-sliders-h');
+            }
+        });
+        
+        // Send message
+        function sendMessage() {
+            const message = messageInput.val().trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            appendMessage(message, 'user');
+            
+            // Clear and reset input
+            messageInput.val('');
+            messageInput.css('height', 'auto');
+            
+            // Show loading indicator in a new message bubble
+            const loadingMessage = $('<div>').addClass('message assistant-message');
+            loadingMessage.append($('<div>').addClass('spinner'));
+            chatMessages.append(loadingMessage);
+            scrollToBottom();
+            
+            // Send to server
+            $.ajax({
+                url: '/chat',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ message: message }),
+                success: function(response) {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    
+                    // Add assistant response
+                    appendMessage(response.response, 'assistant');
+                    
+                    // If voice is enabled, read response aloud
+                    if (localStorage.getItem('voiceEnabled') === 'true') {
+                        window.speakResponse(response.response);
+                    }
+                    
+                    // Display YouTube resources if available
+                    if (response.youtube_resources && response.youtube_resources.length > 0) {
+                        appendYouTubeResources(response.youtube_resources);
+                    }
+                },
+                error: function() {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    
+                    // Show error message
+                    appendMessage("I'm sorry, I encountered an error processing your request. Please try again.", 'assistant');
+                }
+            });
+        }
+        
+        // Append message to chat
+        function appendMessage(text, sender) {
+            const messageDiv = $('<div>').addClass('message').addClass(sender + '-message');
+            messageDiv.text(text);
+            
+            // Add voice indicator if assistant message and voice enabled
+            if (sender === 'assistant' && localStorage.getItem('voiceEnabled') === 'true') {
+                const voiceIndicator = $('<div>').addClass('voice-indicator');
+                const voiceWave = $('<div>').addClass('voice-wave');
+                
+                for (let i = 0; i < 4; i++) {
+                    voiceWave.append($('<div>').addClass('voice-bar'));
+                }
+                
+                voiceIndicator.append(voiceWave);
+                messageDiv.append(voiceIndicator);
+            }
+            
+            chatMessages.append(messageDiv);
+            scrollToBottom();
+        }
+        
+        // Append YouTube resources
+        function appendYouTubeResources(videos) {
+            const resourcesDiv = $('<div>').addClass('message assistant-message');
+            
+            const title = $('<div>').text('Here are some relevant videos:');
+            resourcesDiv.append(title);
+            
+            const youtubeSectionDiv = $('<div>').addClass('youtube-resources');
+            
+            videos.slice(0, 3).forEach(video => {
+                const videoDiv = $('<div>').addClass('youtube-video');
+                
+                const thumbnail = $('<div>').addClass('youtube-thumbnail');
+                if (video.thumbnail) {
+                    thumbnail.append($('<img>').attr('src', video.thumbnail).css('width', '100%'));
+                } else {
+                    thumbnail.css('background', '#ddd');
+                }
+                
+                const infoDiv = $('<div>').addClass('youtube-info');
+                const videoLink = $('<a>')
+                    .addClass('youtube-title')
+                    .attr('href', `https://www.youtube.com/watch?v=${video.id}`)
+                    .attr('target', '_blank')
+                    .text(video.title);
+                
+                const channelDiv = $('<div>').addClass('youtube-channel').text(video.channel);
+                
+                infoDiv.append(videoLink, channelDiv);
+                videoDiv.append(thumbnail, infoDiv);
+                youtubeSectionDiv.append(videoDiv);
+            });
+            
+            resourcesDiv.append(youtubeSectionDiv);
+            chatMessages.append(resourcesDiv);
+            scrollToBottom();
+        }
+        
+        // Scroll to bottom of chat
+        function scrollToBottom() {
+            chatMessages.scrollTop(chatMessages[0].scrollHeight);
+        }
+        
+        // Event handlers
+        sendBtn.click(sendMessage);
+        
+        messageInput.keypress(function(e) {
+            if (e.which === 13 && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Voice button
+        chatVoiceBtn.click(function() {
+            // Use the global voice recognition toggle
+            if (window.toggleVoiceRecognition) {
+                window.toggleVoiceRecognition();
+                
+                // Update button state based on main voice button
+                const mainVoiceBtn = $('#voiceControlBtn');
+                if (mainVoiceBtn.hasClass('listening')) {
+                    chatVoiceBtn.addClass('active');
+                } else {
+                    chatVoiceBtn.removeClass('active');
+                }
+            }
+        });
+        
+        // Sync with main voice control button
+        $('#voiceControlBtn').on('click', function() {
+            setTimeout(() => {
+                if ($(this).hasClass('listening')) {
+                    chatVoiceBtn.addClass('active');
+                } else {
+                    chatVoiceBtn.removeClass('active');
+                }
+            }, 100);
+        });
+        
+        // Quick topics
+        quickTopics.click(function() {
+            const topic = $(this).data('topic');
+            messageInput.val(topic);
+            sendMessage();
+            
+            // Close sidebar on mobile
+            if (window.innerWidth < 768) {
+                sidebarToggle.click();
+            }
+        });
+        
+        // Plant disease upload
+        plantDiseaseBtn.click(function() {
+            plantDiseaseUpload.slideToggle();
+        });
+        
+        // Plant disease form submission
+        $('#plantDiseaseForm').submit(function(e) {
+            e.preventDefault();
+            const fileInput = $('#plantImage')[0];
+            if (!fileInput.files.length) {
+                alert('Please select an image');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            
+            // Add user message to chat
+            appendMessage('I\'m uploading a plant image for disease detection', 'user');
+            
+            // Show loading indicator
+            const loadingMessage = $('<div>').addClass('message assistant-message');
+            loadingMessage.append($('<div>').addClass('spinner'));
+            chatMessages.append(loadingMessage);
+            scrollToBottom();
+            
+            $.ajax({
+                url: '/plant_disease',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    
+                    if (response.result) {
+                        appendMessage('Plant Disease Analysis: ' + response.result, 'assistant');
+                    } else {
+                        appendMessage('I couldn\'t analyze that image. Please try with a clearer image.', 'assistant');
+                    }
+                    
+                    // Hide the upload section
+                    plantDiseaseUpload.slideUp();
+                },
+                error: function() {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    appendMessage('Sorry, there was an error analyzing the image.', 'assistant');
+                }
+            });
+        });
+        
+        // Quiz button
+        $('#generateQuizBtn').click(function() {
+            appendMessage('Generate a quiz on agricultural topics', 'user');
+            
+            // Show loading indicator
+            const loadingMessage = $('<div>').addClass('message assistant-message');
+            loadingMessage.append($('<div>').addClass('spinner'));
+            chatMessages.append(loadingMessage);
+            scrollToBottom();
+            
+            $.ajax({
+                url: '/quiz',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    topic: 'agriculture',
+                    subtopic: 'general',
+                    difficulty: 'medium',
+                    num_questions: 5
+                }),
+                success: function(response) {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    
+                    if (!response.error) {
+                        let quizText = `Here's a quiz on ${response.topic} - ${response.subtopic}:\n\n`;
+                        response.questions.forEach((q, i) => {
+                            quizText += `${i + 1}. ${q.question}\n`;
+                            Object.entries(q.options).forEach(([key, value]) => {
+                                quizText += `   ${key}. ${value}\n`;
+                            });
+                            quizText += '\n';
+                        });
+                        appendMessage(quizText, 'assistant');
+                    } else {
+                        appendMessage('I couldn\'t generate a quiz at this time. Please try again later.', 'assistant');
+                    }
+                },
+                error: function() {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    appendMessage('Sorry, there was an error generating the quiz.', 'assistant');
+                }
+            });
+        });
+        
+        // Study materials button
+        $('#studyMaterialsBtn').click(function() {
+            appendMessage('Generate study materials on agricultural topics', 'user');
+            
+            // Show loading indicator
+            const loadingMessage = $('<div>').addClass('message assistant-message');
+            loadingMessage.append($('<div>').addClass('spinner'));
+            chatMessages.append(loadingMessage);
+            scrollToBottom();
+            
+            $.ajax({
+                url: '/study_materials',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    topic: 'agriculture',
+                    subtopic: 'general'
+                }),
+                success: function(response) {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    
+                    if (!response.error) {
+                        appendMessage(response.materials, 'assistant');
+                        
+                        // Display YouTube resources if available
+                        if (response.videos && response.videos.length > 0) {
+                            appendYouTubeResources(response.videos);
+                        }
+                    } else {
+                        appendMessage('I couldn\'t generate study materials at this time. Please try again later.', 'assistant');
+                    }
+                },
+                error: function() {
+                    // Remove loading indicator
+                    loadingMessage.remove();
+                    appendMessage('Sorry, there was an error generating the study materials.', 'assistant');
+                }
+            });
+        });
+        
+        // Load user progress
+        function loadUserProgress() {
+            $.ajax({
+                url: '/progress',
+                method: 'GET',
+                success: function(response) {
+                    if (!response.error && response.topics) {
+                        const progressContainer = $('#userProgress');
+                        progressContainer.empty();
+                        
+                        Object.entries(response.topics).forEach(([topic, data]) => {
+                            const topicDiv = $('<div>').addClass('mb-3');
+                            topicDiv.append($('<div>').addClass('small text-muted mb-1').text(topic.replace('_', ' ')));
+                            
+                            const progressBar = $('<div>').addClass('progress');
+                            const progressBarInner = $('<div>')
+                                .addClass('progress-bar')
+                                .css('width', `${data.progress}%`)
+                                .attr('role', 'progressbar')
+                                .attr('aria-valuenow', data.progress)
+                                .attr('aria-valuemin', 0)
+                                .attr('aria-valuemax', 100);
+                            
+                            progressBar.append(progressBarInner);
+                            topicDiv.append(progressBar);
+                            progressContainer.append(topicDiv);
+                        });
+                    }
+                }
+            });
+        }
+        
+        // Initial welcome message
+        setTimeout(() => {
+            appendMessage("Hello! I'm your ITI & Agricultural Education Assistant. How can I help you today?", 'assistant');
+        }, 500);
+        
+        // Load user progress
+        loadUserProgress();
+    });
+</script>
+{% endblock %} 

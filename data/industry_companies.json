@@ -1,0 +1,107 @@
+{
+  "Tata Motors": {
+    "description": "One of India's largest automobile manufacturers with a global presence.",
+    "website": "https://www.tatamotors.com",
+    "headquarters": "Mumbai, Maharashtra",
+    "hiring_trades": [
+      "Fitter",
+      "Electrician",
+      "Mechanic (Motor Vehicle)",
+      "Turner"
+    ],
+    "industry_sector": "Automobile Manufacturing",
+    "contact_info": {
+      "email": "careers@tatamotors.com",
+      "phone": "+91-22-12345678"
+    },
+    "apprenticeship_program": true,
+    "iti_partnerships": [
+      "Government ITI, Mumbai",
+      "Government ITI, Pune"
+    ]
+  },
+  "Larsen & Toubro": {
+    "description": "Indian multinational conglomerate with businesses in engineering, construction, manufacturing, and technology.",
+    "website": "https://www.larsentoubro.com",
+    "headquarters": "Mumbai, Maharashtra",
+    "hiring_trades": [
+      "Fitter",
+      "Electrician",
+      "Welder",
+      "Turner",
+      "Machinist"
+    ],
+    "industry_sector": "Engineering and Construction",
+    "contact_info": {
+      "email": "careers@larsentoubro.com",
+      "phone": "+91-22-87654321"
+    },
+    "apprenticeship_program": true,
+    "iti_partnerships": [
+      "Government ITI, Mumbai",
+      "Government ITI, Chennai"
+    ]
+  },
+  "BHEL (Bharat Heavy Electricals Limited)": {
+    "description": "India's largest power generation equipment manufacturer.",
+    "website": "https://www.bhel.com",
+    "headquarters": "New Delhi",
+    "hiring_trades": [
+      "Electrician",
+      "Fitter",
+      "Welder",
+      "Turner",
+      "Machinist"
+    ],
+    "industry_sector": "Power Generation Equipment",
+    "contact_info": {
+      "email": "careers@bhel.in",
+      "phone": "+91-11-12345678"
+    },
+    "apprenticeship_program": true,
+    "iti_partnerships": [
+      "Government ITI, Delhi",
+      "Government ITI, Chennai"
+    ]
+  },
+  "Maruti Suzuki": {
+    "description": "India's largest passenger car manufacturer.",
+    "website": "https://www.marutisuzuki.com",
+    "headquarters": "New Delhi",
+    "hiring_trades": [
+      "Mechanic (Motor Vehicle)",
+      "Electrician",
+      "Fitter",
+      "Painter"
+    ],
+    "industry_sector": "Automobile Manufacturing",
+    "contact_info": {
+      "email": "careers@maruti.co.in",
+      "phone": "+91-11-87654321"
+    },
+    "apprenticeship_program": true,
+    "iti_partnerships": [
+      "Government ITI, Delhi",
+      "Government ITI, Gurugram"
+    ]
+  },
+  "Tech Mahindra": {
+    "description": "Indian multinational provider of information technology and business process outsourcing services.",
+    "website": "https://www.techmahindra.com",
+    "headquarters": "Pune, Maharashtra",
+    "hiring_trades": [
+      "COPA",
+      "Electronics Mechanic",
+      "Information Technology"
+    ],
+    "industry_sector": "Information Technology",
+    "contact_info": {
+      "email": "careers@techmahindra.com",
+      "phone": "+91-20-12345678"
+    },
+    "apprenticeship_program": false,
+    "iti_partnerships": [
+      "Government ITI, Pune"
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+{% extends "api_base.html" %}
+
+{% block title %}Dashboard - EduSpark{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div style="text-align: center; margin: 30px 0;">
+        <h1 style="color: var(--primary-color); margin-bottom: 10px;">Welcome to EduSpark</h1>
+        <p style="color: #666; max-width: 700px; margin: 0 auto;">Access all features without login (Guest Mode)</p>
+    </div>
+    
+    <div class="dashboard-container">
+        <!-- Feature Cards -->
+        <div style="margin-bottom: 40px;">
+            <h2 style="margin-bottom: 20px; color: var(--dark-color);">Available Features</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div class="dashboard-card">
+                    <div style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px;">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 style="margin-bottom: 15px;">Plant Disease Detection</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Upload images of plant leaves to detect diseases and get treatment recommendations.</p>
+                    <a href="/api_plant_disease.html" class="btn btn-primary">Try Now</a>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px;">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 style="margin-bottom: 15px;">AI Farming Assistant</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Get answers to your farming questions from our AI-powered chatbot.</p>
+                    <a href="#" class="btn btn-outline" id="chatBtn">Chat Now</a>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px;">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 style="margin-bottom: 15px;">Learning Resources</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Access educational materials on various agricultural topics.</p>
+                    <a href="#" class="btn btn-outline" id="resourcesBtn">Browse Resources</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Plant Disease Detection Section -->
+        <div class="dashboard-section">
+            <h2 style="margin-bottom: 20px; color: var(--dark-color);">Plant Disease Detection</h2>
+            <p style="color: #666; margin-bottom: 30px;">Our system uses advanced machine learning to identify plant diseases from images with high accuracy.</p>
+            
+            <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+                <a href="/api_plant_disease.html" class="btn btn-primary">Go to Disease Detection</a>
+            </div>
+            
+            <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
+                <h4 style="margin-bottom: 15px; color: var(--dark-color);">How It Works</h4>
+                <ol style="color: #666; padding-left: 20px;">
+                    <li style="margin-bottom: 10px;">Upload a clear photo of the affected plant part</li>
+                    <li style="margin-bottom: 10px;">Our AI analyzes the image to identify the disease</li>
+                    <li style="margin-bottom: 10px;">Receive a diagnosis with confidence score</li>
+                    <li>Get detailed treatment recommendations</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .dashboard-card {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dashboard-section {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+    }
+    
+    .stat-card {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 5px;
+    }
+    
+    .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+    
+    .activity-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+    
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(46, 204, 113, 0.1);
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+    
+    .activity-details {
+        flex-grow: 1;
+    }
+    
+    .activity-title {
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+    
+    .activity-date {
+        font-size: 0.8rem;
+        color: #999;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize chat button
+        const chatBtn = document.getElementById('chatBtn');
+        if (chatBtn) {
+            chatBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Chat feature coming soon! This will be available in the next update.');
+            });
+        }
+        
+        // Initialize resources button
+        const resourcesBtn = document.getElementById('resourcesBtn');
+        if (resourcesBtn) {
+            resourcesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Learning resources feature coming soon! This will be available in the next update.');
+            });
+        }
+    });
+</script>
+{% endblock %} 

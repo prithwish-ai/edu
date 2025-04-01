@@ -1,0 +1,792 @@
+{% extends "api_base.html" %}
+
+{% block title %}Soil Health Analyzer - EDU SPARK{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm animate__animated animate__fadeIn">
+                <div class="card-body text-center">
+                    <h1 class="display-5 text-success mb-3">
+                        <i class="fas fa-microscope me-2"></i>Soil Health Analyzer
+                    </h1>
+                    <p class="lead">Analyze your soil's properties to get personalized crop recommendations and improvement tips</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Soil Input Form -->
+        <div class="col-lg-5 mb-4">
+            <div class="card shadow-sm animate__animated animate__fadeInLeft">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-flask me-2"></i>Soil Parameters</h3>
+                </div>
+                <div class="card-body">
+                    <form id="soilAnalysisForm">
+                        <div class="mb-3">
+                            <label for="ph_level" class="form-label">Soil pH Level</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" min="0" max="14" class="form-control" id="ph_level" name="ph_level" value="6.5" required>
+                                <span class="input-group-text">pH</span>
+                            </div>
+                            <div class="form-text">pH scale ranges from 0 to 14. Neutral is 7.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="nitrogen" class="form-label">Nitrogen (N) Content</label>
+                            <div class="input-group">
+                                <input type="number" step="1" min="0" class="form-control" id="nitrogen" name="nitrogen" value="120" required>
+                                <span class="input-group-text">mg/kg</span>
+                            </div>
+                            <div class="form-text">Ideal range: 100-200 mg/kg</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phosphorus" class="form-label">Phosphorus (P) Content</label>
+                            <div class="input-group">
+                                <input type="number" step="1" min="0" class="form-control" id="phosphorus" name="phosphorus" value="25" required>
+                                <span class="input-group-text">mg/kg</span>
+                            </div>
+                            <div class="form-text">Ideal range: 20-40 mg/kg</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="potassium" class="form-label">Potassium (K) Content</label>
+                            <div class="input-group">
+                                <input type="number" step="1" min="0" class="form-control" id="potassium" name="potassium" value="180" required>
+                                <span class="input-group-text">mg/kg</span>
+                            </div>
+                            <div class="form-text">Ideal range: 100-300 mg/kg</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="organic_matter" class="form-label">Organic Matter</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" min="0" max="100" class="form-control" id="organic_matter" name="organic_matter" value="4.0" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <div class="form-text">Ideal range: 3-6%</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="moisture" class="form-label">Soil Moisture</label>
+                            <div class="input-group">
+                                <input type="number" step="1" min="0" max="100" class="form-control" id="moisture" name="moisture" value="35" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <div class="form-text">Ideal range: 20-60%</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-flask me-2"></i>Analyze Soil
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#helpModal">
+                            <i class="fas fa-question-circle me-1"></i>How to get soil samples tested
+                        </a>
+                        <button id="useExampleData" class="btn btn-sm btn-outline-success">
+                            <i class="fas fa-lightbulb me-1"></i>Use Example Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Soil Health Resources Card -->
+            <div class="card shadow-sm mt-4 animate__animated animate__fadeInLeft animate__delay-1s">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-book me-2"></i>Soil Health Resources</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-file-pdf me-2 text-danger"></i>Guide to Soil Testing
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-video me-2 text-primary"></i>Understanding NPK Values
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-file-alt me-2 text-success"></i>Organic Matter Importance
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-map-marker-alt me-2 text-warning"></i>Find Soil Testing Labs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Panel -->
+        <div class="col-lg-7">
+            <div id="loadingPanel" class="text-center py-5 d-none">
+                <div class="spinner-grow text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Analyzing soil properties...</p>
+            </div>
+            
+            <div id="resultsPanel" class="d-none">
+                <!-- Soil Score Card -->
+                <div class="card shadow-sm mb-4 animate__animated animate__fadeInUp">
+                    <div class="card-body text-center">
+                        <div class="soil-score-container">
+                            <div class="soil-score-circle">
+                                <div class="soil-score-value" id="soilScoreValue">0</div>
+                                <div class="soil-score-label">Score</div>
+                            </div>
+                            <div class="soil-type-badge" id="soilTypeBadge">
+                                Soil Type: <span id="soilType">Unknown</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analysis Results Tabs -->
+                <div class="card shadow-sm mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="soilResultsTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="analysis-tab" data-bs-toggle="tab" data-bs-target="#analysis" type="button" role="tab" aria-controls="analysis" aria-selected="true">
+                                    <i class="fas fa-chart-bar me-1"></i>Analysis
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button" role="tab" aria-controls="recommendations" aria-selected="false">
+                                    <i class="fas fa-seedling me-1"></i>Crop Recommendations
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tips-tab" data-bs-toggle="tab" data-bs-target="#tips" type="button" role="tab" aria-controls="tips" aria-selected="false">
+                                    <i class="fas fa-lightbulb me-1"></i>Improvement Tips
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="soilResultsTabContent">
+                            <!-- Analysis Tab -->
+                            <div class="tab-pane fade show active" id="analysis" role="tabpanel" aria-labelledby="analysis-tab">
+                                <div class="soil-parameters-container" id="soilParameters">
+                                    <!-- Parameters will be populated dynamically -->
+                                </div>
+                            </div>
+                            
+                            <!-- Crop Recommendations Tab -->
+                            <div class="tab-pane fade" id="recommendations" role="tabpanel" aria-labelledby="recommendations-tab">
+                                <div class="row" id="cropRecommendations">
+                                    <!-- Recommendations will be populated dynamically -->
+                                </div>
+                            </div>
+                            
+                            <!-- Improvement Tips Tab -->
+                            <div class="tab-pane fade" id="tips" role="tabpanel" aria-labelledby="tips-tab">
+                                <div class="accordion" id="improvementTips">
+                                    <!-- Tips will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between animate__animated animate__fadeInUp animate__delay-2s">
+                    <button id="printResults" class="btn btn-outline-primary">
+                        <i class="fas fa-print me-2"></i>Print Results
+                    </button>
+                    <button id="saveResults" class="btn btn-outline-success">
+                        <i class="fas fa-save me-2"></i>Save Results
+                    </button>
+                    <button id="resetAnalysis" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo me-2"></i>New Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="helpModalLabel">How to Get Your Soil Tested</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Option 1: Professional Soil Testing</h5>
+                        <ol>
+                            <li>Contact your local agricultural extension office</li>
+                            <li>Collect soil samples following their guidelines</li>
+                            <li>Submit samples to testing lab</li>
+                            <li>Receive comprehensive soil analysis report</li>
+                        </ol>
+                        <p><strong>Cost:</strong> ₹500-1500 depending on tests required</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Option 2: Home Soil Testing Kits</h5>
+                        <ol>
+                            <li>Purchase a soil testing kit from agricultural stores</li>
+                            <li>Follow the kit instructions to collect and test soil</li>
+                            <li>Record your readings</li>
+                            <li>Enter values into our analyzer</li>
+                        </ol>
+                        <p><strong>Cost:</strong> ₹300-800 depending on kit quality</p>
+                    </div>
+                </div>
+                <hr>
+                <h5 class="mt-3">How to Collect Soil Samples</h5>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Use clean tools to avoid contamination</li>
+                            <li>Sample from 6-8 inches deep</li>
+                            <li>Take multiple samples and mix thoroughly</li>
+                            <li>Let soil dry before testing (for home kits)</li>
+                            <li>Label samples clearly if sending to lab</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center">
+                            <img src="/static/images/soil-sampling.jpg" alt="Soil Sampling Diagram" class="img-fluid rounded">
+                            <p class="small text-muted mt-2">Proper soil sampling technique</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success">
+                    <i class="fas fa-map-marker-alt me-1"></i>Find Testing Labs
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Soil Analyzer Specific Styles */
+    .soil-score-container {
+        position: relative;
+        padding: 20px 0;
+    }
+    
+    .soil-score-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: conic-gradient(var(--primary-color) 0%, var(--primary-color) 65%, #f1f1f1 65%, #f1f1f1 100%);
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .soil-score-circle::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        background: white;
+        border-radius: 50%;
+    }
+    
+    .soil-score-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-dark);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .soil-score-label {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .soil-type-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: var(--tertiary-color);
+        color: var(--primary-dark);
+        border-radius: 30px;
+        font-weight: 500;
+        margin-top: 15px;
+    }
+    
+    .soil-parameters-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .param-card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f0f0f0;
+    }
+    
+    .param-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .param-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        color: white;
+    }
+    
+    .param-name {
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    
+    .param-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-top: 5px;
+    }
+    
+    .param-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--dark-color);
+        margin: 10px 0;
+    }
+    
+    .param-range {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    .progress {
+        height: 8px;
+        border-radius: 4px;
+    }
+    
+    .crop-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        margin-bottom: 20px;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .crop-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .crop-header {
+        padding: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+    }
+    
+    .crop-body {
+        padding: 15px;
+    }
+    
+    .crop-suitability {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-top: 5px;
+    }
+    
+    .excellent {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+    
+    .good {
+        background-color: #fff8e1;
+        color: #ffa000;
+    }
+    
+    .poor {
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+    
+    .optimal {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+    
+    .high, .low {
+        background-color: #fff8e1;
+        color: #ffa000;
+    }
+    
+    .very-high, .very-low {
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+    
+    .tip-badge {
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .high-priority {
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+    
+    .medium-priority {
+        background-color: #fff8e1;
+        color: #ffa000;
+    }
+    
+    .low-priority {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+    
+    @media (max-width: 768px) {
+        .soil-parameters-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .soil-score-circle {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .soil-score-value {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const soilForm = document.getElementById('soilAnalysisForm');
+    const loadingPanel = document.getElementById('loadingPanel');
+    const resultsPanel = document.getElementById('resultsPanel');
+    const useExampleBtn = document.getElementById('useExampleData');
+    const resetBtn = document.getElementById('resetAnalysis');
+    const printBtn = document.getElementById('printResults');
+    const saveBtn = document.getElementById('saveResults');
+    
+    // Event listeners
+    soilForm.addEventListener('submit', handleFormSubmit);
+    useExampleBtn.addEventListener('click', populateExampleData);
+    resetBtn.addEventListener('click', resetAnalysis);
+    printBtn.addEventListener('click', printResults);
+    saveBtn.addEventListener('click', saveResults);
+    
+    // Handle form submission
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        
+        const formData = {
+            ph_level: parseFloat(document.getElementById('ph_level').value),
+            nitrogen: parseFloat(document.getElementById('nitrogen').value),
+            phosphorus: parseFloat(document.getElementById('phosphorus').value),
+            potassium: parseFloat(document.getElementById('potassium').value),
+            organic_matter: parseFloat(document.getElementById('organic_matter').value),
+            moisture: parseFloat(document.getElementById('moisture').value)
+        };
+        
+        // Show loading panel
+        loadingPanel.classList.remove('d-none');
+        resultsPanel.classList.add('d-none');
+        
+        // Call API
+        analyzeSoil(formData);
+    }
+    
+    // Analyze soil via API
+    function analyzeSoil(formData) {
+        fetch('/api/soil_health_analysis', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                displayResults(data);
+            } else {
+                alert('Error: ' + data.message);
+                loadingPanel.classList.add('d-none');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+            loadingPanel.classList.add('d-none');
+        });
+    }
+    
+    // Display results
+    function displayResults(data) {
+        // Hide loading, show results
+        loadingPanel.classList.add('d-none');
+        resultsPanel.classList.remove('d-none');
+        
+        // Update soil score and type
+        const scoreValue = document.getElementById('soilScoreValue');
+        const soilType = document.getElementById('soilType');
+        const scoreCircle = document.querySelector('.soil-score-circle');
+        
+        // Animate score counting up
+        animateCounter(scoreValue, 0, data.soil_health_score, 1500);
+        
+        // Update score circle gradient based on score
+        let scorePercentage = Math.min(100, Math.max(0, data.soil_health_score));
+        scoreCircle.style.background = `conic-gradient(var(--primary-color) 0%, var(--primary-color) ${scorePercentage}%, #f1f1f1 ${scorePercentage}%, #f1f1f1 100%)`;
+        
+        // Update soil type
+        soilType.textContent = data.soil_type;
+        
+        // Display parameters
+        displayParameters(data.analysis);
+        
+        // Display crop recommendations
+        displayRecommendations(data.recommendations);
+        
+        // Display improvement tips
+        displayTips(data.improvement_tips);
+    }
+    
+    // Display soil parameters
+    function displayParameters(analysis) {
+        const container = document.getElementById('soilParameters');
+        container.innerHTML = '';
+        
+        // Define parameter icons and colors
+        const paramInfo = {
+            ph_level: { icon: 'vial', color: '#8e24aa' },
+            nitrogen: { icon: 'atom', color: '#43a047' },
+            phosphorus: { icon: 'fire', color: '#fb8c00' },
+            potassium: { icon: 'bolt', color: '#1e88e5' },
+            organic_matter: { icon: 'leaf', color: '#6d4c41' },
+            moisture: { icon: 'tint', color: '#039be5' }
+        };
+        
+        // Parameter display names
+        const paramNames = {
+            ph_level: 'pH Level',
+            nitrogen: 'Nitrogen (N)',
+            phosphorus: 'Phosphorus (P)',
+            potassium: 'Potassium (K)',
+            organic_matter: 'Organic Matter',
+            moisture: 'Soil Moisture'
+        };
+        
+        // Create parameter cards
+        for (const [param, values] of Object.entries(analysis)) {
+            const info = paramInfo[param];
+            const name = paramNames[param];
+            
+            // Create parameter card
+            const paramCard = document.createElement('div');
+            paramCard.className = 'param-card';
+            
+            // Status class mapping
+            let statusClass = 'optimal';
+            if (values.status.includes('Low') || values.status.includes('Dry') || values.status.includes('Acidic')) {
+                statusClass = 'low';
+            } else if (values.status.includes('High') || values.status.includes('Moist') || values.status.includes('Alkaline')) {
+                statusClass = 'high';
+            } else if (values.status.includes('Very Low') || values.status.includes('Very Dry')) {
+                statusClass = 'very-low';
+            } else if (values.status.includes('Very High') || values.status.includes('Waterlogged')) {
+                statusClass = 'very-high';
+            }
+            
+            // Create parameter HTML
+            paramCard.innerHTML = `
+                <div class="param-header">
+                    <div class="param-icon" style="background-color: ${info.color}">
+                        <i class="fas fa-${info.icon}"></i>
+                    </div>
+                    <div>
+                        <h6 class="param-name">${name}</h6>
+                        <span class="param-status ${statusClass}">${values.status}</span>
+                    </div>
+                </div>
+                <div class="param-value">${values.value}</div>
+                <div class="param-range">Ideal Range: ${values.ideal_range}</div>
+                <div class="progress mt-2">
+                    <div class="progress-bar bg-${statusClass === 'optimal' ? 'success' : (statusClass.includes('low') || statusClass.includes('high') ? 'warning' : 'danger')}" 
+                         role="progressbar" style="width: ${getProgressWidth(param, values.value)}%" 
+                         aria-valuenow="${values.value}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+            
+            container.appendChild(paramCard);
+        }
+    }
+    
+    // Calculate progress bar width based on parameter values
+    function getProgressWidth(param, value) {
+        const ranges = {
+            ph_level: { min: 0, max: 14, ideal_min: 6, ideal_max: 7.5 },
+            nitrogen: { min: 0, max: 300, ideal_min: 100, ideal_max: 200 },
+            phosphorus: { min: 0, max: 100, ideal_min: 20, ideal_max: 40 },
+            potassium: { min: 0, max: 400, ideal_min: 100, ideal_max: 300 },
+            organic_matter: { min: 0, max: 10, ideal_min: 3, ideal_max: 6 },
+            moisture: { min: 0, max: 100, ideal_min: 20, ideal_max: 60 }
+        };
+        
+        const range = ranges[param];
+        let percentage = ((value - range.min) / (range.max - range.min)) * 100;
+        
+        // Cap at 100%
+        return Math.min(100, Math.max(0, percentage));
+    }
+    
+    // Display crop recommendations
+    function displayRecommendations(recommendations) {
+        const container = document.getElementById('cropRecommendations');
+        container.innerHTML = '';
+        
+        if (recommendations.length === 0) {
+            container.innerHTML = '<div class="col-12 text-center py-4"><p>No crop recommendations available based on current soil parameters.</p></div>';
+            return;
+        }
+        
+        recommendations.forEach(rec => {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 mb-3';
+            
+            col.innerHTML = `
+                <div class="crop-card">
+                    <div class="crop-header">
+                        <i class="fas fa-seedling me-2"></i>${rec.crop}
+                    </div>
+                    <div class="crop-body">
+                        <span class="crop-suitability ${rec.suitability.toLowerCase()}">${rec.suitability}</span>
+                        <p class="mt-2 mb-0">${rec.notes}</p>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(col);
+        });
+    }
+    
+    // Display improvement tips
+    function displayTips(tips) {
+        const container = document.getElementById('improvementTips');
+        container.innerHTML = '';
+        
+        if (tips.length === 0) {
+            container.innerHTML = '<div class="text-center py-4"><p>No improvement tips available based on current soil parameters.</p></div>';
+            return;
+        }
+        
+        tips.forEach((tip, index) => {
+            const tipItem = document.createElement('div');
+            tipItem.className = 'accordion-item';
+            
+            tipItem.innerHTML = `
+                <h2 class="accordion-header" id="heading${index}">
+                    <button class="accordion-button ${index > 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" 
+                            aria-expanded="${index === 0}" aria-controls="collapse${index}">
+                        <div class="d-flex justify-content-between align-items-center w-100 me-3">
+                            <span>${tip.title}</span>
+                            <span class="tip-badge ${tip.priority.toLowerCase()}-priority">${tip.priority} Priority</span>
+                        </div>
+                    </button>
+                </h2>
+                <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" 
+                     aria-labelledby="heading${index}" data-bs-parent="#improvementTips">
+                    <div class="accordion-body">
+                        <div class="mb-2"><strong>Category:</strong> ${tip.category}</div>
+                        <p>${tip.description}</p>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(tipItem);
+        });
+    }
+    
+    // Populate form with example data
+    function populateExampleData() {
+        document.getElementById('ph_level').value = "6.2";
+        document.getElementById('nitrogen').value = "85";
+        document.getElementById('phosphorus').value = "30";
+        document.getElementById('potassium').value = "150";
+        document.getElementById('organic_matter').value = "2.5";
+        document.getElementById('moisture').value = "40";
+    }
+    
+    // Reset analysis
+    function resetAnalysis() {
+        soilForm.reset();
+        resultsPanel.classList.add('d-none');
+    }
+    
+    // Print results
+    function printResults() {
+        window.print();
+    }
+    
+    // Save results
+    function saveResults() {
+        alert('Results saved successfully!');
+    }
+    
+    // Animate counter
+    function animateCounter(element, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            element.innerHTML = Math.floor(progress * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+});
+</script>
+{% endblock %} 

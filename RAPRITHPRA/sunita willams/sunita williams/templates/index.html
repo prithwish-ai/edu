@@ -1,0 +1,760 @@
+{% extends "base.html" %}
+
+{% block title %}ITI & Agricultural Education AI Assistant - Chat{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-interface {
+        display: flex;
+        gap: 1rem;
+        height: calc(100vh - 200px);
+    }
+    
+    .chat-main {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .chat-sidebar {
+        flex: 1;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 1rem;
+        overflow-y: auto;
+    }
+    
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+    
+    .chat-input {
+        padding: 1rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .message-input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: none;
+    }
+    
+    .voice-input {
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .voice-input:hover {
+        background-color: #2980b9;
+    }
+    
+    .voice-input.recording {
+        background-color: var(--accent-color);
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .topic-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .topic-section h5 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .topic-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .topic-item {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .topic-item:hover {
+        background-color: #e9ecef;
+    }
+    
+    .progress-section {
+        margin-top: 2rem;
+    }
+    
+    .progress-card {
+        margin-bottom: 1rem;
+    }
+    
+    .progress-title {
+        font-size: 0.9rem;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .progress-value {
+        font-size: 0.8rem;
+        color: var(--secondary-color);
+    }
+    
+    .quick-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .quick-action-btn {
+        flex: 1;
+        padding: 0.5rem;
+        text-align: center;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .quick-action-btn:hover {
+        background-color: var(--secondary-color);
+        color: white;
+        border-color: var(--secondary-color);
+    }
+    
+    .plant-disease-upload {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    
+    .market-data-section {
+        margin-top: 1rem;
+    }
+    
+    .market-data-form {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .message {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        max-width: 80%;
+        position: relative;
+    }
+    
+    .user-message {
+        background-color: #e3f2fd;
+        margin-left: auto;
+        border-bottom-right-radius: 0;
+    }
+    
+    .assistant-message {
+        background-color: #f1f1f1;
+        margin-right: auto;
+        border-bottom-left-radius: 0;
+    }
+    
+    .voice-indicator {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--accent-color);
+    }
+    
+    .voice-dots {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+    }
+    
+    .voice-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background-color: var(--accent-color);
+    }
+    
+    .voice-dot:nth-child(1) {
+        animation: voice-wave 1.5s infinite;
+    }
+    
+    .voice-dot:nth-child(2) {
+        animation: voice-wave 1.5s infinite 0.2s;
+    }
+    
+    .voice-dot:nth-child(3) {
+        animation: voice-wave 1.5s infinite 0.4s;
+    }
+    
+    @keyframes voice-wave {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.5); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-interface">
+    <!-- Main Chat Area -->
+    <div class="chat-main">
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be dynamically added here -->
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner-border text-primary loading-spinner" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="chat-input">
+            <textarea class="message-input" id="messageInput" placeholder="Type your message here..." rows="1"></textarea>
+            <button class="voice-input" id="voiceInput">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="btn btn-primary" id="sendMessage">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="chat-sidebar">
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="quick-action-btn" id="generateQuiz">
+                <i class="fas fa-question-circle me-1"></i>Quiz
+            </button>
+            <button class="quick-action-btn" id="studyMaterials">
+                <i class="fas fa-book me-1"></i>Study
+            </button>
+        </div>
+        
+        <!-- Topics -->
+        <div class="topic-section">
+            <h5>Topics</h5>
+            <ul class="topic-list">
+                {% for category, topics in topics.items() %}
+                    <li class="topic-category">
+                        <strong>{{ category.replace('_', ' ').title() }}</strong>
+                        <ul class="topic-list">
+                            {% for topic in topics %}
+                                <li class="topic-item" data-category="{{ category }}" data-topic="{{ topic }}">
+                                    {{ topic }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <h5>Your Progress</h5>
+            <div id="progressContainer">
+                <!-- Progress cards will be dynamically added here -->
+            </div>
+        </div>
+        
+        <!-- Plant Disease Detection -->
+        <div class="plant-disease-upload">
+            <h5>Plant Disease Detection</h5>
+            <form id="plantDiseaseForm">
+                <div class="mb-3">
+                    <input type="file" class="form-control" id="plantImage" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-leaf me-1"></i>Analyze Plant
+                </button>
+            </form>
+        </div>
+        
+        <!-- Market Data -->
+        <div class="market-data-section">
+            <h5>Market Data</h5>
+            <form id="marketDataForm" class="market-data-form">
+                <input type="text" class="form-control" id="cropName" placeholder="Enter crop name">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-line me-1"></i>Check
+                </button>
+            </form>
+            <div id="marketDataResult">
+                <!-- Market data will be displayed here -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Chat functionality
+    $(document).ready(function() {
+        const chatMessages = $('#chatMessages');
+        const messageInput = $('#messageInput');
+        const sendButton = $('#sendMessage');
+        const voiceButton = $('#voiceInput');
+        const loadingIndicator = $('#loadingIndicator');
+        const mainVoiceBtn = $('#voiceControlBtn');
+        
+        // Auto-resize textarea
+        messageInput.on('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Send message
+        function sendMessage() {
+            const message = messageInput.val().trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            messageInput.val('');
+            messageInput.css('height', 'auto');
+            
+            // Show loading indicator
+            loadingIndicator.show();
+            
+            // Send to server
+            $.ajax({
+                url: '/chat',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ message: message }),
+                success: function(response) {
+                    addMessage(response.response, 'assistant');
+                    
+                    // If voice is enabled, read response aloud
+                    if ($('#voiceToggle').is(':checked')) {
+                        speakResponse(response.response);
+                    }
+                    
+                    // Show YouTube resources if available
+                    if (response.youtube_resources && response.youtube_resources.length > 0) {
+                        showYouTubeResources(response.youtube_resources);
+                    }
+                },
+                error: function(xhr) {
+                    addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
+                },
+                complete: function() {
+                    loadingIndicator.hide();
+                }
+            });
+        }
+        
+        // Add message to chat
+        function addMessage(text, type) {
+            const messageDiv = $('<div>')
+                .addClass('message')
+                .addClass(type === 'user' ? 'user-message' : 'assistant-message');
+            
+            const messageText = $('<div>').text(text);
+            
+            // Add voice indicator for assistant messages if voice is enabled
+            if (type === 'assistant' && $('#voiceToggle').is(':checked')) {
+                const voiceIndicator = $('<div>')
+                    .addClass('voice-indicator')
+                    .append(
+                        $('<div>').addClass('voice-dots')
+                            .append($('<div>').addClass('voice-dot'))
+                            .append($('<div>').addClass('voice-dot'))
+                            .append($('<div>').addClass('voice-dot'))
+                    );
+                messageDiv.append(messageText, voiceIndicator);
+            } else {
+                messageDiv.append(messageText);
+            }
+            
+            chatMessages.append(messageDiv);
+            chatMessages.scrollTop(chatMessages[0].scrollHeight);
+        }
+        
+        // Speak response using Web Speech API
+        function speakResponse(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Apply voice settings
+                const voiceType = $('#voiceSelect').val();
+                utterance.rate = parseFloat($('#voiceSpeed').val() || 1);
+                utterance.pitch = parseFloat($('#voicePitch').val() || 1);
+                
+                // Try to find a matching voice
+                const voices = speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    if (voiceType === 'male') {
+                        utterance.voice = voices.find(voice => voice.name.includes('Male')) || voices[0];
+                    } else if (voiceType === 'female') {
+                        utterance.voice = voices.find(voice => voice.name.includes('Female')) || voices[0];
+                    }
+                }
+                
+                speechSynthesis.speak(utterance);
+                
+                // Toggle voice dots while speaking
+                $('.voice-indicator').show();
+                utterance.onend = function() {
+                    $('.voice-indicator').hide();
+                };
+            }
+        }
+        
+        // Event listeners
+        sendButton.click(sendMessage);
+        messageInput.keypress(function(e) {
+            if (e.which === 13 && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Initialize speech synthesis voices
+        if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = function() {
+                speechSynthesis.getVoices();
+            };
+        }
+        
+        // Voice input in chat interface
+        let isRecording = false;
+        voiceButton.click(function() {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        });
+        
+        // Sync with main voice control button
+        mainVoiceBtn.on('click', function() {
+            // If the main button is clicked and we're in the chat interface,
+            // let's update our chat interface button to match
+            setTimeout(() => {
+                if ($(this).hasClass('listening')) {
+                    voiceButton.addClass('recording');
+                    isRecording = true;
+                } else {
+                    voiceButton.removeClass('recording');
+                    isRecording = false;
+                }
+            }, 100);
+        });
+        
+        function startRecording() {
+            isRecording = true;
+            voiceButton.addClass('recording').html('<i class="fas fa-stop"></i>');
+            
+            // Trigger the main voice button
+            mainVoiceBtn.click();
+            
+            // We'll listen for results from the main voice functionality
+            // The results will be shown in a toast by the main voice control
+        }
+        
+        function stopRecording() {
+            isRecording = false;
+            voiceButton.removeClass('recording').html('<i class="fas fa-microphone"></i>');
+            
+            // If the main button is still in listening mode, trigger it to stop
+            if (mainVoiceBtn.hasClass('listening')) {
+                mainVoiceBtn.click();
+            }
+        }
+        
+        // Show YouTube resources
+        function showYouTubeResources(videos) {
+            if (!videos || videos.length === 0) return;
+            
+            const resourcesDiv = $('<div>')
+                .addClass('youtube-resources')
+                .css({
+                    'margin-top': '1rem',
+                    'padding': '1rem',
+                    'background': '#f8f9fa',
+                    'border-radius': '10px'
+                });
+            
+            const heading = $('<h6>').text('Recommended Videos');
+            resourcesDiv.append(heading);
+            
+            const videosList = $('<div>').addClass('videos-list');
+            
+            videos.slice(0, 3).forEach(video => {
+                const videoItem = $('<div>')
+                    .css({
+                        'margin-bottom': '0.5rem',
+                        'padding': '0.5rem',
+                        'background': 'white',
+                        'border-radius': '5px'
+                    });
+                
+                const videoLink = $('<a>')
+                    .attr('href', `https://www.youtube.com/watch?v=${video.id}`)
+                    .attr('target', '_blank')
+                    .text(video.title)
+                    .css({
+                        'color': 'var(--primary-color)',
+                        'font-weight': 'bold',
+                        'text-decoration': 'none'
+                    });
+                
+                const channelInfo = $('<small>')
+                    .addClass('text-muted')
+                    .css('display', 'block')
+                    .text(`By ${video.channel}`);
+                
+                videoItem.append(videoLink, channelInfo);
+                videosList.append(videoItem);
+            });
+            
+            resourcesDiv.append(videosList);
+            
+            // Add a message with the resources
+            const messageDiv = $('<div>')
+                .addClass('message assistant-message')
+                .append(
+                    $('<div>').text('I found some helpful videos for you:'),
+                    resourcesDiv
+                );
+                
+            chatMessages.append(messageDiv);
+            chatMessages.scrollTop(chatMessages[0].scrollHeight);
+        }
+        
+        // Topic selection
+        $('.topic-item').click(function() {
+            const category = $(this).data('category');
+            const topic = $(this).data('topic');
+            const message = `Tell me about ${topic} in ${category.replace('_', ' ')}.`;
+            messageInput.val(message);
+            sendMessage();
+        });
+        
+        // Quick actions
+        $('#generateQuiz').click(function() {
+            const selectedTopic = $('.topic-item.selected');
+            if (selectedTopic.length) {
+                const category = selectedTopic.data('category');
+                const topic = selectedTopic.data('topic');
+                
+                $.ajax({
+                    url: '/quiz',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        topic: category,
+                        subtopic: topic,
+                        difficulty: 'medium',
+                        num_questions: 5
+                    }),
+                    success: function(response) {
+                        if (!response.error) {
+                            showQuiz(response);
+                        }
+                    }
+                });
+            } else {
+                alert('Please select a topic first');
+            }
+        });
+        
+        $('#studyMaterials').click(function() {
+            const selectedTopic = $('.topic-item.selected');
+            if (selectedTopic.length) {
+                const category = selectedTopic.data('category');
+                const topic = selectedTopic.data('topic');
+                
+                $.ajax({
+                    url: '/study_materials',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        topic: category,
+                        subtopic: topic
+                    }),
+                    success: function(response) {
+                        if (!response.error) {
+                            showStudyMaterials(response);
+                        }
+                    }
+                });
+            } else {
+                alert('Please select a topic first');
+            }
+        });
+        
+        // Plant disease detection
+        $('#plantDiseaseForm').submit(function(e) {
+            e.preventDefault();
+            const fileInput = $('#plantImage')[0];
+            if (!fileInput.files.length) {
+                alert('Please select an image');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            
+            $.ajax({
+                url: '/plant_disease',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.result) {
+                        showPlantDiseaseResult(response.result);
+                    }
+                }
+            });
+        });
+        
+        // Market data
+        $('#marketDataForm').submit(function(e) {
+            e.preventDefault();
+            const crop = $('#cropName').val().trim();
+            if (!crop) {
+                alert('Please enter a crop name');
+                return;
+            }
+            
+            $.ajax({
+                url: '/market_data',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ crop: crop }),
+                success: function(response) {
+                    if (!response.error) {
+                        showMarketData(response);
+                    }
+                }
+            });
+        });
+        
+        // Load progress
+        function loadProgress() {
+            $.get('/progress', function(response) {
+                if (!response.error) {
+                    updateProgressDisplay(response);
+                }
+            });
+        }
+        
+        // Update progress display
+        function updateProgressDisplay(progress) {
+            const container = $('#progressContainer');
+            container.empty();
+            
+            Object.entries(progress.topics).forEach(([topic, data]) => {
+                const card = $('<div>')
+                    .addClass('card progress-card')
+                    .append(
+                        $('<div>')
+                            .addClass('card-body')
+                            .append(
+                                $('<div>')
+                                    .addClass('progress-title')
+                                    .text(topic.replace('_', ' ').title()),
+                                $('<div>')
+                                    .addClass('progress')
+                                    .append(
+                                        $('<div>')
+                                            .addClass('progress-bar')
+                                            .css('width', `${data.progress}%`)
+                                            .attr('role', 'progressbar')
+                                            .attr('aria-valuenow', data.progress)
+                                            .attr('aria-valuemin', 0)
+                                            .attr('aria-valuemax', 100)
+                                    ),
+                                $('<div>')
+                                    .addClass('progress-value')
+                                    .text(`${data.progress}% complete`)
+                            )
+                    );
+                container.append(card);
+            });
+        }
+        
+        // Initial load
+        loadProgress();
+        
+        // Helper functions for displaying results
+        function showQuiz(quiz) {
+            let message = `Here's a quiz about ${quiz.topic} - ${quiz.subtopic}:\n\n`;
+            quiz.questions.forEach((q, i) => {
+                message += `${i + 1}. ${q.question}\n`;
+                Object.entries(q.options).forEach(([key, value]) => {
+                    message += `   ${key}: ${value}\n`;
+                });
+                message += '\n';
+            });
+            addMessage(message, 'assistant');
+        }
+        
+        function showStudyMaterials(materials) {
+            let message = `Here are your study materials:\n\n`;
+            message += materials.materials;
+            
+            addMessage(message, 'assistant');
+            
+            // If there are video resources, show them separately
+            if (materials.videos && materials.videos.length) {
+                showYouTubeResources(materials.videos);
+            }
+        }
+        
+        function showPlantDiseaseResult(result) {
+            const message = `Plant Disease Analysis:\n\n${result}`;
+            addMessage(message, 'assistant');
+        }
+        
+        function showMarketData(data) {
+            let message = `Market Data for ${data.crop}:\n\n`;
+            message += `Current Price: ₹${data.price}\n`;
+            message += `Demand: ${data.demand}\n`;
+            message += `Location: ${data.location || 'All Regions'}\n`;
+            message += `Last Updated: ${data.timestamp}`;
+            addMessage(message, 'assistant');
+        }
+        
+        // Welcome message
+        setTimeout(() => {
+            addMessage("Hello! I'm your ITI & Agricultural Education Assistant. How can I help you today?", 'assistant');
+        }, 500);
+    });
+</script>
+{% endblock %} 

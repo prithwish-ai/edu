@@ -1,0 +1,172 @@
+{
+  "engineering": {
+    "Fitter": {
+      "duration": "1 year",
+      "eligibility": "10th pass",
+      "description": "Learn to fit and assemble structural frameworks and housings using hand tools and power tools.",
+      "career_prospects": [
+        "Manufacturing",
+        "Automobile",
+        "Production",
+        "Maintenance"
+      ],
+      "skills_gained": [
+        "Blueprint reading",
+        "Precision measurement",
+        "Hand tools",
+        "Assembly"
+      ],
+      "avg_salary": "₹15,000 - ₹25,000 per month",
+      "difficulty": "Medium"
+    },
+    "Turner": {
+      "duration": "1 year",
+      "eligibility": "10th pass",
+      "description": "Learn to operate lathe machines to create precision components by removing metal.",
+      "career_prospects": [
+        "Manufacturing",
+        "Tool rooms",
+        "Production units"
+      ],
+      "skills_gained": [
+        "Lathe operation",
+        "Precision measurement",
+        "Blueprint reading"
+      ],
+      "avg_salary": "₹15,000 - ₹25,000 per month",
+      "difficulty": "Medium"
+    },
+    "Electrician": {
+      "duration": "2 years",
+      "eligibility": "10th pass",
+      "description": "Learn to install, maintain, and repair electrical systems in residential, commercial, and industrial settings.",
+      "career_prospects": [
+        "Power companies",
+        "Industries",
+        "Self-employment",
+        "Maintenance"
+      ],
+      "skills_gained": [
+        "Circuit design",
+        "Wiring",
+        "Troubleshooting",
+        "Safety protocols"
+      ],
+      "avg_salary": "₹15,000 - ₹30,000 per month",
+      "difficulty": "Medium"
+    },
+    "Mechanic (Motor Vehicle)": {
+      "duration": "2 years",
+      "eligibility": "10th pass",
+      "description": "Learn to repair and maintain vehicles including engines, transmissions, and electrical systems.",
+      "career_prospects": [
+        "Automobile industry",
+        "Service stations",
+        "Self-employment"
+      ],
+      "skills_gained": [
+        "Engine repair",
+        "Diagnostics",
+        "Electrical systems",
+        "Preventive maintenance"
+      ],
+      "avg_salary": "₹15,000 - ₹30,000 per month",
+      "difficulty": "Medium"
+    },
+    "COPA (Computer Operator & Programming Assistant)": {
+      "duration": "1 year",
+      "eligibility": "10th pass",
+      "description": "Learn computer applications, programming, and office automation.",
+      "career_prospects": [
+        "IT companies",
+        "Office administration",
+        "Data entry",
+        "Software support"
+      ],
+      "skills_gained": [
+        "Office software",
+        "Basic programming",
+        "Data management",
+        "Computer hardware"
+      ],
+      "avg_salary": "₹12,000 - ₹25,000 per month",
+      "difficulty": "Low"
+    }
+  },
+  "non_engineering": {
+    "Dress Making": {
+      "duration": "1 year",
+      "eligibility": "8th pass",
+      "description": "Learn to design and create various types of clothing and garments.",
+      "career_prospects": [
+        "Garment industry",
+        "Boutiques",
+        "Self-employment"
+      ],
+      "skills_gained": [
+        "Pattern making",
+        "Cutting",
+        "Sewing",
+        "Design basics"
+      ],
+      "avg_salary": "₹10,000 - ₹20,000 per month",
+      "difficulty": "Low"
+    },
+    "Digital Photography": {
+      "duration": "1 year",
+      "eligibility": "10th pass",
+      "description": "Learn digital photography techniques, editing, and studio management.",
+      "career_prospects": [
+        "Photography studios",
+        "Media",
+        "Self-employment",
+        "E-commerce"
+      ],
+      "skills_gained": [
+        "Camera operation",
+        "Lighting",
+        "Composition",
+        "Photo editing"
+      ],
+      "avg_salary": "₹15,000 - ₹30,000 per month",
+      "difficulty": "Low"
+    }
+  },
+  "advanced": {
+    "CNC Programming": {
+      "duration": "1 year",
+      "eligibility": "ITI in Mechanical trade",
+      "description": "Learn to program and operate Computer Numerical Control machines.",
+      "career_prospects": [
+        "Manufacturing",
+        "Tool rooms",
+        "Production units"
+      ],
+      "skills_gained": [
+        "G-code programming",
+        "CAD/CAM",
+        "Precision machining"
+      ],
+      "avg_salary": "₹20,000 - ₹40,000 per month",
+      "difficulty": "High"
+    },
+    "Mechatronics": {
+      "duration": "1 year",
+      "eligibility": "ITI in Electrical/Electronics/Mechanical",
+      "description": "Learn integration of mechanical, electronic, and computer systems.",
+      "career_prospects": [
+        "Automation industry",
+        "Manufacturing",
+        "Robotics"
+      ],
+      "skills_gained": [
+        "PLC programming",
+        "Hydraulics",
+        "Pneumatics",
+        "Robotics"
+      ],
+      "avg_salary": "₹25,000 - ₹45,000 per month",
+      "difficulty": "High"
+    }
+  }
+}

@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InternHub - Internships & Training</title>
+    <style>
+        /* Reset and Base Styles */
+        :root {
+            --primary-green: #2e7d32;
+            --secondary-green: #4caf50;
+            --accent-green: #8bc34a;
+            --earth-brown: #5d4037;
+            --light-brown: #8d6e63;
+            --wheat: #f5deb3;
+            --cream: #fff8e1;
+            --light-bg: #f8f9f0;
+            --dark-text: #263238;
+            --light-text: #f5f5f5;
+            --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: white;
+            border: 1px solid var(--primary-green);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-green);
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-green);
+            border: 1px solid var(--primary-green);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(139, 195, 74, 0.1);
+            box-shadow: var(--box-shadow);
+            transform: translateY(-2px);
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .logo span {
+            color: var(--accent-green);
+        }
+
+        .main-nav ul {
+            display: flex;
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-right > * {
+            margin-left: 15px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.8), rgba(139, 195, 74, 0.7)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80') no-repeat center/cover;
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url('https://www.svgrepo.com/show/262577/wheat.svg') repeat;
+            background-size: 100px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+
+        .search-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            min-width: 200px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-green);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.2);
+        }
+
+        .search-box button {
+            padding: 12px 25px;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .search-box button:hover {
+            background-color: var(--secondary-green);
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        /* Categories Section */
+        .categories {
+            padding: 60px 0;
+            background-color: var(--light-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .categories::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.svgrepo.com/show/262577/wheat.svg') repeat;
+            background-size: 80px;
+            opacity: 0.06;
+            z-index: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-green), var(--accent-green));
+            border-radius: 3px;
+        }
+
+        .section-title p {
+            color: var(--earth-brown);
+            font-size: 1.1rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-green);
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .category-img {
+            height: 150px;
+            background-color: rgba(235, 245, 233, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .category-img {
+            background-color: rgba(139, 195, 74, 0.1);
+        }
+
+        .category-img img {
+            max-width: 70px;
+            max-height: 70px;
+            transition: all 0.3s ease;
+            filter: invert(38%) sepia(93%) saturate(1033%) hue-rotate(93deg) brightness(94%) contrast(103%);
+        }
+
+        .category-card:hover .category-img img {
+            transform: scale(1.1);
+        }
+
+        .category-info {
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .category-info h3 {
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+            color: var(--primary-green);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .category-info h3 {
+            color: var(--secondary-green);
+        }
+
+        .category-info p {
+            color: var(--light-brown);
+            font-size: 0.95rem;
+        }
+
+        /* Featured Internships */
+        .featured {
+            padding: 60px 0;
+            background-color: white;
+            position: relative;
+        }
+
+        .featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+        }
+
+        .internship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .internship-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .internship-card:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-5px);
+            border-color: var(--accent-green);
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background-color: rgba(235, 245, 233, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 1px solid rgba(139, 195, 74, 0.2);
+        }
+
+        .company-logo img {
+            filter: invert(38%) sepia(93%) saturate(1033%) hue-rotate(93deg) brightness(94%) contrast(103%);
+        }
+
+        .internship-title {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .company-name {
+            color: var(--light-brown);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .internship-details {
+            margin: 15px 0;
+            border-top: 1px dashed rgba(139, 195, 74, 0.3);
+            padding-top: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .detail-icon {
+            width: 25px;
+            margin-right: 12px;
+            color: var(--accent-green);
+            opacity: 0.9;
+        }
+
+        .detail-text {
+            font-size: 0.95rem;
+            color: var(--dark-text);
+        }
+
+        .internship-footer {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .posted-date {
+            font-size: 0.85rem;
+            color: var(--light-brown);
+        }
+
+        /* Training Section */
+        .training {
+            padding: 60px 0;
+            background-color: var(--light-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .training::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.svgrepo.com/show/262577/wheat.svg') repeat;
+            background-size: 80px;
+            opacity: 0.05;
+            transform: rotate(5deg);
+            z-index: 0;
+        }
+
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .training-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .training-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .training-img {
+            height: 180px;
+            background-color: var(--cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .training-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.4));
+            z-index: 1;
+        }
+
+        .training-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .training-card:hover .training-img img {
+            transform: scale(1.1);
+        }
+
+        .training-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .training-info h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            color: var(--primary-green);
+            transition: all 0.3s ease;
+        }
+
+        .training-card:hover .training-info h3 {
+            color: var(--secondary-green);
+        }
+
+        .training-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(139, 195, 74, 0.3);
+            padding-bottom: 12px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--light-brown);
+        }
+
+        .meta-icon {
+            margin-right: 5px;
+            color: var(--accent-green);
+        }
+
+        .training-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: var(--primary-green);
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: var(--light-brown);
+            font-size: 0.95rem;
+            margin-right: 8px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 60px 0;
+            background-color: white;
+        }
+
+        .testimonials-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 60px;
+            color: #008BDC;
+            opacity: 0.2;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f0f7fc;
+            margin-right: 15px;
+        }
+
+        .author-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .author-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-green);
+            color: white;
+            padding: 50px 0 20px;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--cream);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-green);
+            border-radius: 3px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .footer-links a::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-green);
+            padding-left: 20px;
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-green);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .main-nav {
+                margin-top: 15px;
+                width: 100%;
+            }
+            
+            .main-nav ul {
+                flex-direction: column;
+            }
+            
+            .main-nav li {
+                margin: 10px 0;
+            }
+            
+            .nav-right {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-box input, .search-box button {
+                width: 100%;
+            }
+        }
+         /* Chatbot styles */
+    .chatbot-container {
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow);
+    }
+
+    .chatbot-header {
+      background-color: var(--primary-color);
+    }
+
+    .chatbot-message.bot {
+      background-color: var(--card-bg);
+    }
+
+    .chatbot-message.user {
+      background-color: var(--primary-color);
+    }
+
+    /* Responsive adjustment for theme toggle */
+    @media (max-width: 768px) {
+      .theme-toggle {
+        margin: 10px 0;
+      }
+    }
+    /* Chatbot */
+.chatbot-container {
+  position: fixed;
+  bottom: 80px;
+  right: 25px;
+  width: 350px;
+  height: 450px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: var(--hover-shadow);
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.chatbot-header {
+  background-color: var(--primary-green);
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.chatbot-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.close-chatbot {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.chatbot-messages {
+  height: 340px;
+  padding: 15px;
+  overflow-y: auto;
+  background-color: var(--cream-light);
+  background-image: url('https://www.svgrepo.com/show/262577/wheat.svg');
+  background-size: 100px;
+  background-repeat: repeat;
+  background-position: center;
+  background-blend-mode: overlay;
+  background-opacity: 0.05;
+}
+
+.chat-message {
+  margin-bottom: 15px;
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  position: relative;
+  clear: both;
+}
+
+.bot-message {
+  background-color: #F0F2F5;
+  float: left;
+  border-bottom-left-radius: 5px;
+  color: var(--dark-text);
+}
+
+.user-message {
+  background-color: var(--primary-green);
+  color: white;
+  float: right;
+  border-bottom-right-radius: 5px;
+}
+
+.chatbot-input {
+  padding: 10px 15px;
+  background-color: white;
+  border-top: 1px solid var(--light-border);
+  display: flex;
+}
+
+.chatbot-input input {
+  flex: 1;
+  border: 1px solid var(--light-border);
+  border-radius: 25px;
+  padding: 8px 15px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.chatbot-input input:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(139, 195, 74, 0.2);
+}
+
+.chatbot-input button {
+  background-color: var(--primary-green);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chatbot-input button:hover {
+  background-color: var(--secondary-green);
+  transform: scale(1.05);
+}
+
+.chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 25px;
+  background-color: var(--primary-green);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.chatbot-toggle:hover {
+  background-color: var(--secondary-green);
+  transform: scale(1.1);
+  box-shadow: var(--hover-shadow);
+}
+
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">Edu<span>Spark</span></div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="books.html">Books</a></li>
+                    <li><a href="#"> Trainings</a></li>
+                   <li><a href="jobopportunities.html">Jobs</a></li>
+                   <li><a href="chat.html">Guide</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-right">
+                <a href="chatbot.html" class="btn btn-outline">eduAI</a>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="signup.html" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Dream  & Trainings</h1>
+            <p> Develop in-demand skills with our online trainings.</p>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="What are you looking for? (e.g., Marketing, Data Science)">
+                    <input type="text" placeholder="Location">
+                    <button>Search</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Popular Categories</h2>
+                <p>Explore internships in trending fields</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-img">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='none' stroke='%23008BDC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'%3E%3C/path%3E%3Cpath d='M9.8 12.6l1.2 1.2L15 10'%3E%3C/path%3E%3C/svg%3E" alt="Web Development">
+                    </div>
+                    <div class="category-info">
+                        <h3>Web Development</h3>
+                        <p>2,400+ opportunities</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-img">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='none' stroke='%23008BDC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='8' y1='21' x2='16' y2='21'%3E%3C/line%3E%3Cline x1='12' y1='17' x2='12' y2='21'%3E%3C/line%3E%3C/svg%3E" alt="Digital Marketing">
+                    </div>
+                    <div class="category-info">
+                        <h3>Digital Marketing</h3>
+                        <p>1,800+ opportunities</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-img">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='none' stroke='%23008BDC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'%3E%3C/path%3E%3Cpath d='M18.7 8l-5.1 5.2-2.8-2.7L7 14.3'%3E%3C/path%3E%3C/svg%3E" alt="Data Science">
+                    </div>
+                    <div class="category-info">
+                        <h3>Data Science</h3>
+                        <p>1,500+ opportunities</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-img">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='none' stroke='%23008BDC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'%3E%3C/path%3E%3Cline x1='9' y1='9' x2='9.01' y2='9'%3E%3C/line%3E%3Cline x1='15' y1='9' x2='15.01' y2='9'%3E%3C/line%3E%3C/svg%3E" alt="Content Writing">
+                    </div>
+                    <div class="category-info">
+                        <h3>Content Writing</h3>
+                        <p>2,100+ opportunities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Internships -->
+    <section class="featured">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Internships</h2>
+                <p>Apply to these trending internships before they're gone</p>
+            </div>
+            <div class="internship-grid">
+                <div class="internship-card">
+                    <div class="company-logo">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24' fill='none' stroke='%23008BDC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='16 18 22 12 16 6'%3E%3C/polyline%3E%3Cpolyline points='8 6 2 12 8 18'%3E%3C/polyline%3E%3C/svg%3E" alt="TechCorp">
+                    </div>
+                    <h3 class="internship-title">Frontend Developer Intern</h3>
+                    <p class="company-name">TechCorp Solutions</p>
+                    <div class="internship-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">💰</span>
+                            <span class="detail-text">₹15,000-20,000 /month</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span class="detail-text">Bangalore (Remote)</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⏱️</span>
+                            <span class="detail-text">3 months</span>
+                        </div>
+                    </div>
+                    <div class="internship-footer">
+                        <span class="posted-date">Posted 2 days ago</span>
+                        <a href="#" class="btn btn-outline">Apply Now</a>
+                    </div>
+                </div>
+                <div class="internship-card">
+                    <div class="company-logo">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24' fill='none' stroke='%23008BDC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'%3E%3C/path%3E%3Cline x1='9' y1='9' x2='9.01' y2='9'%3E%3C/line%3E%3Cline x1='15' y1='9' x2='15.01' y2='9'%3E%3C/line%3E%3C/svg%3E" alt="MarketWiz">
+                    </div>
+                    <h3 class="internship-title">Digital Marketing Intern</h3>
+                    <p class="company-name">MarketWiz Inc.</p>
+                    <div class="internship-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">💰</span>
+                            <span class="detail-text">₹10,000-15,000 /month</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span class="detail-text">Delhi</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⏱️</span>
+                            <span class="detail-text">6 months</span>
+                        </div>
+                    </div>
+                    <div class="internship-footer">
+                        <span class="posted-date">Posted 1 day ago</span>
+                        <a href="#" class="btn btn-outline">Apply Now</a>
+                    </div>
+                </div>
+                <div class="internship-card">
+                    <div class="company-logo">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24' fill='none' stroke='%23008BDC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E" alt="DataNext">
+                    </div>
+                    <h3 class="internship-title">Data Analyst Intern</h3>
+                    <p class="company-name">DataNext Analytics</p>
+                    <div class="internship-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">💰</span>
+                            <span class="detail-text">₹12,000-18,000 /month</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span class="detail-text">Hyderabad (Remote)</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⏱️</span>
+                            <span class="detail-text">4 months</span>
+                        </div>
+                    </div>
+                    <div class="internship-footer">
+                        <span class="posted-date">Posted 3 days ago</span>
+                        <a href="#" class="btn btn-outline">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Section -->
+    <section class="training">
+        <div class="container">
+            <div class="section-title">
+                <h2>Online Trainings</h2>
+                <p>Upgrade your skills with industry-relevant courses</p>
+            </div>
+            <div class="training-grid">
+                <div class="training-card">
+                    <div class="training-img">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 500' preserveAspectRatio='none'%3E%3Crect fill='%23f0f7fc' width='800' height='500'%3E%3C/rect%3E%3Cg fill='%23008BDC' fill-opacity='0.1'%3E%3Ccircle cx='400' cy='250' r='200'%3E%3C/circle%3E%3Ctext x='400' y='270' text-anchor='middle' font-family='Arial' font-size='60' font-weight='bold' fill='%23008BDC'%3EWeb Dev%3C/text%3E%3C/g%3E%3C/svg%3E" alt="Web Development">
+                    </div>
+                    <div class="training-info">
+                        <h3>Full Stack Web Development</h3>
+                        <div class="training-meta">
+                            <span class="meta-item">
+                                <span class="meta-icon">📅</span>
+                                <span>8 weeks</span>
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-icon">👨‍💻</span>
+                                <span>15 projects</span>
+                            </span>
+                        </div>
+                        <p>Learn HTML, CSS, JavaScript, React, Node.js, Express and MongoDB to become a full stack developer.</p>
+                        <div class="training-price">
+                            <div>
+                                <span class="price-original">₹12,999</span>
+                                <span class="price">₹8,499</span>
+                            </div>
+                            <a href="#" class="btn btn-outline">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="training-card">
+                    <div class="training-img">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 500' preserveAspectRatio='none'%3E%3Crect fill='%23f0f7fc' width='800' height='500'%3E%3C/rect%3E%3Cg fill='%23008BDC' fill-opacity='0.1'%3E%3Ccircle cx='400' cy='250' r='200'%3E%3C/circle%3E%3Ctext x='400' y='270' text-anchor='middle' font-family='Arial' font-size='60' font-weight='bold' fill='%23008BDC'%3EData%3C/text%3E%3C/g%3E%3C/svg%3E" alt="Data Science">
+                    </div>
+                    <div class="training-info">
+                        <h3>Data Science Bootcamp</h3>
+                        <div class="training-meta">
+                            <span class="meta-item">
+                                <span class="meta-icon">📅</span>
+                                <span>10 weeks</span>
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-icon">👨‍💻</span>
+                                <span>15 projects</span>
+                            </span>
+                        </div>
+                        <p>Learn HTML, CSS, JavaScript, React, Node.js, Express and MongoDB to become a full stack developer.</p>
+                        <div class="training-price">
+                            <div>
+                                <span class="price-original">₹12,999</span>
+                                <span class="price">₹8,499</span>
+                            </div>
+                            <a href="#" class="btn btn-outline">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="training-card">
+                    <div class="training-img">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 500' preserveAspectRatio='none'%3E%3Crect fill='%23f0f7fc' width='800' height='500'%3E%3C/rect%3E%3Cg fill='%23008BDC' fill-opacity='0.1'%3E%3Ccircle cx='400' cy='250' r='200'%3E%3C/circle%3E%3Ctext x='400' y='270' text-anchor='middle' font-family='Arial' font-size='60' font-weight='bold' fill='%23008BDC'%3EData%3C/text%3E%3C/g%3E%3C/svg%3E" alt="Data Science">
+                    </div>
+                    <div class="training-info">
+                        <h3>Data Science Bootcamp</h3>
+                        <div class="training-meta">
+                            <span class="meta-item">
+                                <span class="meta-icon">📅</span>
+                                <span>10 weeks</span>
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-icon">👨‍💻</span>
+                                <span>15 projects</span>
+                            </span>
+                        </div>
+                        <p>Learn HTML, CSS, JavaScript, React, Node.js, Express and MongoDB to become a full stack developer.</p>
+                        <div class="training-price">
+                            <div>
+                                <span class="price-original">₹12,999</span>
+                                <span class="price">₹8,499</span>
+                            </div>
+                            <a href="#" class="btn btn-outline">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-header">
+            <h3><i class="fas fa-seedling"></i> AgriLearn Assistant</h3>
+            <button class="close-chatbot"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chatbot-messages">
+            <div class="chat-message bot-message">
+                Hello! I'm your AgriLearn assistant. How can I help you today with agricultural courses or internships?
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" placeholder="Type your message here...">
+            <button><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button class="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Our Story</a></li>
+                        <li><a href="#">Our Team</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>For Students</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Browse Internships</a></li>
+                        <li><a href="#">Explore Courses</a></li>
+                        <li><a href="#">Student Benefits</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                        <li><a href="#">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>For Companies</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Post Internships</a></li>
+                        <li><a href="#">Hire Talent</a></li>
+                        <li><a href="#">Enterprise Solutions</a></li>
+                        <li><a href="#">Partner Programs</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <p class="footer-bottom">&copy; 2025 AgriLearn - Empowering Agricultural Education. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Original script.js functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    this.classList.toggle('active');
+                });
+            }
+
+            // Chatbot functionality
+            const chatbotToggle = document.querySelector('.chatbot-toggle');
+            const chatbotContainer = document.querySelector('.chatbot-container');
+            const closeChatbot = document.querySelector('.close-chatbot');
+            const chatbotInput = document.querySelector('.chatbot-input input');
+            const sendButton = document.querySelector('.chatbot-input button');
+            const chatbotMessages = document.querySelector('.chatbot-messages');
+            
+            // Toggle chatbot visibility
+            if (chatbotToggle) {
+                chatbotToggle.addEventListener('click', function() {
+                    chatbotContainer.style.display = 'block';
+                    chatbotInput.focus();
+                });
+            }
+            
+            // Close chatbot
+            if (closeChatbot) {
+                closeChatbot.addEventListener('click', function() {
+                    chatbotContainer.style.display = 'none';
+                });
+            }
+            
+            // Send message function
+            function sendMessage() {
+                const message = chatbotInput.value.trim();
+                if (message !== '') {
+                    // Add user message
+                    addMessage(message, 'user');
+                    chatbotInput.value = '';
+                    
+                    // Simulate bot response after a short delay
+                    setTimeout(function() {
+                        let botResponse = "Thank you for your message. Our team will get back to you soon about our agricultural courses and internships.";
+                        if (message.toLowerCase().includes('course')) {
+                            botResponse = "We offer a variety of agricultural courses including farming techniques, sustainable agriculture, and agribusiness management. Would you like to know more about any specific course?";
+                        } else if (message.toLowerCase().includes('intern')) {
+                            botResponse = "Our agricultural internships provide hands-on experience with leading farms and agribusinesses. You can filter available internships on our website by location and duration.";
+                        } else if (message.toLowerCase().includes('price') || message.toLowerCase().includes('cost')) {
+                            botResponse = "Our course prices vary based on duration and content. Most basic courses start at $49, while comprehensive programs may go up to $299. We also offer scholarships for eligible students.";
+                        }
+                        addMessage(botResponse, 'bot');
+                    }, 600);
+                }
+            }
+            
+            // Add message to chat
+            function addMessage(message, sender) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message');
+                messageElement.classList.add(sender + '-message');
+                messageElement.textContent = message;
+                chatbotMessages.appendChild(messageElement);
+                
+                // Scroll to bottom
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+            
+            // Send button click event
+            if (sendButton) {
+                sendButton.addEventListener('click', sendMessage);
+            }
+            
+            // Enter key event
+            if (chatbotInput) {
+                chatbotInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

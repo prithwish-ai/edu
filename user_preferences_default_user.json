@@ -1,0 +1,8 @@
+{
+  "language": "bn",
+  "response_length": "medium",
+  "difficulty_level": "medium",
+  "voice_enabled": false,
+  "voice_wake_word": "assistant",
+  "theme": "default"
+}

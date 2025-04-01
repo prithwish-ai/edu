@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ITI & Agricultural Education AI Assistant{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e7e34;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .nav-link {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #166329;
+            border-color: #166329;
+        }
+        
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 2rem 0;
+        }
+        
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            z-index: 1050;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .settings-panel.open {
+            right: 0;
+        }
+        
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1040;
+            display: none;
+        }
+        
+        .settings-overlay.open {
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+        }
+        
+        .voice-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .voice-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .voice-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .voice-btn.listening {
+            background-color: var(--accent-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .voice-status {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .voice-settings-section {
+            border-top: 1px solid #eee;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        {% block extra_css %}{% endblock %}
+    </style>
+</head>
+<body>
+    <!-- Voice Control Button -->
+    <div id="voiceControlContainer" class="voice-control-container">
+        <button id="voiceControlBtn" class="voice-control-btn">
+            <i class="fas fa-microphone"></i>
+        </button>
+        <span id="voiceStatus" class="voice-status">Click to speak</span>
+    </div>
+    
+    <!-- Voice Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="voiceToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fas fa-microphone me-2 text-primary"></i>
+                <strong class="me-auto">Voice Recognition</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="voiceToastBody">
+                <!-- Voice message will go here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <i class="fas fa-seedling me-2"></i>
+                ITI & Agricultural Assistant
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('features') }}">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="settingsToggle">
+                            <i class="fas fa-cog me-1"></i>Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Settings Panel -->
+    <div id="settingsPanel" class="settings-panel">
+        <div class="settings-panel-header">
+            <h4>Settings</h4>
+            <button id="closeSettings" class="close-settings">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="settings-content">
+            <!-- Voice Settings Section -->
+            <div class="settings-section">
+                <h5>Voice Settings</h5>
+                
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="voiceToggle">
+                    <label class="form-check-label" for="voiceToggle">Voice Interaction</label>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="voiceSelect" class="form-label">Voice Type</label>
+                    <select class="form-select" id="voiceSelect">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="voiceSpeed" class="form-label">Speaking Rate</label>
+                    <input type="range" class="form-range" min="0.5" max="2" step="0.1" value="1" id="voiceSpeed">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="voicePitch" class="form-label">Pitch</label>
+                    <input type="range" class="form-range" min="0.5" max="2" step="0.1" value="1" id="voicePitch">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="wakeWord" class="form-label">Wake Word/Phrase</label>
+                    <input type="text" class="form-control" id="wakeWord" placeholder="e.g., Hey Assistant" value="Hey Assistant">
+                </div>
+                
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="continuousListening">
+                    <label class="form-check-label" for="continuousListening">Continuous Listening</label>
+                </div>
+            </div>
+            
+            <!-- Other existing settings sections -->
+            <div class="mb-3">
+                <label for="languageSelect" class="form-label">Language</label>
+                <select class="form-select" id="languageSelect">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="bn">Bengali</option>
+                    <option value="te">Telugu</option>
+                    <option value="mr">Marathi</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ur">Urdu</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="kn">Kannada</option>
+                    <option value="ml">Malayalam</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="difficultySelect" class="form-label">Difficulty Level</label>
+                <select class="form-select" id="difficultySelect">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="settings-footer">
+            <button id="saveSettings" class="btn btn-primary w-100">Save Settings</button>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>ITI & Agricultural Education AI Assistant</h5>
+                    <p>Empowering farmers with technology and education for sustainable agriculture.</p>
+                    <p>&copy; 2023 ITI & Agricultural Education. All rights reserved.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('home') }}" class="text-white">Home</a></li>
+                        <li><a href="{{ url_for('features') }}" class="text-white">Features</a></li>
+                        <li><a href="{{ url_for('about') }}" class="text-white">About</a></li>
+                        <li><a href="{{ url_for('contact') }}" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Voice Control Script -->
+    <script>
+        $(document).ready(function() {
+            // Elements
+            const voiceControlBtn = $('#voiceControlBtn');
+            const voiceStatus = $('#voiceStatus');
+            const voiceToast = $('#voiceToast');
+            const voiceToastBody = $('#voiceToastBody');
+            
+            // Settings
+            let voiceEnabled = localStorage.getItem('voiceEnabled') === 'true' || false;
+            let wakeWord = localStorage.getItem('wakeWord') || 'Hey Assistant';
+            let continuousListening = localStorage.getItem('continuousListening') === 'true' || false;
+            
+            // Initialize settings form values
+            $('#voiceToggle').prop('checked', voiceEnabled);
+            $('#wakeWord').val(wakeWord);
+            $('#continuousListening').prop('checked', continuousListening);
+            
+            // Voice recognition variables
+            let recognition;
+            let isListening = false;
+            
+            // Initialize speech recognition
+            function initSpeechRecognition() {
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    voiceStatus.text('Voice recognition not supported');
+                    return false;
+                }
+                
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = continuousListening;
+                recognition.interimResults = true;
+                
+                recognition.onstart = function() {
+                    isListening = true;
+                    voiceControlBtn.addClass('listening');
+                    voiceStatus.text('Listening...');
+                };
+                
+                recognition.onresult = function(event) {
+                    const transcript = Array.from(event.results)
+                        .map(result => result[0])
+                        .map(result => result.transcript)
+                        .join('');
+                    
+                    // Show what user said
+                    showVoiceToast(transcript);
+                    
+                    // Process commands
+                    processVoiceCommand(transcript);
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    voiceControlBtn.removeClass('listening');
+                    voiceStatus.text('Click to speak');
+                    
+                    // If continuous listening is enabled, restart
+                    if (continuousListening && voiceEnabled) {
+                        setTimeout(() => recognition.start(), 1000);
+                    }
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error', event.error);
+                    voiceStatus.text('Error: ' + event.error);
+                    
+                    // If error is not fatal, restart
+                    if (event.error !== 'no-speech' && continuousListening && voiceEnabled) {
+                        setTimeout(() => recognition.start(), 1000);
+                    }
+                };
+                
+                return true;
+            }
+            
+            // Toggle voice recognition
+            function toggleVoiceRecognition() {
+                if (!recognition && !initSpeechRecognition()) {
+                    return;
+                }
+                
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        console.error('Error starting recognition', e);
+                    }
+                }
+            }
+            
+            // Show toast with voice transcription
+            function showVoiceToast(message) {
+                voiceToastBody.text(message);
+                const toast = new bootstrap.Toast(voiceToast);
+                toast.show();
+            }
+            
+            // Process voice commands
+            function processVoiceCommand(transcript) {
+                // Normalize transcript for comparison
+                const normalizedTranscript = transcript.toLowerCase().trim();
+                
+                // Check if wake word is included (if not in continuous mode)
+                if (!continuousListening && !normalizedTranscript.includes(wakeWord.toLowerCase())) {
+                    return;
+                }
+                
+                // Remove wake word from command if present
+                let command = normalizedTranscript;
+                if (normalizedTranscript.includes(wakeWord.toLowerCase())) {
+                    command = normalizedTranscript.replace(wakeWord.toLowerCase(), '').trim();
+                }
+                
+                // Send voice input to server
+                $.ajax({
+                    url: '/voice',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ voice_input: command }),
+                    success: function(response) {
+                        if (response.response) {
+                            // Add message to chat if we're in chat page
+                            if ($('#chatMessages').length) {
+                                // We're in the chat page, add the messages
+                                if (command) {
+                                    addMessage(command, 'user');
+                                }
+                                addMessage(response.response, 'assistant');
+                            } else {
+                                // We're not in the chat page, just show toast
+                                showVoiceToast("Assistant: " + response.response);
+                            }
+                            
+                            // Speak response if voice is enabled
+                            if (voiceEnabled) {
+                                speakResponse(response.response);
+                            }
+                            
+                            // Handle navigation commands
+                            if (response.action) {
+                                handleVoiceAction(response.action);
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Handle voice actions like navigation
+            function handleVoiceAction(action) {
+                switch (action) {
+                    case 'home':
+                        window.location.href = '/';
+                        break;
+                    case 'chat':
+                        window.location.href = '/chat';
+                        break;
+                    case 'quiz':
+                        window.location.href = '/quiz';
+                        break;
+                    case 'study':
+                        window.location.href = '/study_materials';
+                        break;
+                    case 'settings':
+                        $('#settingsBtn').click();
+                        break;
+                    case 'logout':
+                        window.location.href = '/logout';
+                        break;
+                }
+            }
+            
+            // Speak response using Web Speech API
+            function speakResponse(text) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    
+                    // Apply voice settings
+                    const voiceType = $('#voiceSelect').val();
+                    utterance.rate = parseFloat($('#voiceSpeed').val() || 1);
+                    utterance.pitch = parseFloat($('#voicePitch').val() || 1);
+                    
+                    // Try to find a matching voice
+                    const voices = speechSynthesis.getVoices();
+                    if (voices.length > 0) {
+                        if (voiceType === 'male') {
+                            utterance.voice = voices.find(voice => voice.name.includes('Male')) || voices[0];
+                        } else if (voiceType === 'female') {
+                            utterance.voice = voices.find(voice => voice.name.includes('Female')) || voices[0];
+                        }
+                    }
+                    
+                    // Add event handler to resume recognition after speaking
+                    utterance.onend = function() {
+                        if (continuousListening && voiceEnabled && !isListening) {
+                            setTimeout(() => {
+                                try {
+                                    recognition.start();
+                                } catch (e) {
+                                    console.error('Error restarting recognition after speech', e);
+                                }
+                            }, 500);
+                        }
+                    };
+                    
+                    // Stop recognition while speaking to avoid feedback loop
+                    if (isListening) {
+                        recognition.stop();
+                    }
+                    
+                    speechSynthesis.speak(utterance);
+                }
+            }
+            
+            // Event listeners
+            voiceControlBtn.click(function() {
+                if (!voiceEnabled) {
+                    $('#voiceToggle').prop('checked', true);
+                    voiceEnabled = true;
+                    localStorage.setItem('voiceEnabled', 'true');
+                }
+                toggleVoiceRecognition();
+            });
+            
+            // Save settings
+            $('#saveSettings').click(function() {
+                // Get all settings values
+                voiceEnabled = $('#voiceToggle').is(':checked');
+                wakeWord = $('#wakeWord').val();
+                continuousListening = $('#continuousListening').is(':checked');
+                
+                // Save to localStorage
+                localStorage.setItem('voiceEnabled', voiceEnabled);
+                localStorage.setItem('wakeWord', wakeWord);
+                localStorage.setItem('continuousListening', continuousListening);
+                
+                // Update voice recognition settings
+                if (recognition) {
+                    recognition.continuous = continuousListening;
+                    
+                    // Stop and restart if already listening
+                    if (isListening) {
+                        recognition.stop();
+                        if (voiceEnabled) {
+                            setTimeout(() => recognition.start(), 500);
+                        }
+                    } else if (continuousListening && voiceEnabled) {
+                        // Start listening if continuous mode enabled
+                        setTimeout(() => recognition.start(), 500);
+                    }
+                }
+                
+                // Send settings to server
+                $.ajax({
+                    url: '/voice_settings',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        voice_enabled: voiceEnabled,
+                        voice_type: $('#voiceSelect').val(),
+                        speaking_rate: parseFloat($('#voiceSpeed').val()),
+                        pitch: parseFloat($('#voicePitch').val()),
+                        wake_word: wakeWord,
+                        continuous_listening: continuousListening
+                    })
+                });
+                
+                // Close settings panel
+                $('#closeSettings').click();
+                
+                // Show confirmation toast
+                showVoiceToast('Settings saved successfully');
+            });
+            
+            // Initialize voice if enabled
+            if (voiceEnabled && initSpeechRecognition() && continuousListening) {
+                setTimeout(() => {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        console.error('Error starting initial recognition', e);
+                    }
+                }, 1000);
+            }
+            
+            // Make functions globally available for other pages
+            window.speakResponse = speakResponse;
+            window.toggleVoiceRecognition = toggleVoiceRecognition;
+            window.showVoiceToast = showVoiceToast;
+        });
+    </script>
+    
+    <style>
+        /* Voice Control Styles */
+        .voice-control-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .voice-control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .voice-control-btn:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .voice-control-btn.listening {
+            background-color: var(--accent-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .voice-status {
+            margin-left: 10px;
+            font-size: 14px;
+            color: var(--text-color);
+            white-space: nowrap;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--accent-color-rgb), 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(var(--accent-color-rgb), 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--accent-color-rgb), 0); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .voice-control-container {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 12px;
+            }
+            
+            .voice-control-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .voice-status {
+                font-size: 12px;
+            }
+        }
+    </style>
+</body>
+</html> 

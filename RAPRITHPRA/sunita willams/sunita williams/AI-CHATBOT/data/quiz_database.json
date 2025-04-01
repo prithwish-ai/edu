@@ -1,0 +1,121 @@
+{
+  "Electrician": [
+    {
+      "topic": "Basic Electricity",
+      "difficulty": "easy",
+      "questions": [
+        {
+          "question": "What is Ohm's Law?",
+          "options": [
+            "V = IR",
+            "P = VI",
+            "E = mc²",
+            "F = ma"
+          ],
+          "correct_answer": 0,
+          "explanation": "Ohm's Law states that the current through a conductor is directly proportional to the voltage and inversely proportional to the resistance (V = IR)."
+        },
+        {
+          "question": "Which unit is used to measure electrical resistance?",
+          "options": [
+            "Volt",
+            "Ampere",
+            "Ohm",
+            "Watt"
+          ],
+          "correct_answer": 2,
+          "explanation": "Electrical resistance is measured in ohms, named after Georg Simon Ohm."
+        }
+      ]
+    },
+    {
+      "topic": "Safety",
+      "difficulty": "medium",
+      "questions": [
+        {
+          "question": "What should be your first action when someone experiences an electric shock?",
+          "options": [
+            "Pull them away with your bare hands",
+            "Throw water on them",
+            "Turn off the power source",
+            "Call for help first, then provide aid"
+          ],
+          "correct_answer": 2,
+          "explanation": "The first priority is to turn off the power source to prevent further injury to the victim and to make it safe for you to provide assistance."
+        }
+      ]
+    }
+  ],
+  "Fitter": [
+    {
+      "topic": "Measurement Techniques",
+      "difficulty": "easy",
+      "questions": [
+        {
+          "question": "Which tool is used for precise angular measurement?",
+          "options": [
+            "Vernier Caliper",
+            "Micrometer",
+            "Bevel Protractor",
+            "Try Square"
+          ],
+          "correct_answer": 2,
+          "explanation": "A bevel protractor is used for precise measurement of angles in fitting and machining work."
+        }
+      ]
+    },
+    {
+      "topic": "Hand Tools",
+      "difficulty": "medium",
+      "questions": [
+        {
+          "question": "Which file would be best for finishing work on soft metals?",
+          "options": [
+            "Bastard file",
+            "Second cut file",
+            "Smooth file",
+            "Rough file"
+          ],
+          "correct_answer": 2,
+          "explanation": "A smooth file has fine teeth and is used for finishing work, especially on softer metals where a fine finish is required."
+        }
+      ]
+    }
+  ],
+  "COPA": [
+    {
+      "topic": "Computer Basics",
+      "difficulty": "easy",
+      "questions": [
+        {
+          "question": "What does CPU stand for?",
+          "options": [
+            "Central Processing Unit",
+            "Computer Processing Unit",
+            "Central Program Utility",
+            "Central Processor Unit"
+          ],
+          "correct_answer": 0,
+          "explanation": "CPU stands for Central Processing Unit. It's the primary component of a computer that performs most of the processing."
+        }
+      ]
+    },
+    {
+      "topic": "Office Applications",
+      "difficulty": "medium",
+      "questions": [
+        {
+          "question": "Which Excel function would you use to add up a range of cells?",
+          "options": [
+            "AVERAGE",
+            "COUNT",
+            "SUM",
+            "TOTAL"
+          ],
+          "correct_answer": 2,
+          "explanation": "The SUM function in Excel is used to add all numbers in a range of cells."
+        }
+      ]
+    }
+  ]
+}

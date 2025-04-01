@@ -1,0 +1,230 @@
+{
+  "Electrician": {
+    "modules": [
+      {
+        "title": "Basic Electricity",
+        "topics": [
+          "Electric Circuits",
+          "Ohm's Law",
+          "Kirchhoff's Laws",
+          "Resistors, Capacitors, and Inductors",
+          "AC and DC Fundamentals"
+        ],
+        "resources": [
+          {
+            "type": "text",
+            "title": "Basic Electrical Theory",
+            "content": "Comprehensive guide to electrical theory basics"
+          },
+          {
+            "type": "video",
+            "title": "Understanding Ohm's Law",
+            "url": "https://example.com/ohms-law-video"
+          },
+          {
+            "type": "practice",
+            "title": "Circuit Calculations",
+            "questions": 15
+          }
+        ]
+      },
+      {
+        "title": "Electrical Measurements",
+        "topics": [
+          "Measuring Instruments",
+          "Multimeters",
+          "Oscilloscopes",
+          "Power Measurements",
+          "Calibration Techniques"
+        ],
+        "resources": [
+          {
+            "type": "text",
+            "title": "Electrical Measurement Guide",
+            "content": "Detailed guide to using electrical measuring instruments"
+          },
+          {
+            "type": "video",
+            "title": "Multimeter Usage Tutorial",
+            "url": "https://example.com/multimeter-tutorial"
+          },
+          {
+            "type": "practice",
+            "title": "Measurement Practice",
+            "questions": 10
+          }
+        ]
+      }
+    ],
+    "important_topics": [
+      "Safety in Electrical Work",
+      "AC Motor Control",
+      "Transformer Principles",
+      "Power Distribution Systems"
+    ],
+    "exam_pattern": {
+      "theory_marks": 100,
+      "practical_marks": 100,
+      "passing_percentage": 40,
+      "duration_hours": 3,
+      "question_types": [
+        "Multiple Choice",
+        "Short Answer",
+        "Long Answer",
+        "Diagram-based"
+      ]
+    }
+  },
+  "Fitter": {
+    "modules": [
+      {
+        "title": "Fitting and Assembly",
+        "topics": [
+          "Hand Tools",
+          "Marking Tools",
+          "Measuring Instruments",
+          "Filing and Fitting",
+          "Assembly Techniques"
+        ],
+        "resources": [
+          {
+            "type": "text",
+            "title": "Fitting Workshop Manual",
+            "content": "Comprehensive guide to fitting techniques"
+          },
+          {
+            "type": "video",
+            "title": "Precision Fitting Demonstration",
+            "url": "https://example.com/fitting-demo"
+          },
+          {
+            "type": "practice",
+            "title": "Measurement Exercises",
+            "questions": 12
+          }
+        ]
+      },
+      {
+        "title": "Machine Operations",
+        "topics": [
+          "Drilling",
+          "Grinding",
+          "Lathe Operations",
+          "Milling Basics",
+          "CNC Introduction"
+        ],
+        "resources": [
+          {
+            "type": "text",
+            "title": "Machine Shop Operations",
+            "content": "Guide to basic machine shop processes"
+          },
+          {
+            "type": "video",
+            "title": "Lathe Operating Tutorial",
+            "url": "https://example.com/lathe-tutorial"
+          },
+          {
+            "type": "practice",
+            "title": "Machine Operation Quiz",
+            "questions": 15
+          }
+        ]
+      }
+    ],
+    "important_topics": [
+      "Workshop Safety",
+      "Blueprint Reading",
+      "Precision Measurement",
+      "Material Properties"
+    ],
+    "exam_pattern": {
+      "theory_marks": 100,
+      "practical_marks": 100,
+      "passing_percentage": 40,
+      "duration_hours": 3,
+      "question_types": [
+        "Multiple Choice",
+        "Short Answer",
+        "Practical Demonstration",
+        "Drawing"
+      ]
+    }
+  },
+  "COPA": {
+    "modules": [
+      {
+        "title": "Computer Fundamentals",
+        "topics": [
+          "Computer Architecture",
+          "Operating Systems",
+          "File Management",
+          "Software and Hardware",
+          "Networking Basics"
+        ],
+        "resources": [
+          {
+            "type": "text",
+            "title": "Computer Fundamentals Guide",
+            "content": "Comprehensive introduction to computers"
+          },
+          {
+            "type": "video",
+            "title": "Computer Hardware Tour",
+            "url": "https://example.com/hardware-tour"
+          },
+          {
+            "type": "practice",
+            "title": "Computer Basics Quiz",
+            "questions": 20
+          }
+        ]
+      },
+      {
+        "title": "Office Applications",
+        "topics": [
+          "Word Processing",
+          "Spreadsheets",
+          "Presentations",
+          "Database Management",
+          "Email and Communication"
+        ],
+        "resources": [
+          {
+            "type": "text",
+            "title": "Office Applications Manual",
+            "content": "Guide to using office productivity software"
+          },
+          {
+            "type": "video",
+            "title": "Advanced Excel Tutorial",
+            "url": "https://example.com/excel-tutorial"
+          },
+          {
+            "type": "practice",
+            "title": "Office Apps Exercises",
+            "questions": 15
+          }
+        ]
+      }
+    ],
+    "important_topics": [
+      "Programming Basics",
+      "Internet Security",
+      "Web Development Fundamentals",
+      "Troubleshooting"
+    ],
+    "exam_pattern": {
+      "theory_marks": 100,
+      "practical_marks": 100,
+      "passing_percentage": 40,
+      "duration_hours": 3,
+      "question_types": [
+        "Multiple Choice",
+        "Practical Lab Work",
+        "Problem Solving",
+        "Project"
+      ]
+    }
+  }
+}

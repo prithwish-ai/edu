@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSpark Plant AI Chatbot</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">EduSpark Plant AI</div>
+            <button id="new-chat-btn" class="new-chat-button">
+                <span>+ New Chat</span>
+            </button>
+            <div class="chat-history">
+                <div class="history-header">Chat History</div>
+                <div id="chat-history-list"></div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div id="chat-container">
+                <div id="landing-container" class="landing-view">
+                    <h1>Welcome to EduSpark Plant AI</h1>
+                    <p>Your plant disease identification and gardening assistant</p>
+                    
+                    <div class="features-section">
+                        <div class="feature-card">
+                            <h3>Plant Disease Identification</h3>
+                            <p>Upload an image of your plant to identify diseases and get treatment recommendations.</p>
+                            <button id="upload-plant-image" class="feature-button">Upload Plant Image</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h3>Gardening Tips & Advice</h3>
+                            <p>Ask questions about plant care, gardening techniques, and more.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="examples-section">
+                        <h3>Try asking:</h3>
+                        <div class="examples">
+                            <div class="example-item" data-query="How do I care for tomato plants?">How do I care for tomato plants?</div>
+                            <div class="example-item" data-query="What are common diseases affecting roses?">What are common diseases affecting roses?</div>
+                            <div class="example-item" data-query="How often should I water my succulents?">How often should I water my succulents?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <div id="file-preview" class="file-preview">
+                    <div class="file-info">
+                        <div id="file-name">filename.jpg</div>
+                        <div id="file-size">123 KB</div>
+                    </div>
+                    <button id="remove-file" class="remove-file">✕</button>
+                </div>
+                
+                <div class="input-area">
+                    <textarea id="chat-input" placeholder="Ask me about plants or upload an image..."></textarea>
+                    <div class="input-actions">
+                        <label for="file-upload" class="file-upload-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+                            </svg>
+                        </label>
+                        <input type="file" id="file-upload" accept="image/*" style="display:none">
+                        
+                        <button id="send-button" class="send-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/chatbot.js"></script>
+</body>
+</html>

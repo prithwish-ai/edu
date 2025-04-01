@@ -1,0 +1,1717 @@
+{% extends "api_base.html" %}
+
+{% block title %}EDU SPARK - Learning, Growing, Cultivating{% endblock %}
+
+{% block content %}
+<!-- Add index-specific dots container -->
+<div class="index-dots"></div>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <!-- Language option banner -->
+        <div class="language-banner text-center mb-4 p-2" style="background-color: rgba(255,255,255,0.9); border-radius: 10px;">
+            <p class="mb-0">
+                <i class="fas fa-language me-2"></i> 
+                <span>Prefer Hindi? <a href="#" onclick="if(!languageChangeInProgress){setAppLanguage('hi');} return false;" class="fw-bold">हिंदी में देखें</a></span>
+            </p>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text animate__animated animate__fadeInLeft">
+                <h1>Cultivate Knowledge, <br>Harvest Success</h1>
+                <p>EDU SPARK combines cutting-edge AI with agricultural expertise to revolutionize farming education and crop management. Our innovative platform helps you identify plant diseases, predict market trends, and access expert knowledge instantly.</p>
+                <div class="hero-buttons">
+                    <a href="/api_signup.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus"></i> Get Started
+                    </a>
+                    <a href="/api_chat.html" class="btn btn-outline btn-lg">
+                        <i class="fas fa-comment-dots"></i> Try AI Assistant
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number"><span class="counter">10</span>K+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number"><span class="counter">97</span>%</div>
+                        <div class="stat-label">Accuracy Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number"><span class="counter">24</span>/7</div>
+                        <div class="stat-label">Support</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image animate__animated animate__fadeInRight">
+                <img src="https://images.unsplash.com/photo-1590682680695-43b964a3ae17?auto=format&fit=crop&w=800&q=80" alt="Smart Farming" class="main-image">
+                <div class="image-badge">
+                    <div class="badge-icon"><i class="fas fa-robot"></i></div>
+                    <div class="badge-text">AI-Powered</div>
+                </div>
+                <div class="image-badge badge-right">
+                    <div class="badge-icon"><i class="fas fa-leaf"></i></div>
+                    <div class="badge-text">Sustainable</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+            <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,117.3C672,107,768,117,864,144C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>State-of-the-Art Features</h2>
+            <p>Discover the powerful tools designed to revolutionize your agricultural journey</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h3>Plant Disease Detection</h3>
+                <p>Identify crop diseases instantly with our AI-powered image recognition system. Get accurate diagnoses and treatment recommendations.</p>
+                <a href="/api_plant_disease.html" class="feature-link">
+                    Detect Diseases <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI Farming Assistant</h3>
+                <p>Our intelligent chatbot provides instant answers to all your agricultural questions, anytime, anywhere.</p>
+                <a href="/api_chat.html" class="feature-link">
+                    Chat with AI <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Market Prediction</h3>
+                <p>Stay ahead of the market with price forecasts and trend analysis for various agricultural commodities.</p>
+                <a href="/api_market_prediction.html" class="feature-link">
+                    Predict Prices <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="feature-card animate__animated animate__fadeInUp" data-delay="400">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Education Resources</h3>
+                <p>Access a comprehensive library of agricultural knowledge, tutorials, and best practices.</p>
+                <a href="/api_dashboard.html" class="feature-link">
+                    Learn More <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seasonal Crop Calendar -->
+<section class="section crop-calendar-section" id="crop-calendar">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="section-title">Seasonal Crop Calendar</h2>
+            <p class="section-subtitle">Stay informed about the best crops to plant based on the current season</p>
+        </div>
+        
+        <div class="card crop-calendar-card animate__animated animate__fadeInUp">
+            <div class="card-header">
+                <h3><i class="fas fa-seedling"></i> <span id="current-season">Current Season</span> Planting Guide</h3>
+            </div>
+            <div class="card-body">
+                <div class="season-tabs">
+                    <button class="season-tab" data-season="spring">Spring</button>
+                    <button class="season-tab" data-season="summer">Summer</button>
+                    <button class="season-tab" data-season="monsoon">Monsoon</button>
+                    <button class="season-tab" data-season="winter">Winter</button>
+                </div>
+                
+                <div class="crops-container">
+                    <!-- Spring crops -->
+                    <div class="season-crops" id="spring-crops">
+                        <div class="crop-grid">
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-carrot"></i></div>
+                                <h4>Carrots</h4>
+                                <p>Planting: Feb-Apr</p>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-leaf"></i></div>
+                                <h4>Spinach</h4>
+                                <p>Planting: Feb-Mar</p>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Peas</h4>
+                                <p>Planting: Feb-Apr</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Radish</h4>
+                                <p>Planting: Mar-Apr</p>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Summer crops -->
+                    <div class="season-crops" id="summer-crops">
+                        <div class="crop-grid">
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-apple-alt"></i></div>
+                                <h4>Tomatoes</h4>
+                                <p>Planting: Apr-Jun</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-pepper-hot"></i></div>
+                                <h4>Peppers</h4>
+                                <p>Planting: Apr-May</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Cucumber</h4>
+                                <p>Planting: Apr-Jun</p>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Okra</h4>
+                                <p>Planting: Apr-Jul</p>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monsoon crops -->
+                    <div class="season-crops" id="monsoon-crops">
+                        <div class="crop-grid">
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Rice</h4>
+                                <p>Planting: Jun-Jul</p>
+                                <span class="difficulty hard">Hard</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Corn</h4>
+                                <p>Planting: Jun-Jul</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Soybeans</h4>
+                                <p>Planting: Jun-Jul</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Millets</h4>
+                                <p>Planting: Jun-Aug</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Winter crops -->
+                    <div class="season-crops" id="winter-crops">
+                        <div class="crop-grid">
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Wheat</h4>
+                                <p>Planting: Oct-Dec</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Mustard</h4>
+                                <p>Planting: Oct-Nov</p>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-carrot"></i></div>
+                                <h4>Potatoes</h4>
+                                <p>Planting: Oct-Dec</p>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <div class="crop-card">
+                                <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                                <h4>Peas</h4>
+                                <p>Planting: Nov-Dec</p>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Agricultural Tools Section -->
+<section class="tools-section py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="display-5">Agricultural Tools</h2>
+            <p class="lead">Powerful tools to enhance your farming operations</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Plant Disease Detection</h3>
+                    <p>Identify plant diseases using AI technology</p>
+                    <a href="/api_plant_disease.html" class="btn btn-tool">Use Tool</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Market Price Prediction</h3>
+                    <p>Forecast crop prices based on market trends</p>
+                    <a href="/api_market_prediction.html" class="btn btn-tool">Use Tool</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Soil Health Analyzer</h3>
+                    <p>Analyze soil properties and get crop recommendations</p>
+                    <a href="/api_soil_analyzer.html" class="btn btn-tool">Use Tool</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <h3>Weather Forecast</h3>
+                    <p>Get localized weather data with farming recommendations</p>
+                    <a href="/api_weather_forecast.html" class="btn btn-tool">Use Tool</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Spotlight Sections -->
+<section class="spotlight-section">
+    <div class="container">
+        <div class="spotlight-item">
+            <div class="spotlight-image animate__animated animate__fadeInLeft">
+                <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=800&q=80" alt="Plant Disease Detection">
+                <div class="spotlight-badge">
+                    <i class="fas fa-shield-alt"></i> 97% Accuracy
+                </div>
+            </div>
+            <div class="spotlight-content animate__animated animate__fadeInRight">
+                <div class="section-tag">Advanced Technology</div>
+                <h2>Cutting-Edge Plant Disease Detection</h2>
+                <p>Our sophisticated AI model can identify 40+ plant diseases across 15 different crop varieties with remarkable accuracy. By simply uploading a photo, you'll receive instant diagnosis and customized treatment recommendations.</p>
+                
+                <div class="spotlight-features">
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Instant disease identification</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Evidence-based treatment plans</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Preventive measure recommendations</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Offline mode for field use</span>
+                    </div>
+                </div>
+                
+                <a href="/api_plant_disease.html" class="btn btn-primary">
+                    <i class="fas fa-leaf"></i> Try Disease Detection
+                </a>
+            </div>
+        </div>
+        
+        <div class="spotlight-item reversed">
+            <div class="spotlight-content animate__animated animate__fadeInLeft">
+                <div class="section-tag">Intelligent Assistance</div>
+                <h2>Your 24/7 Farming & Vocational Training Expert</h2>
+                <p>EDU SPARK's AI assistant combines vast agricultural & vocational training knowledge with the latest research to answer your questions instantly. From crop selection to pest management, our assistant is your reliable farming companion.</p>
+                
+                <div class="spotlight-features">
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Voice-enabled interactions</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Personalized recommendations</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Continuous learning capabilities</span>
+                    </div>
+                    <div class="spotlight-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Multilingual support</span>
+                    </div>
+                </div>
+                
+                <a href="/api_chat.html" class="btn btn-primary">
+                    <i class="fas fa-comments"></i> Start Conversation
+                </a>
+            </div>
+            <div class="spotlight-image animate__animated animate__fadeInRight">
+                <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?auto=format&fit=crop&w=800&q=80" alt="AI Farming Assistant">
+                <div class="spotlight-badge">
+                    <i class="fas fa-brain"></i> AI Powered
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Trusted by Farmers, Vocational Training Students Worldwide</h2>
+            <p>Hear from our growing community of agricultural professionals and vocational training students</p>
+        </div>
+        
+        <div class="testimonials-slider">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"EDU SPARK has transformed how I manage crop yield and quality and improving my vocational training skills. The instant detection system saved my tomato harvest from late blight, which would have cost me thousands."</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Testimonial Author">
+                    </div>
+                    <div class="author-info">
+                        <h4>Munna kumar</h4>
+                        <p>Farm Owner India</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"As an agricultural student, the AI assistant has been incredibly valuable for my studies. It's like having a mentor available 24/7 to answer all my farming questions."</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Testimonial Author">
+                    </div>
+                    <div class="author-info">
+                        <h4>Prashant Kumar</h4>
+                        <p>Agricultural Science Student</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p>"The market prediction tool has proven invaluable for my small farm business. Being able to anticipate price trends has helped me maximize profits on my organic produce."</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="https://randomuser.me/api/portraits/men/68.jpg" alt="Testimonial Author">
+                    </div>
+                    <div class="author-info">
+                        <h4>David fernandez</h4>
+                        <p>Organic Farmer, sikkim</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Transform Your Agricultural Journey?</h2>
+            <p>Join thousands of farmers and agricultural enthusiasts who are already benefiting from EDU SPARK's innovative features.</p>
+            <div class="cta-buttons">
+                <a href="/api_signup.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Create Free Account
+                </a>
+                <a href="/api_contact.html" class="btn btn-outline btn-lg">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);
+        color: white;
+        padding: 120px 0 200px;
+        overflow: hidden;
+    }
+    
+    .hero-content {
+        display: flex;
+        align-items: center;
+        gap: 60px;
+    }
+    
+    .hero-text {
+        flex: 1;
+        max-width: 600px;
+    }
+    
+    .hero-text h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        color: white;
+    }
+    
+    .hero-text p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .hero-stats {
+        display: flex;
+        gap: 40px;
+        margin-top: 40px;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 5px;
+    }
+    
+    .hero-image {
+        flex: 1;
+        position: relative;
+    }
+    
+    .hero-image img {
+        width: 100%;
+        max-width: 550px;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .image-badge {
+        position: absolute;
+        bottom: 30px;
+        left: -15px;
+        background-color: white;
+        border-radius: 15px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .badge-right {
+        left: auto;
+        right: -15px;
+        top: 30px;
+        bottom: auto;
+    }
+    
+    .badge-icon {
+        width: 36px;
+        height: 36px;
+        background-color: var(--tertiary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+        font-size: 1.1rem;
+    }
+    
+    .badge-text {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+    
+    .hero-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        line-height: 0;
+    }
+    
+    /* Features Section */
+    .features-section {
+        padding: 80px 0;
+        background-color: white;
+    }
+    
+    .section-header {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 60px;
+    }
+    
+    .section-header h2 {
+        font-size: 2.5rem;
+        color: var(--dark-color);
+        margin-bottom: 15px;
+    }
+    
+    .section-header p {
+        font-size: 1.1rem;
+        color: var(--text-light);
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+    
+    .feature-card {
+        background-color: white;
+        border-radius: 16px;
+        padding: 40px 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border-bottom: 4px solid transparent;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+        border-bottom: 4px solid var(--primary-color);
+    }
+    
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background-color: var(--tertiary-color);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-icon {
+        background-color: var(--primary-color);
+        color: white;
+        transform: rotateY(180deg);
+    }
+    
+    .feature-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: var(--dark-color);
+    }
+    
+    .feature-card p {
+        color: var(--text-color);
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+    
+    .feature-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--primary-color);
+        font-weight: 600;
+        font-size: 1.05rem;
+    }
+    
+    .feature-link i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-link:hover i {
+        transform: translateX(5px);
+    }
+    
+    /* Spotlight Section */
+    .spotlight-section {
+        padding: 100px 0;
+        background-color: #f9fafb;
+    }
+    
+    .spotlight-item {
+        display: flex;
+        align-items: center;
+        gap: 60px;
+        margin-bottom: 120px;
+    }
+    
+    .spotlight-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .spotlight-item.reversed {
+        flex-direction: row-reverse;
+    }
+    
+    .spotlight-image {
+        flex: 1;
+        position: relative;
+    }
+    
+    .spotlight-image img {
+        width: 100%;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .spotlight-badge {
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .spotlight-badge i {
+        margin-right: 8px;
+    }
+    
+    .spotlight-content {
+        flex: 1;
+    }
+    
+    .section-tag {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: var(--tertiary-color);
+        color: var(--primary-dark);
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    
+    .spotlight-content h2 {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        color: var(--dark-color);
+    }
+    
+    .spotlight-content p {
+        font-size: 1.05rem;
+        color: var(--text-color);
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+    
+    .spotlight-features {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .spotlight-feature {
+        display: flex;
+        align-items: center;
+    }
+    
+    .spotlight-feature i {
+        margin-right: 10px;
+        color: var(--success-color);
+        font-size: 1.2rem;
+    }
+    
+    /* Testimonials Section */
+    .testimonials-section {
+        padding: 100px 0;
+        background-color: white;
+    }
+    
+    .testimonials-slider {
+        display: flex;
+        gap: 30px;
+        overflow-x: auto;
+        padding: 30px 10px;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+    }
+    
+    .testimonials-slider::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .testimonials-slider::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .testimonials-slider::-webkit-scrollbar-thumb {
+        background: var(--primary-light);
+        border-radius: 10px;
+    }
+    
+    .testimonial-card {
+        flex: 0 0 400px;
+        background-color: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        scroll-snap-align: start;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .testimonial-rating {
+        color: #ffb400;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .testimonial-content p {
+        font-style: italic;
+        color: var(--text-color);
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .author-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    
+    .author-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .author-info h4 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+        color: var(--dark-color);
+    }
+    
+    .author-info p {
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, #388e3c 0%, #1b5e20 100%);
+        padding: 100px 0;
+        color: white;
+        text-align: center;
+    }
+    
+    .cta-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .cta-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: white;
+    }
+    
+    .cta-content p {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+        opacity: 0.9;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    /* Counter Animation */
+    .counter {
+        display: inline-block;
+    }
+    
+    /* Media Queries */
+    @media (max-width: 1024px) {
+        .hero-content {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .hero-text {
+            max-width: 100%;
+        }
+        
+        .hero-stats {
+            justify-content: center;
+        }
+        
+        .hero-buttons {
+            justify-content: center;
+        }
+        
+        .spotlight-item, 
+        .spotlight-item.reversed {
+            flex-direction: column;
+            text-align: center;
+            gap: 40px;
+        }
+        
+        .spotlight-features {
+            justify-content: center;
+            text-align: left;
+        }
+        
+        .section-tag {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 80px 0 180px;
+        }
+        
+        .hero-text h1 {
+            font-size: 2.5rem;
+        }
+        
+        .spotlight-content h2 {
+            font-size: 1.8rem;
+        }
+        
+        .spotlight-features {
+            grid-template-columns: 1fr;
+        }
+        
+        .testimonial-card {
+            flex: 0 0 300px;
+        }
+    }
+    
+    /* Enhanced network animation for index page */
+    .agro-background {
+        background: linear-gradient(to bottom, #0a2a0a, #071b07);
+    }
+    
+    .digital-grid {
+        background-image: 
+            radial-gradient(rgba(76, 175, 80, 0.1) 2px, transparent 2px),
+            radial-gradient(rgba(76, 175, 80, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px, 20px 20px;
+        background-position: 0 0, 10px 10px;
+        opacity: 0.3;
+        animation: pulseGrid 8s ease-in-out infinite;
+    }
+    
+    @keyframes pulseGrid {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.4; }
+    }
+    
+    /* Additional floating dots specifically for index page */
+    .index-dots {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+    
+    .index-dot {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background-color: rgba(76, 175, 80, 0.8);
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    /* Add special pulse effect for some dots */
+    .index-dot.pulse {
+        animation: dotPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes dotPulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.5); opacity: 1; }
+    }
+    
+    /* Make content sections pop more against the background */
+    .hero-section, .features-section, .spotlight-section, .testimonials-section {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Seasonal Crop Calendar Styles */
+    .crop-calendar-section {
+        background-color: #f9fcf7;
+        padding: 60px 0;
+    }
+    
+    .crop-calendar-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-top: 30px;
+    }
+    
+    .crop-calendar-card .card-header {
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 20px;
+        border-bottom: none;
+    }
+    
+    .crop-calendar-card .card-header h3 {
+        margin: 0;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .season-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .season-tab {
+        padding: 10px 20px;
+        background-color: #f0f4ea;
+        border: none;
+        border-radius: 30px;
+        font-weight: 500;
+        color: var(--primary-dark);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .season-tab:hover {
+        background-color: var(--tertiary-color);
+        transform: translateY(-2px);
+    }
+    
+    .season-tab.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .crops-container {
+        position: relative;
+        min-height: 300px;
+    }
+    
+    .season-crops {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+    
+    .season-crops.active {
+        display: block;
+    }
+    
+    .crop-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+    
+    .crop-card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .crop-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-light);
+    }
+    
+    .crop-icon {
+        width: 60px;
+        height: 60px;
+        background-color: var(--tertiary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        color: var(--primary-dark);
+        font-size: 1.5rem;
+    }
+    
+    .crop-card h4 {
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+        color: var(--dark-color);
+    }
+    
+    .crop-card p {
+        margin-bottom: 10px;
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    .difficulty {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .easy {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+    
+    .medium {
+        background-color: #fff8e1;
+        color: #ffa000;
+    }
+    
+    .hard {
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 768px) {
+        .crop-grid {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        }
+        
+        .crop-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+        }
+        
+        .crop-card h4 {
+            font-size: 1rem;
+        }
+    }
+
+    /* Tools Section Styles */
+    .tools-section {
+        background-color: #f5f9f5;
+        padding: 60px 0;
+    }
+    
+    .tool-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .tool-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tool-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    .tool-card h4 {
+        margin-bottom: 15px;
+        color: var(--primary-dark);
+        font-weight: 600;
+    }
+    
+    .tool-card p {
+        color: var(--text-light);
+        margin-bottom: 20px;
+        min-height: 60px;
+    }
+    
+    .tool-card .btn {
+        transition: all 0.3s ease;
+    }
+    
+    .tool-card .btn:hover {
+        transform: translateY(-3px);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add translations specific to the index page
+        if (typeof translations === 'undefined') {
+            window.translations = {
+                'en': {},
+                'hi': {}
+            };
+        }
+        
+        // Add index page translations
+        translations.en.indexPage = {
+            // Hero section
+            "heroTitle": "AI-Powered Agricultural Education & Support Platform",
+            "heroSubtitle": "Empowering farmers with intelligent solutions for sustainable agriculture",
+            "exploreButton": "Explore Features",
+            "chatButton": "Chat with Assistant",
+            
+            // Features section
+            "featuresTitle": "Our Smart Features",
+            "featuresSubtitle": "Innovative tools to revolutionize farming practices",
+            
+            "aiChatTitle": "AI Chat Assistant",
+            "aiChatDesc": "Get instant answers to all your agricultural queries from our intelligent assistant",
+            
+            "diseaseDetectionTitle": "Plant Disease Detection",
+            "diseaseDetectionDesc": "Upload plant images to identify diseases and get treatment recommendations",
+            
+            "marketPredictionTitle": "Market Price Prediction",
+            "marketPredictionDesc": "Access AI-powered forecasts to make informed decisions about selling your crops",
+            
+            "educationalResourcesTitle": "Educational Resources",
+            "educationalResourcesDesc": "Learn modern agricultural techniques with our curated courses and materials",
+            
+            // Counter section
+            "farmersHelped": "Farmers Helped",
+            "queriesAnswered": "Queries Answered",
+            "diseasesIdentified": "Diseases Identified",
+            "resourcesAvailable": "Resources Available",
+            
+            // Language banner
+            "languageTitle": "Available in Multiple Languages",
+            "languageDesc": "Access information in your preferred language for better understanding",
+            "languageNote": "We support Hindi, Bengali, Tamil, Telugu and Marathi"
+        };
+        
+        // Add Hindi translations
+        translations.hi.indexPage = {
+            // Hero section
+            "heroTitle": "एआई-संचालित कृषि शिक्षा और सहायता मंच",
+            "heroSubtitle": "स्थायी कृषि के लिए बुद्धिमान समाधानों के साथ किसानों को सशक्त बनाना",
+            "exploreButton": "विशेषताएं देखें",
+            "chatButton": "सहायक से चैट करें",
+            
+            // Features section
+            "featuresTitle": "हमारी स्मार्ट विशेषताएं",
+            "featuresSubtitle": "खेती प्रथाओं में क्रांति लाने के लिए नवीन उपकरण",
+            
+            "aiChatTitle": "एआई चैट सहायक",
+            "aiChatDesc": "हमारे बुद्धिमान सहायक से अपने सभी कृषि प्रश्नों के तुरंत उत्तर प्राप्त करें",
+            
+            "diseaseDetectionTitle": "पौधों के रोग का पता लगाना",
+            "diseaseDetectionDesc": "रोगों की पहचान करने और उपचार की सिफारिशें प्राप्त करने के लिए पौधों की छवियां अपलोड करें",
+            
+            "marketPredictionTitle": "बाजार मूल्य भविष्यवाणी",
+            "marketPredictionDesc": "अपनी फसलों को बेचने के बारे में सूचित निर्णय लेने के लिए एआई-संचालित पूर्वानुमानों तक पहुंचें",
+            
+            "educationalResourcesTitle": "शैक्षिक संसाधन",
+            "educationalResourcesDesc": "हमारे क्यूरेटेड पाठ्यक्रमों और सामग्रियों के साथ आधुनिक कृषि तकनीकों को सीखें",
+            
+            // Counter section
+            "farmersHelped": "मदद किए गए किसान",
+            "queriesAnswered": "उत्तर दिए गए प्रश्न",
+            "diseasesIdentified": "पहचाने गए रोग",
+            "resourcesAvailable": "उपलब्ध संसाधन",
+            
+            // Language banner
+            "languageTitle": "कई भाषाओं में उपलब्ध",
+            "languageDesc": "बेहतर समझ के लिए अपनी पसंदीदा भाषा में जानकारी प्राप्त करें",
+            "languageNote": "हम हिंदी, बंगाली, तमिल, तेलुगु और मराठी का समर्थन करते हैं"
+        };
+        
+        // Function to apply translations to index page
+        function applyPageTranslations(lang) {
+            console.log('Applying index page translations for', lang);
+            
+            // Default to English if translation not available
+            if (!translations[lang] || !translations[lang].indexPage) {
+                console.log(`No index page translations available for ${lang}, defaulting to English`);
+                lang = 'en';
+            }
+            
+            const t = translations[lang].indexPage;
+            
+            // Hero section
+            document.querySelector('.hero-content h1').textContent = t.heroTitle;
+            document.querySelector('.hero-content p').textContent = t.heroSubtitle;
+            document.querySelectorAll('.hero-buttons .btn')[0].textContent = t.exploreButton;
+            document.querySelectorAll('.hero-buttons .btn')[1].textContent = t.chatButton;
+            
+            // Features section
+            document.querySelector('.features-header h2').textContent = t.featuresTitle;
+            document.querySelector('.features-header p').textContent = t.featuresSubtitle;
+            
+            const featureCards = document.querySelectorAll('.feature-card');
+            if (featureCards.length >= 4) {
+                featureCards[0].querySelector('h3').textContent = t.aiChatTitle;
+                featureCards[0].querySelector('p').textContent = t.aiChatDesc;
+                
+                featureCards[1].querySelector('h3').textContent = t.diseaseDetectionTitle;
+                featureCards[1].querySelector('p').textContent = t.diseaseDetectionDesc;
+                
+                featureCards[2].querySelector('h3').textContent = t.marketPredictionTitle;
+                featureCards[2].querySelector('p').textContent = t.marketPredictionDesc;
+                
+                featureCards[3].querySelector('h3').textContent = t.educationalResourcesTitle;
+                featureCards[3].querySelector('p').textContent = t.educationalResourcesDesc;
+            }
+            
+            // Counter section
+            const counterItems = document.querySelectorAll('.counter-item');
+            if (counterItems.length >= 4) {
+                counterItems[0].querySelector('h3').textContent = t.farmersHelped;
+                counterItems[1].querySelector('h3').textContent = t.queriesAnswered;
+                counterItems[2].querySelector('h3').textContent = t.diseasesIdentified;
+                counterItems[3].querySelector('h3').textContent = t.resourcesAvailable;
+            }
+            
+            // Language banner
+            document.querySelector('.language-banner h2').textContent = t.languageTitle;
+            document.querySelector('.language-banner p').textContent = t.languageDesc;
+            document.querySelector('.language-banner .language-note').textContent = t.languageNote;
+        }
+        
+        // Listen for language change events
+        document.addEventListener('languageChanged', function(e) {
+            applyPageTranslations(e.detail.language);
+        });
+        
+        // Listen for translate page events
+        document.addEventListener('translatePage', function(e) {
+            applyPageTranslations(e.detail.language);
+        });
+        
+        // Apply translations on page load
+        const currentLang = localStorage.getItem('app_language') || 'en';
+        applyPageTranslations(currentLang);
+        
+        // Animations for feature cards
+        const featureCards = document.querySelectorAll('.feature-card');
+        
+        // Create IntersectionObserver to animate cards when they enter the viewport
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                    entry.target.style.opacity = 1;
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        // Observe each feature card
+        featureCards.forEach((card, index) => {
+            card.style.opacity = 0;
+            card.style.animationDelay = `${index * 0.2}s`;
+            observer.observe(card);
+        });
+        
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter-value');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const animate = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText.replace(/,/g, '');
+                    const increment = Math.ceil(target / speed);
+                    
+                    if (count < target) {
+                        counter.innerText = (count + increment).toLocaleString();
+                        setTimeout(animate, 10);
+                    } else {
+                        counter.innerText = target.toLocaleString();
+                    }
+                };
+                animate();
+            });
+        }
+        
+        // Create IntersectionObserver for counter section
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        });
+        
+        // Observe counter section
+        const counterSection = document.querySelector('.counter-section');
+        if (counterSection) {
+            counterObserver.observe(counterSection);
+        }
+        
+        // Create additional animated dots specifically for index page
+        const dotsContainer = document.querySelector('.index-dots');
+        const numDots = 120; // Increased number of dots
+        let mousePosX = 0, mousePosY = 0;
+        
+        // Track mouse position
+        document.addEventListener('mousemove', function(e) {
+            mousePosX = e.clientX;
+            mousePosY = e.clientY;
+            
+            // Make dots near mouse react
+            const dots = document.querySelectorAll('.index-dot');
+            dots.forEach(dot => {
+                const dotX = parseInt(dot.style.left);
+                const dotY = parseInt(dot.style.top);
+                const dx = mousePosX - dotX;
+                const dy = mousePosY - dotY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = (100 - distance) / 10;
+                    const moveX = Math.cos(angle) * force;
+                    const moveY = Math.sin(angle) * force;
+                    
+                    // Apply transform for performance instead of changing position
+                    dot.style.transform = `translate(${moveX}px, ${moveY}px) scale(${1 + (100-distance)/100})`;
+                    dot.style.opacity = Math.min(1, 0.8 + (100-distance)/100 * 0.2);
+                    dot.style.zIndex = "1";
+                } else {
+                    dot.style.transform = "";
+                    dot.style.opacity = "";
+                    dot.style.zIndex = "-1";
+                }
+            });
+        });
+        
+        if (dotsContainer) {
+            // Generate random dots
+            for (let i = 0; i < numDots; i++) {
+                createIndexDot(dotsContainer, i);
+            }
+            
+            // Draw connections between dots
+            setInterval(drawConnections, 1000/30); // 30 fps update for connections
+        }
+        
+        function createIndexDot(container, index) {
+            const dot = document.createElement('div');
+            dot.classList.add('index-dot');
+            
+            // Some dots will pulse
+            if (index % 8 === 0) {
+                dot.classList.add('pulse');
+            }
+            
+            // Random initial position
+            const posX = Math.random() * window.innerWidth;
+            const posY = Math.random() * window.innerHeight;
+            
+            // Random size (varied sizes for more interest)
+            const size = Math.random() * 3 + 1;
+            
+            // Set dot styles
+            dot.style.left = posX + 'px';
+            dot.style.top = posY + 'px';
+            dot.style.width = size + 'px';
+            dot.style.height = size + 'px';
+            dot.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            // Add dot to container
+            container.appendChild(dot);
+            
+            // Create floating animation with random duration
+            const duration = Math.random() * 20 + 10; // 10-30 seconds
+            const delay = Math.random() * 10; // 0-10 seconds delay
+            
+            dot.style.animation = `floatDot ${duration}s ease-in-out ${delay}s infinite`;
+            
+            // Add keyframe animation to head
+            if (!document.querySelector('#dot-animations')) {
+                const style = document.createElement('style');
+                style.id = 'dot-animations';
+                style.textContent = `
+                    @keyframes floatDot {
+                        0%, 100% {
+                            transform: translate(0, 0);
+                        }
+                        25% {
+                            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px);
+                        }
+                        50% {
+                            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px);
+                        }
+                        75% {
+                            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        function drawConnections() {
+            // Create canvas if it doesn't exist
+            let canvas = document.querySelector('#dots-connections');
+            if (!canvas) {
+                canvas = document.createElement('canvas');
+                canvas.id = 'dots-connections';
+                canvas.style.position = 'absolute';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.pointerEvents = 'none';
+                canvas.style.zIndex = '-1';
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                dotsContainer.appendChild(canvas);
+                
+                // Update canvas size on window resize
+                window.addEventListener('resize', function() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                });
+            }
+            
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const dots = document.querySelectorAll('.index-dot');
+            const dotsArray = Array.from(dots);
+            const maxDistance = 100; // Maximum distance for connections
+            
+            // Draw connections
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.15)';
+            ctx.lineWidth = 0.5;
+            
+            for (let i = 0; i < dotsArray.length; i++) {
+                const dot1 = dotsArray[i];
+                const x1 = parseInt(dot1.style.left);
+                const y1 = parseInt(dot1.style.top);
+                
+                // Connect to nearby dots
+                for (let j = i + 1; j < dotsArray.length; j++) {
+                    const dot2 = dotsArray[j];
+                    const x2 = parseInt(dot2.style.left);
+                    const y2 = parseInt(dot2.style.top);
+                    
+                    const dx = x1 - x2;
+                    const dy = y1 - y2;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < maxDistance) {
+                        // Opacity based on distance
+                        const opacity = 0.15 * (1 - distance / maxDistance);
+                        ctx.strokeStyle = `rgba(76, 175, 80, ${opacity})`;
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    }
+                }
+                
+                // Connect dots to mouse if close enough
+                const mouseDistance = Math.sqrt(
+                    Math.pow(x1 - mousePosX, 2) + 
+                    Math.pow(y1 - mousePosY, 2)
+                );
+                
+                if (mouseDistance < 150) {
+                    const opacity = 0.3 * (1 - mouseDistance / 150);
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(mousePosX, mousePosY);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Seasonal Crop Calendar Functionality
+        // Set default season based on current month
+        const month = new Date().getMonth();
+        let currentSeason;
+        
+        // Determine current season
+        if (month >= 2 && month <= 4) {
+            currentSeason = "spring";
+        } else if (month >= 5 && month <= 6) {
+            currentSeason = "summer";
+        } else if (month >= 7 && month <= 9) {
+            currentSeason = "monsoon";
+        } else {
+            currentSeason = "winter";
+        }
+        
+        // Update current season text
+        document.getElementById('current-season').textContent = capitalizeFirstLetter(currentSeason);
+        
+        // Show the current season crops
+        const allSeasonCrops = document.querySelectorAll('.season-crops');
+        allSeasonCrops.forEach(season => {
+            season.classList.remove('active');
+        });
+        document.getElementById(currentSeason + '-crops').classList.add('active');
+        
+        // Set active tab
+        const seasonTabs = document.querySelectorAll('.season-tab');
+        seasonTabs.forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.dataset.season === currentSeason) {
+                tab.classList.add('active');
+            }
+            
+            // Add click event listeners
+            tab.addEventListener('click', function() {
+                const season = this.dataset.season;
+                
+                // Update active tab
+                seasonTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding crops
+                allSeasonCrops.forEach(s => s.classList.remove('active'));
+                document.getElementById(season + '-crops').classList.add('active');
+                
+                // Update season text
+                document.getElementById('current-season').textContent = capitalizeFirstLetter(season);
+            });
+        });
+        
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    });
+</script>
+{% endblock %} 
