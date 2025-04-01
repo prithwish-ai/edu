@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Debugging Tools</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #45a049;
+            --text-color: #333;
+            --background-color: #fff;
+            --card-bg: #f9f9f9;
+            --border-color: #ddd;
+            --code-bg: #f1f1f1;
+            --success-color: #4CAF50;
+            --error-color: #f44336;
+            --log-bg: #000;
+            --log-text: #0f0;
+            --table-header: #f1f1f1;
+        }
+        
+        [data-theme="dark"] {
+            --primary-color: #66bb6a;
+            --primary-dark: #57a85a;
+            --text-color: #eee;
+            --background-color: #222;
+            --card-bg: #333;
+            --border-color: #444;
+            --code-bg: #2a2a2a;
+            --success-color: #66bb6a;
+            --error-color: #f77;
+            --log-bg: #111;
+            --log-text: #5f5;
+            --table-header: #2a2a2a;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            transition: all 0.3s ease;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        
+        .debug-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: var(--card-bg);
+        }
+        
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        
+        .code {
+            font-family: monospace;
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--code-bg);
+        }
+        
+        .success {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        
+        .error {
+            color: var(--error-color);
+            font-weight: bold;
+        }
+        
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .test-table th, .test-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .test-table th {
+            background-color: var(--table-header);
+        }
+        
+        .test-row.success td:first-child {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .test-row.error td:first-child {
+            border-left: 4px solid var(--error-color);
+        }
+        
+        .log {
+            background-color: var(--log-bg);
+            color: var(--log-text);
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+            font-family: monospace;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            cursor: pointer;
+            color: var(--primary-color);
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .download-button {
+            margin-left: 10px;
+            background-color: #3498db;
+        }
+        
+        .download-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .favorite-phrases {
+            margin-top: 15px;
+        }
+        
+        .favorites-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .favorite-chip {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .favorite-chip:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .metric-card {
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            background-color: var(--code-bg);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-color);
+        }
+        
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .debug-section {
+                padding: 15px;
+            }
+            
+            button {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" id="theme-toggle">🌙</div>
+    
+    <h1>TTS Debugging Tools</h1>
+    <p>Use this page to diagnose issues with the text-to-speech functionality.</p>
+    
+    <div class="debug-section">
+        <h2>1. Check gTTS Installation</h2>
+        <p>Verify that the gTTS package is properly installed and functioning.</p>
+        <button id="check-gtts">Check gTTS Installation</button>
+        <div id="gtts-result" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>2. Test TTS Endpoint</h2>
+        <p>Test the basic functionality of the /api/text-to-speech endpoint.</p>
+        <div class="favorite-phrases">
+            <label for="test-text">Text to test:</label>
+            <textarea id="test-text" rows="3" style="width: 100%; margin-top: 10px;">This is a test of the text-to-speech system.</textarea>
+            <label for="language">Language:</label>
+            <select id="language" style="margin-top: 10px;">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="bn">Bengali</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+            </select>
+            <div class="favorites-list">
+                <div class="favorite-chip" data-text="Hello, this is a test." data-lang="en">Hello (English)</div>
+                <div class="favorite-chip" data-text="नमस्ते, यह एक परीक्षण है।" data-lang="hi">Hello (Hindi)</div>
+                <div class="favorite-chip" data-text="স্বাগতম, এটি একটি পরীক্ষা।" data-lang="bn">Hello (Bengali)</div>
+            </div>
+        </div>
+        <button id="test-tts-endpoint">Test TTS Endpoint</button>
+        <button id="download-audio" class="download-button">Download Audio</button>
+        <div id="tts-endpoint-result" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>3. File System Access</h2>
+        <p>Check if the application has proper permissions to create and delete temporary files.</p>
+        <button id="check-filesystem">Check File System Permissions</button>
+        <div id="filesystem-result" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>4. Browser Audio Support</h2>
+        <p>Verify browser audio support and capabilities.</p>
+        <button id="check-browser-audio">Check Browser Audio Support</button>
+        <div id="browser-audio-result" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>5. Network Requests</h2>
+        <p>Monitor network requests for TTS API calls.</p>
+        <button id="test-network">Test Network Request</button>
+        <div id="network-result" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>6. Performance Analysis</h2>
+        <p>Analyze the performance of TTS generation and playback.</p>
+        <button id="test-performance">Test TTS Performance</button>
+        <div id="performance-result" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>7. Server Statistics</h2>
+        <div class="metrics" id="server-metrics">
+            <div class="metric-card">
+                <div class="metric-label">Cached Files</div>
+                <div class="metric-value" id="metric-cached-files">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Cache Size</div>
+                <div class="metric-value" id="metric-cache-size">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Uptime</div>
+                <div class="metric-value" id="metric-uptime">-</div>
+            </div>
+        </div>
+        <button id="refresh-stats">Refresh Statistics</button>
+        <div id="stats-result" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>8. Debug Log</h2>
+        <button id="clear-log">Clear Log</button>
+        <div id="log" class="log"></div>
+    </div>
+    
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or use preference from OS
+        const savedTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        
+        function updateThemeIcon(theme) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+        
+        // Utility function to log messages
+        function log(message) {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        // Clear log
+        document.getElementById('clear-log').addEventListener('click', function() {
+            document.getElementById('log').innerHTML = '';
+        });
+        
+        // Update audio element reference when favorite is clicked
+        document.querySelectorAll('.favorite-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const text = this.getAttribute('data-text');
+                const lang = this.getAttribute('data-lang');
+                document.getElementById('test-text').value = text;
+                document.getElementById('language').value = lang;
+                log(`Selected phrase: "${text}" (${lang})`);
+            });
+        });
+        
+        // Utility function for making fetch requests and timing them
+        async function timedFetch(url, options = {}) {
+            log(`Fetching ${url}...`);
+            const startTime = performance.now();
+            try {
+                const response = await fetch(url, options);
+                const endTime = performance.now();
+                const duration = (endTime - startTime).toFixed(2);
+                log(`Fetch completed in ${duration}ms with status ${response.status}`);
+                return { response, duration };
+            } catch (error) {
+                const endTime = performance.now();
+                const duration = (endTime - startTime).toFixed(2);
+                log(`Fetch failed after ${duration}ms with error: ${error.message}`);
+                throw error;
+            }
+        }
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' bytes';
+            else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+            else return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+        
+        // Format time duration
+        function formatDuration(seconds) {
+            if (seconds < 60) return seconds + ' seconds';
+            else if (seconds < 3600) return Math.floor(seconds / 60) + 'm ' + (seconds % 60) + 's';
+            else {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                return hours + 'h ' + minutes + 'm';
+            }
+        }
+        
+        // Load server statistics
+        async function loadServerStats() {
+            try {
+                const { response } = await timedFetch('/api/get-stats');
+                if (!response.ok) {
+                    throw new Error(`API returned status: ${response.status}`);
+                }
+                
+                const stats = await response.json();
+                
+                // Update metrics
+                document.getElementById('metric-cached-files').textContent = stats.cached_files;
+                document.getElementById('metric-cache-size').textContent = formatFileSize(stats.cache_size_bytes);
+                document.getElementById('metric-uptime').textContent = formatDuration(stats.uptime);
+                
+                // Update result
+                document.getElementById('stats-result').innerHTML = `
+                    <p class="success">Statistics retrieved successfully!</p>
+                    <pre>${JSON.stringify(stats, null, 2)}</pre>
+                `;
+                
+                log(`Server stats loaded: ${stats.cached_files} files, ${formatFileSize(stats.cache_size_bytes)} used`);
+            } catch (error) {
+                log(`Error loading stats: ${error.message}`);
+                document.getElementById('stats-result').innerHTML = `
+                    <p class="error">Error loading statistics: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // Refresh stats button
+        document.getElementById('refresh-stats').addEventListener('click', loadServerStats);
+        
+        // Download audio button
+        document.getElementById('download-audio').addEventListener('click', function() {
+            const audioEl = document.querySelector('#tts-endpoint-result audio');
+            if (!audioEl || !audioEl.src) {
+                alert('No audio available to download. Generate audio first.');
+                return;
+            }
+            
+            const a = document.createElement('a');
+            a.href = audioEl.src;
+            a.download = `tts_${document.getElementById('language').value}_${Date.now()}.mp3`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            log(`Downloaded audio file: ${a.download}`);
+        });
+        
+        // Check gTTS Installation
+        document.getElementById('check-gtts').addEventListener('click', async function() {
+            const resultElement = document.getElementById('gtts-result');
+            resultElement.innerHTML = '<p>Checking gTTS installation...</p>';
+            
+            try {
+                // Request version information
+                const { response, duration } = await timedFetch('/api/tts-test');
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status: ${response.status}`);
+                }
+                
+                const audioBlob = await response.blob();
+                log(`Received audio blob: ${audioBlob.type}, size: ${audioBlob.size} bytes`);
+                
+                resultElement.innerHTML = `
+                    <p class="success">gTTS installation check passed!</p>
+                    <p>Response time: ${duration}ms</p>
+                    <p>Audio size: ${formatFileSize(audioBlob.size)}</p>
+                    <p>Audio type: ${audioBlob.type}</p>
+                    <audio controls src="${URL.createObjectURL(audioBlob)}"></audio>
+                `;
+            } catch (error) {
+                log(`Error checking gTTS: ${error.message}`);
+                resultElement.innerHTML = `
+                    <p class="error">Error checking gTTS installation: ${error.message}</p>
+                `;
+            }
+        });
+        
+        // Test TTS endpoint
+        document.getElementById('test-tts-endpoint').addEventListener('click', async function() {
+            const resultElement = document.getElementById('tts-endpoint-result');
+            const text = document.getElementById('test-text').value;
+            const language = document.getElementById('language').value;
+            
+            if (!text.trim()) {
+                alert('Please enter some text to test.');
+                return;
+            }
+            
+            resultElement.innerHTML = '<p>Testing TTS endpoint...</p>';
+            
+            try {
+                const { response, duration } = await timedFetch('/api/text-to-speech', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text, language })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status: ${response.status}`);
+                }
+                
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                log(`Received audio blob: ${audioBlob.type}, size: ${formatFileSize(audioBlob.size)}`);
+                
+                resultElement.innerHTML = `
+                    <p class="success">TTS endpoint test passed!</p>
+                    <p>Response time: ${duration}ms</p>
+                    <p>Audio size: ${formatFileSize(audioBlob.size)}</p>
+                    <p>Audio type: ${audioBlob.type}</p>
+                    <audio controls src="${audioUrl}"></audio>
+                `;
+                
+                // Auto-play the audio
+                const audio = resultElement.querySelector('audio');
+                audio.onloadeddata = function() {
+                    log('Audio loaded, playing...');
+                };
+                audio.play().catch(e => {
+                    log(`Auto-play failed: ${e.message}`);
+                });
+            } catch (error) {
+                log(`Error testing TTS endpoint: ${error.message}`);
+                resultElement.innerHTML = `
+                    <p class="error">Error testing TTS endpoint: ${error.message}</p>
+                `;
+            }
+        });
+        
+        // Check file system
+        document.getElementById('check-filesystem').addEventListener('click', async function() {
+            const resultElement = document.getElementById('filesystem-result');
+            resultElement.innerHTML = '<p>Checking file system permissions...</p>';
+            
+            try {
+                const { response, duration } = await timedFetch('/api/check-filesystem');
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                log(`File system check result: ${JSON.stringify(result)}`);
+                
+                if (result.success) {
+                    resultElement.innerHTML = `
+                        <p class="success">File system check passed!</p>
+                        <p>Write access: ${result.write_access ? 'Yes' : 'No'}</p>
+                        <p>Delete access: ${result.delete_access ? 'Yes' : 'No'}</p>
+                        <p>Temp directory: ${result.temp_dir}</p>
+                        <p>Response time: ${duration}ms</p>
+                    `;
+                } else {
+                    resultElement.innerHTML = `
+                        <p class="error">File system check failed!</p>
+                        <p>Error: ${result.error}</p>
+                        <p>Response time: ${duration}ms</p>
+                    `;
+                }
+            } catch (error) {
+                log(`Error checking file system: ${error.message}`);
+                resultElement.innerHTML = `
+                    <p class="error">Error checking file system: ${error.message}</p>
+                `;
+            }
+        });
+        
+        // Check browser audio support
+        document.getElementById('check-browser-audio').addEventListener('click', function() {
+            const resultElement = document.getElementById('browser-audio-result');
+            
+            try {
+                // Check audio context
+                let hasAudioContext = false;
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    const context = new AudioContext();
+                    hasAudioContext = true;
+                    context.close().catch(() => {});
+                } catch (e) {
+                    log(`Error creating AudioContext: ${e.message}`);
+                }
+                
+                // Check audio element
+                const audio = document.createElement('audio');
+                const canPlayMp3 = audio.canPlayType('audio/mpeg') !== '';
+                const canPlayOgg = audio.canPlayType('audio/ogg') !== '';
+                const canPlayWav = audio.canPlayType('audio/wav') !== '';
+                
+                log(`Browser audio support check: MP3=${canPlayMp3}, OGG=${canPlayOgg}, WAV=${canPlayWav}, WebAudio=${hasAudioContext}`);
+                
+                resultElement.innerHTML = `
+                    <p class="${hasAudioContext && canPlayMp3 ? 'success' : 'error'}">Browser audio support test ${hasAudioContext && canPlayMp3 ? 'passed' : 'failed'}!</p>
+                    <table class="test-table">
+                        <tr>
+                            <th>Feature</th>
+                            <th>Supported</th>
+                        </tr>
+                        <tr class="${hasAudioContext ? 'success' : 'error'} test-row">
+                            <td>Web Audio API</td>
+                            <td>${hasAudioContext ? 'Yes' : 'No'}</td>
+                        </tr>
+                        <tr class="${canPlayMp3 ? 'success' : 'error'} test-row">
+                            <td>MP3 Playback</td>
+                            <td>${canPlayMp3 ? 'Yes' : 'No'}</td>
+                        </tr>
+                        <tr class="${canPlayOgg ? 'success' : 'error'} test-row">
+                            <td>OGG Playback</td>
+                            <td>${canPlayOgg ? 'Yes' : 'No'}</td>
+                        </tr>
+                        <tr class="${canPlayWav ? 'success' : 'error'} test-row">
+                            <td>WAV Playback</td>
+                            <td>${canPlayWav ? 'Yes' : 'No'}</td>
+                        </tr>
+                    </table>
+                `;
+                
+                // Add browser info
+                resultElement.innerHTML += `
+                    <p>Browser: ${navigator.userAgent}</p>
+                `;
+            } catch (error) {
+                log(`Error checking browser audio support: ${error.message}`);
+                resultElement.innerHTML = `
+                    <p class="error">Error checking browser audio support: ${error.message}</p>
+                `;
+            }
+        });
+        
+        // Test network request
+        document.getElementById('test-network').addEventListener('click', async function() {
+            const resultElement = document.getElementById('network-result');
+            resultElement.innerHTML = '<p>Testing network request...</p>';
+            
+            try {
+                const testText = "This is a test of the network request functionality.";
+                log(`Sending TTS request with text: "${testText}"`);
+                
+                // Use performance API to measure network timings
+                const startTime = performance.now();
+                
+                // Create a test request with a unique parameter to avoid caching
+                const response = await fetch('/api/text-to-speech', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: testText,
+                        language: 'en'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status: ${response.status}`);
+                }
+                
+                const endTime = performance.now();
+                const totalTime = endTime - startTime;
+                
+                // Get response headers
+                const headers = {};
+                response.headers.forEach((value, name) => {
+                    headers[name] = value;
+                });
+                
+                // Get response body
+                const audioBlob = await response.blob();
+                
+                log(`Network request completed in ${totalTime.toFixed(2)}ms, received ${formatFileSize(audioBlob.size)}`);
+                
+                resultElement.innerHTML = `
+                    <p class="success">Network request test passed!</p>
+                    <p>Total time: ${totalTime.toFixed(2)}ms</p>
+                    <p>Response size: ${formatFileSize(audioBlob.size)}</p>
+                    <p>Content type: ${headers['content-type'] || 'unknown'}</p>
+                    <details>
+                        <summary>Response Headers</summary>
+                        <pre>${JSON.stringify(headers, null, 2)}</pre>
+                    </details>
+                    <audio controls src="${URL.createObjectURL(audioBlob)}"></audio>
+                `;
+            } catch (error) {
+                log(`Error testing network request: ${error.message}`);
+                resultElement.innerHTML = `
+                    <p class="error">Error testing network request: ${error.message}</p>
+                `;
+            }
+        });
+        
+        // Test performance
+        document.getElementById('test-performance').addEventListener('click', async function() {
+            const resultElement = document.getElementById('performance-result');
+            resultElement.innerHTML = '<p>Testing TTS performance...</p>';
+            
+            try {
+                // Define test cases with different text lengths
+                const testCases = [
+                    { label: 'Short Text (10 chars)', text: 'Hello World', language: 'en' },
+                    { label: 'Medium Text (50 chars)', text: 'This is a medium length text to test TTS performance.', language: 'en' },
+                    { label: 'Long Text (150 chars)', text: 'This is a longer piece of text that will be used to evaluate the performance of the text-to-speech system with more content. It should give us a better idea of how it scales.', language: 'en' }
+                ];
+                
+                const results = [];
+                
+                // Run each test case
+                for (const testCase of testCases) {
+                    log(`Testing "${testCase.label}"...`);
+                    
+                    const startTime = performance.now();
+                    
+                    const response = await fetch('/api/text-to-speech', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            text: testCase.text,
+                            language: testCase.language
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`API returned status: ${response.status} for "${testCase.label}"`);
+                    }
+                    
+                    const audioBlob = await response.blob();
+                    const endTime = performance.now();
+                    const duration = endTime - startTime;
+                    
+                    // Calculate characters per second
+                    const charsPerSecond = (testCase.text.length / (duration / 1000)).toFixed(2);
+                    
+                    results.push({
+                        label: testCase.label,
+                        textLength: testCase.text.length,
+                        duration: duration.toFixed(2),
+                        responseSize: audioBlob.size,
+                        charsPerSecond: charsPerSecond
+                    });
+                    
+                    log(`"${testCase.label}" completed in ${duration.toFixed(2)}ms, ${charsPerSecond} chars/second`);
+                }
+                
+                // Generate HTML table with results
+                const tableRows = results.map(result => `
+                    <tr>
+                        <td>${result.label}</td>
+                        <td>${result.textLength} chars</td>
+                        <td>${result.duration} ms</td>
+                        <td>${formatFileSize(result.responseSize)}</td>
+                        <td>${result.charsPerSecond} chars/sec</td>
+                    </tr>
+                `).join('');
+                
+                // Generate chart data
+                const chartLabels = results.map(r => r.textLength);
+                const chartDurations = results.map(r => r.duration);
+                
+                resultElement.innerHTML = `
+                    <p class="success">Performance test completed!</p>
+                    <table class="test-table">
+                        <tr>
+                            <th>Test Case</th>
+                            <th>Text Length</th>
+                            <th>Response Time</th>
+                            <th>Response Size</th>
+                            <th>Performance</th>
+                        </tr>
+                        ${tableRows}
+                    </table>
+                `;
+            } catch (error) {
+                log(`Error testing performance: ${error.message}`);
+                resultElement.innerHTML = `
+                    <p class="error">Error testing performance: ${error.message}</p>
+                `;
+            }
+        });
+        
+        // Load initial statistics
+        loadServerStats();
+    </script>
+</body>
+</html> 
