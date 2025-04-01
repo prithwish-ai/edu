@@ -1,0 +1,23 @@
+# Ignore large model file
+RAPRITHPRA/sunita willams/sunita williams/plant_disease_prediction_model.h5
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo 
