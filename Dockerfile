@@ -9,6 +9,9 @@ ENV PORT=5000
 # Set the working directory
 WORKDIR /app
 
+# Install system dependencies required for PyAudio
+RUN apt-get update && apt-get install -y portaudio19-dev
+
 # Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
