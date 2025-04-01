@@ -1,5 +1,9 @@
 import os
 import secrets
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class Config:
     """Base configuration."""
@@ -56,6 +60,32 @@ config = {
 }
 
 def get_config():
-    """Get the current configuration."""
-    env = os.environ.get('FLASK_ENV', 'default')
-    return config.get(env, config['default']) 
+    """Get configuration based on environment"""
+    env = os.getenv('FLASK_ENV', 'development')
+    
+    if env == 'production':
+        # Production configuration
+        return {
+            'DATABASE_URL': os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/edu_spark'),
+            'SECRET_KEY': os.getenv('SECRET_KEY', os.urandom(24)),
+            'MAX_CONTENT_LENGTH': 16 * 1024 * 1024,  # 16MB
+            'UPLOAD_FOLDER': '/tmp/uploads',
+            'TTS_CACHE_DIR': '/tmp/tts_cache',
+            'AWS_ACCESS_KEY_ID': os.getenv('AWS_ACCESS_KEY_ID'),
+            'AWS_SECRET_ACCESS_KEY': os.getenv('AWS_SECRET_ACCESS_KEY'),
+            'AWS_BUCKET_NAME': os.getenv('AWS_BUCKET_NAME'),
+            'AWS_REGION': os.getenv('AWS_REGION', 'us-east-1')
+        }
+    else:
+        # Development configuration
+        return {
+            'DATABASE_URL': 'sqlite:///agro_app.db',
+            'SECRET_KEY': 'dev-secret-key',
+            'MAX_CONTENT_LENGTH': 16 * 1024 * 1024,  # 16MB
+            'UPLOAD_FOLDER': 'temp/uploads',
+            'TTS_CACHE_DIR': 'temp/tts_cache',
+            'AWS_ACCESS_KEY_ID': None,
+            'AWS_SECRET_ACCESS_KEY': None,
+            'AWS_BUCKET_NAME': None,
+            'AWS_REGION': 'us-east-1'
+        } 
