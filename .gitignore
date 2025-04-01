@@ -1,5 +1,5 @@
 # Ignore large model file
-RAPRITHPRA/sunita willams/sunita williams/plant_disease_prediction_model.h5
+**/plant_disease_prediction_model.h5
 
 # Python cache
 __pycache__/
